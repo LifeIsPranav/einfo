@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/constants";
 import { useAuthStore } from "@/stores";
+import { useThemeStore } from "@/stores/themeStore";
 import { formatNumber } from "@/utils";
 
 import {
@@ -21,12 +22,22 @@ import {
 
 const Dashboard: React.FC = () => {
   const { user, isAuthenticated, isLoading: authLoading } = useAuthStore();
+  const { theme } = useThemeStore();
   const navigate = useNavigate();
   const [stats, setStats] = useState({
     totalViews: 0,
     totalClicks: 0,
   });
   const [statsLoading, setStatsLoading] = useState(true);
+
+  // Apply theme to document
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
   // Redirect to auth if not authenticated
   useEffect(() => {

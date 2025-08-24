@@ -13,27 +13,75 @@ const ThemeToggle: React.FC<ThemeToggleProps> = ({ className = '' }) => {
     <button
       onClick={toggleTheme}
       className={`
-        group relative flex items-center gap-2 px-3 py-2 text-sm font-medium 
-        rounded-lg transition-all duration-200 border
+        group relative flex items-center justify-center w-12 h-12 
+        rounded-xl transition-all duration-200 ease-out
         ${theme === 'dark'
-          ? 'bg-zinc-900/50 hover:bg-zinc-800/60 text-zinc-400 border-zinc-800/50 hover:text-zinc-200 hover:border-zinc-700/60'
-          : 'bg-white hover:bg-gray-50 text-gray-600 border-gray-200 hover:text-gray-900 hover:border-gray-300'
+          ? 'bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30'
+          : 'bg-black/5 hover:bg-black/10 border border-black/10 hover:border-black/20'
+        }
+        hover:scale-105 active:scale-95
+        focus:outline-none focus:ring-2 focus:ring-offset-2
+        ${theme === 'dark'
+          ? 'focus:ring-white/50 focus:ring-offset-black'
+          : 'focus:ring-black/50 focus:ring-offset-white'
         }
         ${className}
       `}
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
       title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
     >
-      <div className="relative w-4 h-4">
-        {theme === 'light' ? (
-          <Moon className="w-4 h-4 transition-transform duration-200 group-hover:scale-110" />
-        ) : (
-          <Sun className="w-4 h-4 transition-transform duration-200 group-hover:scale-110" />
-        )}
+      {/* Icon Container */}
+      <div className="relative w-6 h-6">
+        {/* Current Theme Icon */}
+        <div
+          className={`
+            absolute inset-0 flex items-center justify-center
+            transition-all duration-200 ease-out
+            ${theme === 'light' 
+              ? 'opacity-100 rotate-0 scale-100' 
+              : 'opacity-0 rotate-90 scale-75'
+            }
+          `}
+        >
+          <Sun 
+            className={`w-full h-full transition-colors duration-200 ${
+              theme === 'light' ? 'text-black' : 'text-white'
+            }`}
+            strokeWidth={1.5}
+          />
+        </div>
+        
+        {/* Next Theme Icon */}
+        <div
+          className={`
+            absolute inset-0 flex items-center justify-center
+            transition-all duration-200 ease-out
+            ${theme === 'dark' 
+              ? 'opacity-100 rotate-0 scale-100' 
+              : 'opacity-0 rotate-90 scale-75'
+            }
+          `}
+        >
+          <Moon 
+            className={`w-full h-full transition-colors duration-200 ${
+              theme === 'dark' ? 'text-white' : 'text-black'
+            }`}
+            strokeWidth={1.5}
+          />
+        </div>
       </div>
-      <span className="hidden sm:inline transition-opacity duration-200">
-        {theme === 'light' ? 'Dark' : 'Light'}
-      </span>
+      
+      {/* Subtle hover indicator */}
+      <div 
+        className={`
+          absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100
+          transition-opacity duration-200 pointer-events-none
+          ${theme === 'dark'
+            ? 'bg-white/5'
+            : 'bg-black/5'
+          }
+        `} 
+      />
     </button>
   );
 };

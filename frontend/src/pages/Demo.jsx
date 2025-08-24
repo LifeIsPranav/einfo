@@ -6,11 +6,14 @@ import Logo from "@/components/Logo";
 import PortfolioSection from "@/components/PortfolioSection";
 import UnifiedProfileSection from "@/components/UnifiedProfileSection";
 import WorkExperienceSection from "@/components/WorkExperienceSection";
+import ThemeToggle from "@/components/common/ThemeToggle";
 import { Home } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { getIconFromName } from "@/lib/iconUtils";
 import { useProfileStore } from "@/stores";
+import { useThemeStore } from "@/stores/themeStore";
+import { useEffect } from "react";
 
 const Demo = () => {
   const {
@@ -21,9 +24,20 @@ const Demo = () => {
     education,
     visibilitySettings,
   } = useProfileStore();
+  
+  const { theme } = useThemeStore();
+
+  // Apply theme to document
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-6 relative">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 p-4 md:p-6 relative transition-colors duration-300">
       {/* Logo - Top Left */}
       <div className="absolute top-4 left-4 z-50">
         <Logo />
@@ -31,6 +45,7 @@ const Demo = () => {
 
       {/* Navigation - Top Right */}
       <div className="absolute top-4 right-4 z-50 flex items-center gap-3">
+        <ThemeToggle />
         <AuthButton />
       </div>
 
