@@ -50,7 +50,7 @@ netlify.toml
 
 # npm/yarn
 .npmrc
-package-lock.json
+# package-lock.json
 yarn.lock
 
 # IDEs

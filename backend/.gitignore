@@ -127,7 +127,7 @@ clear-stars.js
 !prisma/migrations/migration_lock.toml
 
 # Lock files
-package-lock.json
+# package-lock.json
 yarn.lock
 
 # Additional security patterns
