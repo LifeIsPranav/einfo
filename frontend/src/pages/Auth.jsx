@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
+import ThemeToggle from "@/components/common/ThemeToggle";
 import { AlertCircle, Shield } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,15 +10,26 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/services/api";
 import { googleOAuth } from "@/services/googleOAuth";
 import { useAuthStore } from "@/stores";
+import { useThemeStore } from "@/stores/themeStore";
 import { sanitizeUsername, validateUsername } from "@/utils/validation";
 
 const Auth = () => {
   const { signIn, isLoading, error, clearError, getRedirectPath } =
     useAuthStore();
+  const { theme } = useThemeStore();
   const navigate = useNavigate();
   const [isGoogleReady, setIsGoogleReady] = useState(false);
   const [googleError, setGoogleError] = useState(null);
   const [isInitializing, setIsInitializing] = useState(true);
+
+  // Apply theme to document
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
   // Initialize Google OAuth on component mount
   useEffect(() => {
@@ -98,15 +110,22 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
       {/* Navigation Bar */}
       <nav className="w-full px-6 py-4 flex justify-between items-center">
         <Logo />
-        <Link to="/">
-          <Button variant="ghost" size="sm">
-            Back to Home
-          </Button>
-        </Link>
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <Link to="/">
+            <Button 
+              variant="ghost" 
+              size="sm"
+              className="text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors duration-200"
+            >
+              Back to Home
+            </Button>
+          </Link>
+        </div>
       </nav>
 
       {/* Main Content - Centered */}
@@ -119,24 +138,24 @@ const Auth = () => {
               <img 
                 src="/logo.png" 
                 alt="E-Info Logo" 
-                className="auth-logo w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 object-contain"
+                className="auth-logo w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 object-contain dark:brightness-0 dark:invert transition-all duration-300"
               />
             </div>
             
-            <h1 className="text-4xl font-bold text-gray-900">Welcome</h1>
-            <p className="text-gray-600 text-xl">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-zinc-100 transition-colors duration-200">Welcome</h1>
+            <p className="text-gray-600 dark:text-zinc-400 text-xl transition-colors duration-200">
               Sign in to create and manage your digital identity
             </p>
           </div>
 
           {/* Configuration Warning */}
           {!isGoogleReady && !isInitializing && (
-            <Alert className="mb-4">
-              <Shield className="h-4 w-4" />
-              <AlertDescription className="text-sm">
+            <Alert className="mb-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/40 transition-colors duration-200">
+              <Shield className="h-4 w-4 text-yellow-600 dark:text-yellow-500" />
+              <AlertDescription className="text-sm text-yellow-800 dark:text-yellow-200 transition-colors duration-200">
                 {googleError ||
                   "Google OAuth is not configured. Please add your Google Client ID to continue."}
-                <div className="mt-2 text-xs text-gray-500">
+                <div className="mt-2 text-xs text-yellow-700 dark:text-yellow-300 transition-colors duration-200">
                   To set up Google OAuth:
                   <ol className="list-decimal list-inside mt-1 ml-2">
                     <li>
@@ -145,7 +164,7 @@ const Auth = () => {
                         href="https://console.cloud.google.com/apis/credentials"
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-blue-600 hover:underline"
+                        className="text-blue-600 dark:text-blue-400 hover:underline transition-colors duration-200"
                       >
                         Google Cloud Console
                       </a>
@@ -164,7 +183,7 @@ const Auth = () => {
             <Button
               variant="outline"
               size="lg"
-              className="w-full flex items-center justify-center gap-3 py-3 border-gray-300 hover:bg-gray-50 transition-colors disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-3 py-3 bg-white dark:bg-zinc-900 border-gray-300 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors duration-200 disabled:opacity-50"
               onClick={handleGoogleSignIn}
               disabled={isLoading || isInitializing || !isGoogleReady}
             >
@@ -206,16 +225,16 @@ const Auth = () => {
             </Button>
 
             {(error || googleError) && (
-              <Alert variant="destructive" className="mt-4">
-                <AlertCircle className="h-4 w-4" />
-                <AlertDescription className="flex items-center justify-between">
+              <Alert variant="destructive" className="mt-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800/40 transition-colors duration-200">
+                <AlertCircle className="h-4 w-4 text-red-600 dark:text-red-400" />
+                <AlertDescription className="flex items-center justify-between text-red-800 dark:text-red-200 transition-colors duration-200">
                   <span>{error || googleError}</span>
                   <button
                     onClick={() => {
                       clearError();
                       setGoogleError(null);
                     }}
-                    className="ml-auto text-red-400 hover:text-red-600"
+                    className="ml-auto text-red-400 dark:text-red-500 hover:text-red-600 dark:hover:text-red-400 transition-colors duration-200"
                   >
                     <svg
                       className="w-4 h-4"
