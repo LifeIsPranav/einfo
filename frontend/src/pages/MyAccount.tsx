@@ -1,6 +1,7 @@
 import AuthButton from "@/components/AuthButton";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
+import ThemeToggle from "@/components/common/ThemeToggle";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
@@ -13,6 +14,7 @@ import { useToast } from "@/hooks/use-toast";
 import { api } from "@/services/api";
 import { apiClient } from "@/services/apiClient";
 import { useAuthStore } from "@/stores";
+import { useThemeStore } from "@/stores/themeStore";
 import { isNetworkError, safeApiCall } from "@/utils/apiSafety";
 import { sanitizeUsername, validateUsername } from "@/utils/validation";
 
@@ -60,6 +62,7 @@ const MyAccount = () => {
     isAuthenticated,
     isLoading: authLoading,
   } = useAuthStore();
+  const { theme } = useThemeStore();
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
@@ -76,6 +79,15 @@ const MyAccount = () => {
   //   username: "",
   // });
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+  
+  // Apply theme to document
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
   
   // Generate a more unique default username
   const generateDefaultUsername = (email: string) => {
@@ -434,21 +446,21 @@ const MyAccount = () => {
   // Show loading while checking auth or syncing data
   if (authLoading || isSyncing || !isDataLoaded) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center transition-colors duration-300">
         <div className="text-center space-y-6">
           <div className="flex justify-center mb-6">
             <img 
               src="/logo.png" 
               alt="Logo" 
-              className="w-16 h-16 object-contain animate-pulse"
+              className="w-16 h-16 object-contain animate-pulse dark:brightness-0 dark:invert transition-all duration-300"
               style={{
-                filter: 'brightness(0)',
+                filter: theme === 'dark' ? 'brightness(0) invert(1)' : 'brightness(0)',
                 animation: 'logo-fade 2s ease-in-out infinite'
               }}
             />
           </div>
           <LoadingSpinner size="lg" />
-          <p className="text-gray-800 font-light">
+          <p className="text-gray-800 dark:text-zinc-200 font-light">
             Turning Personality into Pixels...
           </p>
         </div>
@@ -462,7 +474,7 @@ const MyAccount = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-6 relative">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 p-4 md:p-6 relative transition-colors duration-300">
       {/* Logo - Top Left */}
       <div className="absolute top-4 left-4 z-50">
         <Logo />
@@ -470,18 +482,19 @@ const MyAccount = () => {
 
       {/* Navigation - Top Right */}
       <div className="absolute top-4 right-4 z-50 flex items-center gap-3">
+        <ThemeToggle />
         <Button
           onClick={() => (window.location.href = "/")}
           variant="outline"
           size="sm"
-          className="hidden md:inline-flex bg-white border-gray-200 text-gray-700 hover:bg-gray-50 font-medium"
+          className="hidden md:inline-flex bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 font-medium transition-colors duration-200"
         >
           <Home className="w-4 h-4 mr-2" />
           Home
         </Button>
         <Button
           onClick={() => (window.location.href = "/mycard")}
-          className="bg-gray-900 hover:bg-gray-800 text-white font-medium"
+          className="bg-gray-900 dark:bg-zinc-700 hover:bg-gray-800 dark:hover:bg-zinc-600 text-white font-medium transition-colors duration-200"
           size="sm"
         >
           <CreditCard className="w-4 h-4 mr-2" />
@@ -496,7 +509,7 @@ const MyAccount = () => {
         <div className="flex items-center gap-3 mb-16">
           <Link
             to="/mycard"
-            className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors text-sm font-medium"
+            className="flex items-center gap-2 text-gray-600 dark:text-zinc-400 hover:text-gray-900 dark:hover:text-zinc-100 transition-colors text-sm font-medium"
           >
             <ArrowLeft className="w-4 h-4" />
             Back to My Card
@@ -506,10 +519,10 @@ const MyAccount = () => {
         {/* Header Section */}
         <div className="text-center space-y-4">
           <div>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-zinc-100 mb-2 transition-colors duration-200">
               My Account
             </h2>
-            <p className="text-gray-600 text-sm">
+            <p className="text-gray-600 dark:text-zinc-400 text-sm transition-colors duration-200">
               Manage your account information and preferences
             </p>
           </div>
@@ -517,16 +530,16 @@ const MyAccount = () => {
 
         {/* Backend Status Alert */}
         {!isBackendConnected && (
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+          <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/40 rounded-lg p-4 transition-colors duration-200">
             <div className="flex items-start gap-3">
-              <div className="w-5 h-5 rounded-full bg-yellow-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <div className="w-5 h-5 rounded-full bg-yellow-500 dark:bg-yellow-600 flex items-center justify-center flex-shrink-0 mt-0.5">
                 <AlertTriangle className="w-3 h-3 text-white" />
               </div>
               <div>
-                <h4 className="text-sm font-medium text-yellow-900 mb-1">
+                <h4 className="text-sm font-medium text-yellow-900 dark:text-yellow-200 mb-1 transition-colors duration-200">
                   Demo Mode
                 </h4>
-                <p className="text-xs text-yellow-700 leading-relaxed">
+                <p className="text-xs text-yellow-700 dark:text-yellow-300 leading-relaxed transition-colors duration-200">
                   Backend is not connected. You're in demo mode - changes will
                   be saved locally only. To enable full functionality, set up
                   the backend using the provided implementation guide.
@@ -537,40 +550,40 @@ const MyAccount = () => {
         )}
 
         {/* Account Form */}
-        <div className="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="bg-white dark:bg-zinc-900 rounded-xl border border-gray-100 dark:border-zinc-800 shadow-sm overflow-hidden transition-colors duration-200">
           <div className="p-6 space-y-6">
             {/* Name Field */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-800">
-                Full Name <span className="text-red-500">*</span>
+              <label className="text-sm font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
+                Full Name <span className="text-red-500 dark:text-red-400">*</span>
               </label>
               <Input
                 value={accountData.name}
                 onChange={(e) => handleFieldChange("name", e.target.value)}
                 placeholder="Enter your full name"
-                className={`bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium ${
+                className={`bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200 ${
                   validationErrors.name
-                    ? "border-red-300 focus:border-red-400 focus:ring-red-400"
+                    ? "border-red-300 dark:border-red-600 focus:border-red-400 dark:focus:border-red-500 focus:ring-red-400 dark:focus:ring-red-500"
                     : ""
                 }`}
                 required
               />
               {validationErrors.name && (
-                <p className="text-sm text-red-600">{validationErrors.name}</p>
+                <p className="text-sm text-red-600 dark:text-red-400 transition-colors duration-200">{validationErrors.name}</p>
               )}
             </div>
 
             {/* Email Field (Read-only) */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-800">
+              <label className="text-sm font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Email Address
               </label>
               <Input
                 value={user?.email || ""}
                 readOnly
-                className="bg-gray-100 border-gray-200 text-gray-600 cursor-not-allowed"
+                className="bg-gray-100 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-400 cursor-not-allowed transition-colors duration-200"
               />
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-500 dark:text-zinc-500 transition-colors duration-200">
                 Email address is managed through your Google account and cannot
                 be changed here
               </p>
@@ -578,11 +591,11 @@ const MyAccount = () => {
 
             {/* Username Field */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-800">
-                Username <span className="text-red-500">*</span>
+              <label className="text-sm font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
+                Username <span className="text-red-500 dark:text-red-400">*</span>
               </label>
               <div className="relative">
-                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm font-medium">
+                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-zinc-500 text-sm font-medium transition-colors duration-200">
                   @
                 </span>
                 <Input
@@ -591,13 +604,13 @@ const MyAccount = () => {
                     handleFieldChange("username", e.target.value)
                   }
                   placeholder="yourname"
-                  className={`bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium pl-8 pr-10 ${
+                  className={`bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium pl-8 pr-10 transition-colors duration-200 ${
                     validationErrors.username
-                      ? "border-red-300 focus:border-red-400 focus:ring-red-400"
+                      ? "border-red-300 dark:border-red-600 focus:border-red-400 dark:focus:border-red-500 focus:ring-red-400 dark:focus:ring-red-500"
                       : usernameAvailable === false
-                      ? "border-red-300 focus:border-red-400 focus:ring-red-400"
+                      ? "border-red-300 dark:border-red-600 focus:border-red-400 dark:focus:border-red-500 focus:ring-red-400 dark:focus:ring-red-500"
                       : usernameAvailable === true
-                      ? "border-green-300 focus:border-green-400 focus:ring-green-400"
+                      ? "border-green-300 dark:border-green-600 focus:border-green-400 dark:focus:border-green-500 focus:ring-green-400 dark:focus:ring-green-500"
                       : ""
                   }`}
                   required
@@ -623,19 +636,19 @@ const MyAccount = () => {
                 </div>
               </div>
               {validationErrors.username ? (
-                <p className="text-sm text-red-600">
+                <p className="text-sm text-red-600 dark:text-red-400 transition-colors duration-200">
                   {validationErrors.username}
                 </p>
               ) : usernameAvailable === false ? (
-                <p className="text-sm text-red-600">
+                <p className="text-sm text-red-600 dark:text-red-400 transition-colors duration-200">
                   This username is already taken. Please choose a different one.
                 </p>
               ) : usernameAvailable === true ? (
-                <p className="text-sm text-green-600">
+                <p className="text-sm text-green-600 dark:text-green-400 transition-colors duration-200">
                   Great! This username is available.
                 </p>
               ) : (
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-500 dark:text-zinc-500 transition-colors duration-200">
                   5-20 characters, lowercase letters, numbers, and dashes only.
                   Your profile will be at e-info.me/@
                   {accountData.username || "username"}
@@ -645,8 +658,8 @@ const MyAccount = () => {
 
             {/* Instant Message Subject Field */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-800">
-                Instant Message Subject <span className="text-red-500">*</span>
+              <label className="text-sm font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
+                Instant Message Subject <span className="text-red-500 dark:text-red-400">*</span>
               </label>
               <Input
                 value={accountData.instantMessageSubject}
@@ -654,19 +667,19 @@ const MyAccount = () => {
                   handleFieldChange("instantMessageSubject", e.target.value)
                 }
                 placeholder="Subject for instant messages..."
-                className={`bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium ${
+                className={`bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200 ${
                   validationErrors.instantMessageSubject
-                    ? "border-red-300 focus:border-red-400 focus:ring-red-400"
+                    ? "border-red-300 dark:border-red-600 focus:border-red-400 dark:focus:border-red-500 focus:ring-red-400 dark:focus:ring-red-500"
                     : ""
                 }`}
                 required
               />
               {validationErrors.instantMessageSubject ? (
-                <p className="text-sm text-red-600">
+                <p className="text-sm text-red-600 dark:text-red-400 transition-colors duration-200">
                   {validationErrors.instantMessageSubject}
                 </p>
               ) : (
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-500 dark:text-zinc-500 transition-colors duration-200">
                   Subject line for the instant message template that visitors
                   can use
                 </p>
@@ -675,8 +688,8 @@ const MyAccount = () => {
 
             {/* Instant Message Field */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-800">
-                Instant Message Body <span className="text-red-500">*</span>
+              <label className="text-sm font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
+                Instant Message Body <span className="text-red-500 dark:text-red-400">*</span>
               </label>
               <Textarea
                 value={accountData.instantMessage}
@@ -684,19 +697,19 @@ const MyAccount = () => {
                   handleFieldChange("instantMessage", e.target.value)
                 }
                 placeholder="Set your instant message for quick communication..."
-                className={`bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium min-h-20 resize-none ${
+                className={`bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium min-h-20 resize-none transition-colors duration-200 ${
                   validationErrors.instantMessage
-                    ? "border-red-300 focus:border-red-400 focus:ring-red-400"
+                    ? "border-red-300 dark:border-red-600 focus:border-red-400 dark:focus:border-red-500 focus:ring-red-400 dark:focus:ring-red-500"
                     : ""
                 }`}
                 required
               />
               {validationErrors.instantMessage ? (
-                <p className="text-sm text-red-600">
+                <p className="text-sm text-red-600 dark:text-red-400 transition-colors duration-200">
                   {validationErrors.instantMessage}
                 </p>
               ) : (
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-500 dark:text-zinc-500 transition-colors duration-200">
                   Message body for the instant message template. This will be
                   displayed when people want to message you quickly.
                 </p>
@@ -704,14 +717,14 @@ const MyAccount = () => {
             </div>
 
             {/* Save Button */}
-            <div className="pt-4 border-t border-gray-100">
+            <div className="pt-4 border-t border-gray-100 dark:border-zinc-800 transition-colors duration-200">
               <Button
                 onClick={handleSave}
                 disabled={isLoading || !hasChanges || usernameAvailable === false || usernameCheckLoading}
                 className={`w-full font-medium py-3 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${
                   hasChanges && usernameAvailable !== false
-                    ? "bg-gray-900 hover:bg-gray-800 text-white"
-                    : "bg-gray-100 text-gray-400"
+                    ? "bg-gray-900 dark:bg-zinc-700 hover:bg-gray-800 dark:hover:bg-zinc-600 text-white"
+                    : "bg-gray-100 dark:bg-zinc-800 text-gray-400 dark:text-zinc-500"
                 }`}
               >
                 {isLoading ? (
@@ -745,7 +758,7 @@ const MyAccount = () => {
               {/* Username availability message below save button */}
               {usernameAvailable === false && hasChanges && (
                 <div className="mt-2 text-center">
-                  <p className="text-sm text-red-600">
+                  <p className="text-sm text-red-600 dark:text-red-400 transition-colors duration-200">
                     Cannot save: Username "{accountData.username}" is already taken. Please choose a different username.
                   </p>
                 </div>
@@ -755,16 +768,16 @@ const MyAccount = () => {
         </div>
 
         {/* Account Info */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+        <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/40 rounded-lg p-4 transition-colors duration-200">
           <div className="flex items-start gap-3">
-            <div className="w-5 h-5 rounded-full bg-blue-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <div className="w-5 h-5 rounded-full bg-blue-500 dark:bg-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5">
               <User className="w-3 h-3 text-white" />
             </div>
             <div>
-              <h4 className="text-sm font-medium text-blue-900 mb-1">
+              <h4 className="text-sm font-medium text-blue-900 dark:text-blue-200 mb-1 transition-colors duration-200">
                 Account Information
               </h4>
-              <p className="text-xs text-blue-700 leading-relaxed">
+              <p className="text-xs text-blue-700 dark:text-blue-300 leading-relaxed transition-colors duration-200">
                 Your account information is used across the platform. Changes to
                 your name and username will be reflected in your profile and
                 public displays.

@@ -100,7 +100,7 @@ export default function AuthButton() {
       <Button
         onClick={handleSignIn}
         size="sm"
-        className="bg-gray-900 hover:bg-gray-800 dark:bg-orange-600 dark:hover:bg-orange-500 text-white px-4 py-2 text-sm font-medium transition-colors duration-200"
+        className="bg-gray-900 hover:bg-gray-800 dark:bg-zinc-700 dark:hover:bg-zinc-600 text-white px-4 py-2 text-sm font-medium transition-colors duration-200"
       >
         Sign In
       </Button>
