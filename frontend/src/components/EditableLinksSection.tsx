@@ -102,9 +102,9 @@ const EditableLinkItem = ({
   if (isEditing) {
     return (
       <div
-        className={`bg-white border border-gray-100 rounded-xl transition-all duration-200 overflow-hidden shadow-sm ${
+        className={`bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-700 rounded-xl transition-all duration-200 overflow-hidden shadow-sm ${
           isBeingDragged ? "opacity-50 scale-95" : ""
-        } ${isDraggedOver ? "border-gray-300 shadow-lg" : ""}`}
+        } ${isDraggedOver ? "border-gray-300 dark:border-zinc-600 shadow-lg" : ""}`}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
@@ -149,23 +149,23 @@ const EditableLinkItem = ({
           {/* Title and URL Row */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Name
               </label>
               <Input
                 value={editingProject.title}
                 onChange={(e) => handleFieldChange("title", e.target.value)}
                 placeholder="e.g., LinkedIn"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-600 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={50}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   editingProject.title.length > 45 
                     ? editingProject.title.length >= 50 
                       ? 'text-red-500' 
                       : 'text-orange-500'
-                    : 'text-gray-500'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {editingProject.title.length}/50 characters
                 </p>
@@ -177,37 +177,37 @@ const EditableLinkItem = ({
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Link URL
               </label>
               <Input
                 value={editingProject.href}
                 onChange={(e) => handleFieldChange("href", e.target.value)}
                 placeholder="https://linkedin.com/in/yourname"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-600 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
               />
             </div>
           </div>
 
           {/* Description */}
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-gray-800">
+            <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
               Description
             </label>
             <Input
               value={editingProject.description}
               onChange={(e) => handleFieldChange("description", e.target.value)}
               placeholder="Brief description of this link"
-              className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+              className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-600 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
               maxLength={65}
             />
             <div className="text-right">
-              <p className={`text-xs ${
+              <p className={`text-xs transition-colors duration-200 ${
                 editingProject.description.length > 58 
                   ? editingProject.description.length >= 65 
                     ? 'text-red-500' 
                     : 'text-orange-500'
-                  : 'text-gray-500'
+                  : 'text-gray-500 dark:text-zinc-400'
               }`}>
                 {editingProject.description.length}/65 characters
               </p>
@@ -221,7 +221,7 @@ const EditableLinkItem = ({
 
           {/* Icon Selection */}
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-gray-800">Icon</label>
+            <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">Icon</label>
             <IconPicker
               selectedIcon={editingProject.icon ? getIconFromName(editingProject.icon) : null}
               onIconSelect={(icon, iconName) => {
@@ -252,21 +252,21 @@ const EditableLinkItem = ({
   return (
     <button
       onClick={handleClick}
-      className="w-full bg-white hover:bg-gray-50 border border-gray-100 rounded-xl transition-all duration-200 group shadow-sm overflow-hidden"
+      className="w-full bg-white dark:bg-zinc-900 hover:bg-gray-50 dark:hover:bg-zinc-800 border border-gray-100 dark:border-zinc-800 rounded-xl transition-all duration-200 group shadow-sm overflow-hidden"
     >
       <div className="p-4 flex items-center gap-4 text-left">
         {/* Icon */}
-        <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 group-hover:bg-gray-100 transition-colors duration-200">
-          {project.icon ? getIconFromName(project.icon) : <ExternalLink className="w-4 h-4 text-gray-600" />}
+        <div className="w-10 h-10 rounded-lg bg-gray-50 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0 group-hover:bg-gray-100 dark:group-hover:bg-zinc-700 transition-colors duration-200">
+          {project.icon ? getIconFromName(project.icon) : <ExternalLink className="w-4 h-4 text-gray-600 dark:text-zinc-400" />}
         </div>
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <div className="text-gray-900 font-medium text-sm">
+          <div className="text-gray-900 dark:text-white font-medium text-sm transition-colors duration-200">
             {project.title}
           </div>
           {project.description && (
-            <div className="text-gray-500 text-xs mt-0.5 truncate">
+            <div className="text-gray-500 dark:text-zinc-400 text-xs mt-0.5 truncate transition-colors duration-200">
               {project.description}
             </div>
           )}
@@ -397,8 +397,8 @@ export default function EditableLinksSection({
       {/* Header with Edit Button */}
       <div className="flex items-center justify-between">
         <div className="text-center flex-1">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">Links</h2>
-          <p className="text-gray-600 text-sm">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-300">Links</h2>
+          <p className="text-gray-600 dark:text-zinc-400 text-sm transition-colors duration-300">
             {isEditing
               ? "Edit your links and social profiles"
               : "Connect through my various platforms"}
@@ -412,9 +412,9 @@ export default function EditableLinksSection({
                 onClick={handleCancel}
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
+                className="h-9 w-9 p-2 rounded-full bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-600 shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors duration-200"
               >
-                <X className="w-4 h-4 text-gray-600" />
+                <X className="w-4 h-4 text-gray-600 dark:text-zinc-400" />
               </Button>
               <Button
                 onClick={handleSave}
@@ -430,9 +430,9 @@ export default function EditableLinksSection({
               onClick={handleStartEdit}
               variant="ghost"
               size="sm"
-              className="h-9 w-9 p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
+              className="h-9 w-9 p-2 rounded-full bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-600 shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors duration-200"
             >
-              <Edit3 className="w-4 h-4 text-gray-600" />
+              <Edit3 className="w-4 h-4 text-gray-600 dark:text-zinc-400" />
             </Button>
           )}
         </div>

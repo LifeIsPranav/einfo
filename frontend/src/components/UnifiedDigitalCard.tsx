@@ -263,17 +263,17 @@ const EditableField = ({
           value={value}
           onChange={(e) => handleChange(e.target.value)}
           placeholder={placeholder}
-          className={`${className} min-h-[60px] resize-none bg-blue-50/50 border-blue-200 focus:border-blue-400 focus:ring-1 focus:ring-blue-400`}
+          className={`${className} min-h-[60px] resize-none bg-blue-50/50 dark:bg-zinc-800/50 border-blue-200 dark:border-zinc-600 focus:border-blue-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-blue-400 dark:focus:ring-zinc-500 text-gray-900 dark:text-zinc-100 placeholder:text-gray-500 dark:placeholder:text-zinc-400`}
           onClick={(e) => e.stopPropagation()}
         />
         {maxLength && (
           <div className="mt-1 text-right">
-            <p className={`text-xs ${
+            <p className={`text-xs transition-colors duration-200 ${
               value.length > maxLength * 0.9 
                 ? value.length >= maxLength 
                   ? 'text-red-500' 
                   : 'text-orange-500'
-                : 'text-gray-500'
+                : 'text-gray-500 dark:text-zinc-400'
             }`}>
               {value.length}/{maxLength} characters
             </p>
@@ -293,7 +293,7 @@ const EditableField = ({
       value={value}
       onChange={(e) => handleChange(e.target.value)}
       placeholder={placeholder}
-      className={`${className} bg-blue-50/50 border-blue-200 focus:border-blue-400 focus:ring-1 focus:ring-blue-400`}
+      className={`${className} bg-blue-50/50 dark:bg-zinc-800/50 border-blue-200 dark:border-zinc-600 focus:border-blue-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-blue-400 dark:focus:ring-zinc-500 text-gray-900 dark:text-zinc-100 placeholder:text-gray-500 dark:placeholder:text-zinc-400`}
       onClick={(e) => e.stopPropagation()}
       maxLength={maxLength}
     />
@@ -340,7 +340,7 @@ const EditableContactInfo = ({
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
         placeholder={placeholder}
-        className="text-xs bg-blue-50/50 border-blue-200 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 h-7 min-w-0 w-full"
+        className="text-xs bg-blue-50/50 dark:bg-zinc-800/50 border-blue-200 dark:border-zinc-600 focus:border-blue-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-blue-400 dark:focus:ring-zinc-500 h-7 min-w-0 w-full text-gray-900 dark:text-zinc-100 placeholder:text-gray-500 dark:placeholder:text-zinc-400 transition-colors duration-200"
         onClick={(e) => e.stopPropagation()}
       />
     ) : (
@@ -433,7 +433,7 @@ const EditableSkills = ({
               onChange={(e) => setNewSkill(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && addSkill()}
               placeholder="Add skill"
-              className="h-7 px-2 text-xs bg-blue-50/50 border-blue-200 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 w-20 text-gray-900 placeholder-gray-400"
+              className="h-7 px-2 text-xs bg-blue-50/50 dark:bg-zinc-800/50 border-blue-200 dark:border-zinc-600 focus:border-blue-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-blue-400 dark:focus:ring-zinc-500 w-20 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 transition-colors duration-200"
             />
             <button
               onClick={addSkill}
@@ -820,7 +820,7 @@ Best regards`;
                 {/* Resume Upload Section */}
                 {isEditing && (
                   <div className="mb-4" onClick={(e) => e.stopPropagation()}>
-                    <label className="text-xs font-semibold text-gray-800 mb-2 block">
+                    <label className="text-xs font-semibold dark:text-white text-gray-800 mb-2 block">
                       Resume/CV Link
                     </label>
                     <Input
@@ -829,7 +829,7 @@ Best regards`;
                         handleProfileFieldChange("resumeUrl", e.target.value)
                       }
                       placeholder="https://your-resume-link.com"
-                      className="text-sm bg-blue-50/50 border-blue-200 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 text-gray-900 placeholder-gray-400"
+                      className="text-sm bg-blue-50/50 dark:bg-transparent border-blue-200 dark:text-white focus:border-blue-400 focus:ring-1 focus:ring-blue-400 text-gray-900 placeholder-gray-400"
                     />
                     <p className="text-xs text-gray-500 mt-1">
                       Add a link to your resume, portfolio, or CV

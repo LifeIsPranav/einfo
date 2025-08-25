@@ -530,31 +530,31 @@ export function IconPicker({
           <div className="flex items-center gap-2">
             {selectedIcon ? (
               <>
-                <div className="w-4 h-4 flex items-center justify-center text-gray-700">
+                <div className="w-4 h-4 flex items-center justify-center text-gray-700 dark:text-zinc-300">
                   {selectedIcon}
                 </div>
-                <span className="text-sm text-gray-900">Selected Icon</span>
+                <span className="text-sm text-gray-900 dark:text-zinc-100">Selected Icon</span>
               </>
             ) : (
-              <span className="text-sm text-gray-500">{placeholder}</span>
+              <span className="text-sm text-gray-500 dark:text-zinc-400">{placeholder}</span>
             )}
           </div>
           <div className="w-4 h-4 flex items-center justify-center">
-            <Search className="w-3 h-3 text-gray-500" />
+            <Search className="w-3 h-3 text-gray-500 dark:text-zinc-400" />
           </div>
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="w-80 p-0 bg-white border-gray-200 text-gray-900"
+        className="w-80 p-0 bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100"
         align="start"
       >
-        <div className="space-y-3 p-3 bg-white">
+        <div className="space-y-3 p-3 bg-white dark:bg-zinc-900">
           {/* Search */}
           <Input
             placeholder="Search icons..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="text-sm h-8 bg-white border-gray-200 text-gray-900 placeholder-gray-500"
+            className="text-sm h-8 bg-white dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-500 dark:placeholder-zinc-400"
           />
 
           {/* Category Filter */}
@@ -567,8 +567,8 @@ export function IconPicker({
                 onClick={() => setSelectedCategory(category)}
                 className={`h-6 px-2 text-xs ${
                   selectedCategory === category
-                    ? "bg-gray-900 text-white hover:bg-gray-800"
-                    : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                    ? "bg-gray-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:bg-gray-800 dark:hover:bg-zinc-200"
+                    : "text-gray-700 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-800 hover:text-gray-900 dark:hover:text-zinc-100"
                 }`}
               >
                 {category}
@@ -578,8 +578,8 @@ export function IconPicker({
         </div>
 
         {/* Icons Grid */}
-        <ScrollArea className="h-48 bg-white">
-          <div className="grid grid-cols-8 gap-1 p-3 pt-0 bg-white">
+        <ScrollArea className="h-48 bg-white dark:bg-zinc-900">
+          <div className="grid grid-cols-8 gap-1 p-3 pt-0 bg-white dark:bg-zinc-900">
             {filteredIcons.map((iconOption) => (
               <Button
                 key={iconOption.name}
@@ -596,7 +596,7 @@ export function IconPicker({
             ))}
           </div>
           {filteredIcons.length === 0 && (
-            <div className="text-center text-gray-500 text-sm py-4 bg-white">
+            <div className="text-center text-gray-500 dark:text-zinc-400 text-sm py-4 bg-white dark:bg-zinc-900">
               No icons found
             </div>
           )}
