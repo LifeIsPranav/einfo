@@ -1,5 +1,6 @@
 import AuthButton from "@/components/AuthButton";
 import EducationSection from "@/components/EducationSection";
+import AchievementSection from "@/components/AchievementSection";
 import Footer from "@/components/Footer";
 import LinkButton from "@/components/LinkButton";
 import Logo from "@/components/Logo";
@@ -22,6 +23,7 @@ const Demo = () => {
     portfolioProjects,
     workExperiences,
     education,
+    achievements,
     visibilitySettings,
   } = useProfileStore();
   
@@ -77,10 +79,10 @@ const Demo = () => {
           <div className="space-y-4 mt-24">
             {visibilitySettings.showTitles && (
               <div className="text-center">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
                   Experience
                 </h2>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 dark:text-zinc-400 text-sm transition-colors duration-300">
                   My professional journey and key achievements
                 </p>
               </div>
@@ -89,15 +91,32 @@ const Demo = () => {
           </div>
         )}
 
+        {/* Achievements Section */}
+        {visibilitySettings.showAchievements && achievements.length > 0 && (
+          <div className="space-y-4 mt-24">
+            {visibilitySettings.showTitles && (
+              <div className="text-center">
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
+                  Achievements
+                </h2>
+                <p className="text-gray-600 dark:text-zinc-400 text-sm transition-colors duration-300">
+                  Recognition and accomplishments throughout my career
+                </p>
+              </div>
+            )}
+            <AchievementSection achievements={achievements} />
+          </div>
+        )}
+
         {/* Portfolio Section */}
         {visibilitySettings.showPortfolio && portfolioProjects.length > 0 && (
           <div className="space-y-4 mt-24">
             {visibilitySettings.showTitles && (
               <div className="text-center">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
                   Portfolio
                 </h2>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 dark:text-zinc-400 text-sm transition-colors duration-300">
                   Explore my latest projects and creative work
                 </p>
               </div>
@@ -111,10 +130,10 @@ const Demo = () => {
           <div className="space-y-4 mt-24 mb-16">
             {visibilitySettings.showTitles && (
               <div className="text-center">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
                   Education & Certifications
                 </h2>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 dark:text-zinc-400 text-sm transition-colors duration-300">
                   My educational journey and professional certifications
                 </p>
               </div>

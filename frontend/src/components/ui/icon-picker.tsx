@@ -524,7 +524,7 @@ export function IconPicker({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full justify-between bg-gray-50 border-gray-200 hover:bg-gray-100 text-gray-900"
+          className="w-full justify-between bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 hover:bg-gray-100 dark:hover:bg-zinc-700 text-gray-900 dark:text-zinc-100"
           disabled={disabled}
         >
           <div className="flex items-center gap-2">
@@ -586,7 +586,7 @@ export function IconPicker({
                 variant="ghost"
                 size="sm"
                 onClick={() => handleIconSelect(iconOption)}
-                className="h-8 w-8 p-1 hover:bg-gray-100 bg-white text-gray-700 flex items-center justify-center border-0"
+                className="h-8 w-8 p-1 hover:bg-gray-100 dark:hover:bg-zinc-800 bg-white dark:bg-zinc-900 text-gray-700 dark:text-zinc-200 flex items-center justify-center border-0"
                 title={iconOption.name}
               >
                 <div className="w-4 h-4 flex items-center justify-center">

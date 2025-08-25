@@ -4,6 +4,8 @@ import type { EducationData } from "@/components/Education";
 import { WorkExperienceData } from "@/components/WorkExperience";
 import { defaultEducation } from "@/lib/educationData";
 import { defaultWorkExperiences } from "@/lib/workExperienceData";
+import { defaultAchievements } from "@/lib/achievementsData";
+import type { AchievementData } from "@/types/newSections";
 
 import {
   PersonProfile,
@@ -33,6 +35,7 @@ interface ProfileState {
   portfolioProjects: PortfolioProject[];
   workExperiences: WorkExperienceData[];
   education: EducationData[];
+  achievements: AchievementData[];
 
   // Visibility settings
   visibilitySettings: VisibilitySettings;
@@ -47,6 +50,7 @@ interface ProfileState {
   updatePortfolioProjects: (projects: PortfolioProject[]) => void;
   updateWorkExperiences: (experiences: WorkExperienceData[]) => void;
   updateEducation: (education: EducationData[]) => void;
+  updateAchievements: (achievements: AchievementData[]) => void;
   updateVisibilitySettings: (settings: VisibilitySettings) => void;
   initializeWithUserData: (userData: any) => void;
   setLoading: (loading: boolean) => void;
@@ -96,6 +100,7 @@ export const useProfileStore = create<ProfileState>()(
     portfolioProjects: defaultPortfolioProjects,
     workExperiences: defaultWorkExperiences,
     education: defaultEducation,
+    achievements: defaultAchievements,
     visibilitySettings: defaultVisibilitySettings,
     isLoading: false,
     error: null,
@@ -119,6 +124,10 @@ export const useProfileStore = create<ProfileState>()(
 
     updateEducation: (newEducation: EducationData[]) => {
       set({ education: newEducation });
+    },
+
+    updateAchievements: (newAchievements: AchievementData[]) => {
+      set({ achievements: newAchievements });
     },
 
     updateVisibilitySettings: (newSettings: VisibilitySettings) => {

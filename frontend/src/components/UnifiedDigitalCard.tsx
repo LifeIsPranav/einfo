@@ -323,12 +323,12 @@ const EditableContactInfo = ({
   showTick?: boolean;
   fieldType?: "email" | "website" | "default";
 }) => (
-  <div className="flex items-center text-gray-600 justify-center md:justify-start min-w-0 w-full">
+  <div className="flex items-center text-gray-600 dark:text-zinc-400 justify-center md:justify-start min-w-0 w-full transition-colors duration-300">
     {showTick ? (
       <Check className="w-4 h-4 mr-2 text-green-500 flex-shrink-0 transition-all duration-200" />
     ) : (
       <Icon
-        className="w-4 h-4 mr-2 text-gray-400 flex-shrink-0 cursor-pointer hover:text-gray-600 transition-colors"
+        className="w-4 h-4 mr-2 text-gray-400 dark:text-zinc-500 flex-shrink-0 cursor-pointer hover:text-gray-600 dark:hover:text-zinc-300 transition-colors"
         onClick={(e: any) => {
           e.stopPropagation();
           onIconClick?.();
@@ -347,7 +347,7 @@ const EditableContactInfo = ({
       <span
         className={`text-xs min-w-0 flex-1 ${
           isClickable
-            ? "cursor-pointer hover:text-gray-800 transition-colors"
+            ? "cursor-pointer hover:text-gray-800 dark:hover:text-zinc-200 transition-colors"
             : ""
         } ${
           (fieldType === "website" || fieldType === "email") && value.length > 20
@@ -410,7 +410,7 @@ const EditableSkills = ({
         {skills.map((skill, index) => (
           <span
             key={index}
-            className={`inline-flex items-center px-2 py-1 rounded-md bg-gray-100 text-gray-700 text-xs font-medium ${
+            className={`inline-flex items-center px-2 py-1 rounded-md bg-gray-100 dark:bg-zinc-800 text-gray-700 dark:text-zinc-200 text-xs font-medium transition-colors duration-200 ${
               isEditing ? "pr-1" : ""
             }`}
           >
@@ -418,7 +418,7 @@ const EditableSkills = ({
             {isEditing && onChange && (
               <button
                 onClick={() => removeSkill(index)}
-                className="ml-1 text-gray-500 hover:text-gray-700"
+                className="ml-1 text-gray-500 dark:text-zinc-400 hover:text-gray-700 dark:hover:text-zinc-200 transition-colors duration-200"
               >
                 <X className="w-3 h-3" />
               </button>
@@ -691,7 +691,7 @@ Best regards`;
           {/* Card Front */}
           <div
             ref={frontCardRef}
-            className="absolute top-0 left-0 w-full backface-hidden rounded-2xl bg-white shadow-lg border border-gray-100/80 overflow-hidden"
+            className="absolute top-0 left-0 w-full backface-hidden rounded-2xl bg-white dark:bg-zinc-900 shadow-lg border border-gray-100/80 dark:border-zinc-800/80 overflow-hidden transition-colors duration-300"
             onClick={handleCardClick}
             style={{ backfaceVisibility: "hidden" }}
           >
@@ -707,9 +707,9 @@ Best regards`;
                       }}
                       variant="ghost"
                       size="sm"
-                      className="h-9 w-9 p-2 rounded-full bg-white/90 hover:bg-white border border-gray-200 shadow-sm backdrop-blur-sm transition-all duration-200"
+                      className="h-9 w-9 p-2 rounded-full bg-white/90 dark:bg-zinc-800/90 hover:bg-white dark:hover:bg-zinc-700 border border-gray-200 dark:border-zinc-700 shadow-sm backdrop-blur-sm transition-all duration-200"
                     >
-                      <X className="w-4 h-4 text-gray-600" />
+                      <X className="w-4 h-4 text-gray-600 dark:text-zinc-300" />
                     </Button>
                     <Button
                       onClick={(e) => {
@@ -730,9 +730,9 @@ Best regards`;
                         onClick={handleResumeClick}
                         variant="ghost"
                         size="sm"
-                        className="h-9 w-9 p-2 rounded-full bg-white/90 hover:bg-white border border-gray-200 shadow-sm backdrop-blur-sm transition-all duration-200"
+                        className="h-9 w-9 p-2 rounded-full bg-white/90 dark:bg-zinc-800/90 hover:bg-white dark:hover:bg-zinc-700 border border-gray-200 dark:border-zinc-700 shadow-sm backdrop-blur-sm transition-all duration-200"
                       >
-                        <FileText className="w-4 h-4 text-gray-600" />
+                        <FileText className="w-4 h-4 text-gray-600 dark:text-zinc-300" />
                       </Button>
                     )}
                     {canEdit && (
@@ -743,9 +743,9 @@ Best regards`;
                         }}
                         variant="ghost"
                         size="sm"
-                        className="h-9 w-9 p-2 rounded-full bg-white/90 hover:bg-white border border-gray-200 shadow-sm backdrop-blur-sm transition-all duration-200"
+                        className="h-9 w-9 p-2 rounded-full bg-white/90 dark:bg-zinc-800/90 hover:bg-white dark:hover:bg-zinc-700 border border-gray-200 dark:border-zinc-700 shadow-sm backdrop-blur-sm transition-all duration-200"
                       >
-                        <Edit3 className="w-4 h-4 text-gray-600" />
+                        <Edit3 className="w-4 h-4 text-gray-600 dark:text-zinc-300" />
                       </Button>
                     )}
                   </>
@@ -782,7 +782,7 @@ Best regards`;
                             : undefined
                         }
                         placeholder="Your name"
-                        className="text-xl md:text-2xl font-semibold text-gray-900 mb-1 leading-tight block w-full"
+                        className="text-xl md:text-2xl font-semibold text-gray-900 dark:text-white mb-1 leading-tight block w-full transition-colors duration-300"
                       />
                       <EditableField
                         value={profile.jobTitle || ""}
@@ -794,7 +794,7 @@ Best regards`;
                             : undefined
                         }
                         placeholder="Your job title"
-                        className="text-gray-600 text-sm md:text-base font-medium mb-3 block w-full"
+                        className="text-gray-600 dark:text-zinc-400 text-sm md:text-base font-medium mb-3 block w-full transition-colors duration-300"
                       />
                     </div>
                   </div>
@@ -811,7 +811,7 @@ Best regards`;
                         : undefined
                     }
                     placeholder="Write your bio..."
-                    className="text-gray-700 text-sm leading-relaxed text-center md:text-left w-full"
+                    className="text-gray-700 dark:text-zinc-300 text-sm leading-relaxed text-center md:text-left w-full transition-colors duration-300"
                     multiline
                     maxLength={400}
                   />
@@ -952,9 +952,9 @@ Best regards`;
 
               {/* Call to Action */}
               {!isEditing && (
-                <div className="p-4 border-t border-gray-100 bg-gray-50/50">
+                <div className="p-4 border-t border-gray-100 dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-900/50">
                   <div className="text-center py-2">
-                    <span className="text-gray-500 text-sm font-medium">
+                    <span className="text-gray-500 dark:text-zinc-400 text-sm font-medium">
                       Tap card to send message
                     </span>
                   </div>
@@ -966,7 +966,7 @@ Best regards`;
           {/* Card Back - Message Form */}
           <div
             ref={backCardRef}
-            className="absolute top-0 left-0 w-full backface-hidden rounded-2xl bg-white shadow-lg border border-gray-100/80 overflow-hidden"
+            className="absolute top-0 left-0 w-full backface-hidden rounded-2xl bg-white dark:bg-zinc-900 shadow-lg border border-gray-100/80 dark:border-zinc-800/80 overflow-hidden transition-colors duration-300"
             style={{
               backfaceVisibility: "hidden",
               transform: "rotateY(180deg)",
@@ -979,10 +979,10 @@ Best regards`;
                   className="flex-1 cursor-pointer"
                   onClick={handleCloseCard}
                 >
-                  <h2 className="text-xl font-semibold text-gray-900">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
                     Send Message
                   </h2>
-                  <p className="text-gray-500 text-sm mt-1">Let's connect</p>
+                  <p className="text-gray-500 dark:text-zinc-400 text-sm mt-1">Let's connect</p>
                 </div>
 
                 <div className="flex items-center gap-2">
@@ -992,7 +992,7 @@ Best regards`;
                       variant="ghost"
                       size="sm"
                       onClick={handleInstantMessage}
-                      className="text-blue-500 hover:text-blue-600 hover:bg-blue-50 p-2 h-9 w-9 rounded-full transition-colors"
+                      className="text-blue-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 p-2 h-9 w-9 rounded-full transition-colors"
                       title="Quick message template"
                     >
                       <Zap className="w-4 h-4" />
@@ -1004,7 +1004,7 @@ Best regards`;
                     variant="ghost"
                     size="sm"
                     onClick={handleCloseCard}
-                    className="text-gray-400 hover:text-gray-600 p-2 h-9 w-9 rounded-full hover:bg-gray-50"
+                    className="text-gray-400 dark:text-zinc-500 hover:text-gray-600 dark:hover:text-zinc-300 p-2 h-9 w-9 rounded-full hover:bg-gray-50 dark:hover:bg-zinc-800"
                   >
                     <div className="flex flex-col items-center justify-center">
                       <ArrowRight className="w-3 h-3 -mb-0.5" />
@@ -1021,7 +1021,7 @@ Best regards`;
                     value={messageTitle}
                     onChange={(e) => setMessageTitle(e.target.value)}
                     placeholder="Subject"
-                    className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 h-11 text-sm"
+                    className="bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 h-11 text-sm"
                     onClick={(e) => e.stopPropagation()}
                   />
 
@@ -1029,18 +1029,18 @@ Best regards`;
                     value={messageText}
                     onChange={(e) => setMessageText(e.target.value)}
                     placeholder="Your message..."
-                    className="bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 resize-none text-sm w-full h-full min-h-20"
+                    className="bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 resize-none text-sm w-full h-full min-h-20"
                     onClick={(e) => e.stopPropagation()}
                   />
                 </div>
               </div>
 
               {/* Send Button */}
-              <div className="p-4 border-t border-gray-100 bg-gray-50/50 flex-shrink-0">
+              <div className="p-4 border-t border-gray-100 dark:border-zinc-800 bg-gray-50/50 dark:bg-zinc-900/50 flex-shrink-0">
                 <Button
                   onClick={handleSendMessage}
                   disabled={!messageTitle.trim() || !messageText.trim()}
-                  className="w-full bg-gray-900 hover:bg-gray-800 text-white h-11 disabled:bg-gray-200 disabled:text-gray-400 text-sm font-medium transition-colors"
+                  className="w-full bg-gray-900 dark:bg-zinc-100 hover:bg-gray-800 dark:hover:bg-zinc-200 text-white dark:text-zinc-900 h-11 disabled:bg-gray-200 dark:disabled:bg-zinc-700 disabled:text-gray-400 dark:disabled:text-zinc-500 text-sm font-medium transition-colors"
                 >
                   <Send className="w-4 h-4 mr-2" />
                   Send Message
