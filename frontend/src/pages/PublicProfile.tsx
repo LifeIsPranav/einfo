@@ -283,9 +283,10 @@ const PublicProfile = () => {
               <Button
                 onClick={() => navigate("/demo")}
                 variant="outline"
-                className="text-gray-600"
+                size="lg"
+                className="border-gray-300 dark:border-zinc-600 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 hover:text-gray-900 dark:hover:text-zinc-100 transition-all duration-300"
               >
-                View Demo Profile
+                View Demo
               </Button>
             </div>
           </div>
@@ -344,9 +345,10 @@ const PublicProfile = () => {
               <Button
                 onClick={() => navigate("/demo")}
                 variant="outline"
-                className="text-gray-600 dark:text-zinc-400 bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-700 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors duration-200"
+                size="lg"
+                className="border-gray-300 dark:border-zinc-600 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 hover:text-gray-900 dark:hover:text-zinc-100 transition-all duration-300"
               >
-                View Demo Profile
+                View Demo
               </Button>
             </div>
           </div>
