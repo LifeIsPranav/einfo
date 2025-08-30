@@ -12,6 +12,9 @@ async function checkMigrations() {
   try {
     logger.info('Checking migration status...');
     
+    // Ensure Prisma client is connected before making queries
+    await prisma.$connect();
+    
     // Get all migration folders from the filesystem
     const migrationsDir = path.join(__dirname, '../../prisma/migrations');
     const migrationFolders = fs.readdirSync(migrationsDir)
