@@ -8,6 +8,7 @@
     "dev": "nodemon src/server.js",
     "test": "jest",
     "test-db": "node src/scripts/test-db.js",
+    "test-connection": "node src/scripts/test-connection.js",
     "migrate": "npx prisma migrate dev",
     "migrate-deploy": "npx prisma migrate deploy",
     "migrate-status": "node src/scripts/check-migrations.js",

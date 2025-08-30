@@ -12,8 +12,34 @@ async function checkMigrations() {
   try {
     logger.info('Checking migration status...');
     
-    // Ensure Prisma client is connected before making queries
-    await prisma.$connect();
+    // Ensure Prisma client is connected before making queries with retry logic
+    let connected = false;
+    let retries = 3;
+    
+    for (let i = 0; i < retries; i++) {
+      try {
+        await prisma.$connect();
+        connected = true;
+        logger.info('Database connection established for migration check');
+        break;
+      } catch (error) {
+        logger.warn(`Database connection attempt ${i + 1} failed:`, {
+          error: error.message,
+          code: error.code
+        });
+        
+        if (i === retries - 1) {
+          throw new Error(`Failed to connect to database after ${retries} attempts: ${error.message}`);
+        }
+        
+        // Wait before retrying (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
+      }
+    }
+    
+    if (!connected) {
+      throw new Error('Could not establish database connection');
+    }
     
     // Get all migration folders from the filesystem
     const migrationsDir = path.join(__dirname, '../../prisma/migrations');
