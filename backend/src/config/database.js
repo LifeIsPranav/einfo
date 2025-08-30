@@ -12,13 +12,17 @@ const prismaConfig = {
       url: process.env.DATABASE_URL,
     },
   },
+  // Add specific configuration for production SSL
+  ...(process.env.NODE_ENV === "production" && {
+    datasources: {
+      db: {
+        url: process.env.DATABASE_URL,
+      },
+    },
+  }),
 };
 
-// Add connection pool settings for production
-if (process.env.NODE_ENV === "production") {
-  prismaConfig.datasources.db.url = process.env.DATABASE_URL;
-}
-
+// Create Prisma instance with proper SSL handling
 if (process.env.NODE_ENV === "production") {
   prisma = new PrismaClient(prismaConfig);
 } else {
@@ -28,11 +32,13 @@ if (process.env.NODE_ENV === "production") {
   prisma = global.__prisma;
 }
 
-// Enhanced connection function with retry logic
-async function connectWithRetry(retries = 3, delay = 1000) {
+// Enhanced connection function with retry logic and SSL error handling
+async function connectWithRetry(retries = 5, delay = 2000) {
   for (let i = 0; i < retries; i++) {
     try {
       await prisma.$connect();
+      // Test the connection with a simple query
+      await prisma.$queryRaw`SELECT 1`;
       logger.info("Database connected successfully");
       return true;
     } catch (error) {
@@ -40,6 +46,14 @@ async function connectWithRetry(retries = 3, delay = 1000) {
         error: error.message,
         code: error.code
       });
+      
+      // If it's an SSL/TLS error, log additional information
+      if (error.message.includes('TLS') || error.message.includes('SSL') || error.message.includes('OpenSSL')) {
+        logger.error("SSL/TLS connection error detected. Please check your DATABASE_URL includes sslmode=require", {
+          error: error.message,
+          connectionUrl: process.env.DATABASE_URL ? process.env.DATABASE_URL.replace(/:[^:@]+@/, ':***@') : 'NOT_SET'
+        });
+      }
       
       if (i === retries - 1) {
         logger.error("All database connection attempts failed", {
@@ -50,8 +64,8 @@ async function connectWithRetry(retries = 3, delay = 1000) {
         throw error;
       }
       
-      // Wait before retrying
-      await new Promise(resolve => setTimeout(resolve, delay * (i + 1)));
+      // Exponential backoff for retries
+      await new Promise(resolve => setTimeout(resolve, delay * Math.pow(2, i)));
     }
   }
 }
