@@ -1,8 +1,6 @@
 const jwt = require('jsonwebtoken');
-const { PrismaClient } = require('@prisma/client');
+const { prisma } = require('../config/database');
 const logger = require('../utils/logger');
-
-const prisma = new PrismaClient();
 
 /**
  * Admin authentication middleware

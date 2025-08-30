@@ -1,9 +1,7 @@
-const { PrismaClient } = require('@prisma/client');
+const { prisma } = require('../config/database');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const logger = require('../utils/logger');
-
-const prisma = new PrismaClient();
 
 class AdminController {
   /**

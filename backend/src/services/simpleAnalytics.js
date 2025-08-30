@@ -1,6 +1,5 @@
-const { PrismaClient } = require('@prisma/client');
+const { prisma } = require('../config/database');
 const logger = require('../utils/logger');
-const prisma = new PrismaClient();
 
 /**
  * Simple analytics service for tracking views and clicks

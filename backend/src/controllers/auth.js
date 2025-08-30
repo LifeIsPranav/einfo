@@ -1,4 +1,4 @@
-const prisma = require("../config/database");
+const { prisma } = require("../config/database");
 const authService = require("../services/auth");
 const googleAuthService = require("../services/googleAuth");
 const emailService = require("../services/email");

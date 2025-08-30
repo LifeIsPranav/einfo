@@ -1,5 +1,6 @@
 const authService = require("../services/auth");
-const prisma = require("../config/database");
+const jwt = require("jsonwebtoken");
+const { prisma } = require("../config/database");
 const logger = require("../utils/logger");
 
 const authMiddleware = async (req, res, next) => {

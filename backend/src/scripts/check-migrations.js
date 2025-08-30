@@ -1,9 +1,7 @@
-const { PrismaClient } = require('@prisma/client');
+const { prisma } = require('../config/database');
 const fs = require('fs');
 const path = require('path');
 const logger = require('../utils/logger');
-
-const prisma = new PrismaClient();
 
 /**
  * Check if all migrations have been applied to the database

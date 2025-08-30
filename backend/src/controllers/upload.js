@@ -1,5 +1,6 @@
 const cloudinaryUpload = require("../services/cloudinaryUpload");
-const prisma = require("../config/database");
+const multer = require("multer");
+const { prisma } = require("../config/database");
 
 class UploadController {
   /**
