@@ -2,6 +2,10 @@
 
 A comprehensive digital profile platform that enables users to create professional digital cards with portfolio galleries, work experience, education, and social links. Built with modern web technologies for seamless user experience and robust performance.
 
+How It's Build:
+<img width="1356" height="821" alt="Screenshot 2025-09-02 at 10 26 41 PM" src="https://github.com/user-attachments/assets/60bf2317-b6e9-46f7-906c-c828bed75137" />
+
+
 ## Table of Contents
 
 - [About](#about)
