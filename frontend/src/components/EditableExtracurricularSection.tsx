@@ -300,9 +300,9 @@ const EditableExtracurricularItem = ({
   if (isEditing) {
     return (
       <div
-        className={`bg-white border border-gray-200 rounded-xl p-4 space-y-4 transition-all duration-200 ${
+        className={`bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-800 rounded-xl p-4 space-y-4 transition-all duration-200 ${
           isDragging ? "opacity-50" : ""
-        } ${dragOverIndex === index ? "border-blue-300 bg-blue-50" : ""}`}
+        } ${dragOverIndex === index ? "border-blue-300 dark:border-blue-600 bg-blue-50 dark:bg-blue-950/50" : ""}`}
         onDragOver={(e) => {
           e.preventDefault();
           handleDragOver();
@@ -316,7 +316,7 @@ const EditableExtracurricularItem = ({
           {/* Drag Handle and Move Buttons */}
           <div className="flex items-center justify-between -mt-1 mb-2">
             <div 
-              className="flex items-center gap-2 text-gray-500 cursor-grab active:cursor-grabbing select-none"
+              className="flex items-center gap-2 text-gray-500 dark:text-zinc-400 cursor-grab active:cursor-grabbing select-none transition-colors duration-200"
               draggable
               onDragStart={handleDragStart}
             >
@@ -329,8 +329,8 @@ const EditableExtracurricularItem = ({
                 disabled={!canMoveUp}
                 className={`w-6 h-6 flex items-center justify-center rounded transition-colors ${
                   canMoveUp 
-                    ? 'text-gray-600 hover:text-gray-800 hover:bg-gray-100' 
-                    : 'text-gray-300 cursor-not-allowed'
+                    ? 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800' 
+                    : 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
                 }`}
                 title="Move up"
               >
@@ -341,8 +341,8 @@ const EditableExtracurricularItem = ({
                 disabled={!canMoveDown}
                 className={`w-6 h-6 flex items-center justify-center rounded transition-colors ${
                   canMoveDown 
-                    ? 'text-gray-600 hover:text-gray-800 hover:bg-gray-100' 
-                    : 'text-gray-300 cursor-not-allowed'
+                    ? 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800' 
+                    : 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
                 }`}
                 title="Move down"
               >
@@ -354,35 +354,35 @@ const EditableExtracurricularItem = ({
           {/* Basic Info */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Activity Name
               </label>
               <Input
                 value={editingExtracurricular.activityName}
                 onChange={(e) => handleFieldChange("activityName", e.target.value)}
                 placeholder="e.g., University Debate Team Captain"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={100}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   editingExtracurricular.activityName.length > 90 
                     ? editingExtracurricular.activityName.length >= 100 
-                      ? 'text-red-500' 
-                      : 'text-orange-500'
-                    : 'text-gray-500'
+                      ? 'text-red-500 dark:text-red-400' 
+                      : 'text-orange-500 dark:text-orange-400'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {editingExtracurricular.activityName.length}/100 characters
                 </p>
                 {editingExtracurricular.activityName.length >= 100 && (
-                  <p className="text-xs text-red-500 mt-1">
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                     Character limit reached
                   </p>
                 )}
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Organization
               </label>
               <Input
@@ -391,21 +391,21 @@ const EditableExtracurricularItem = ({
                   handleFieldChange("organization", e.target.value)
                 }
                 placeholder="e.g., UC Berkeley Debate Society"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={80}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   editingExtracurricular.organization.length > 72 
                     ? editingExtracurricular.organization.length >= 80 
-                      ? 'text-red-500' 
-                      : 'text-orange-500'
-                    : 'text-gray-500'
+                      ? 'text-red-500 dark:text-red-400' 
+                      : 'text-orange-500 dark:text-orange-400'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {editingExtracurricular.organization.length}/80 characters
                 </p>
                 {editingExtracurricular.organization.length >= 80 && (
-                  <p className="text-xs text-red-500 mt-1">
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                     Character limit reached
                   </p>
                 )}
@@ -415,83 +415,83 @@ const EditableExtracurricularItem = ({
 
           <div className="grid grid-cols-4 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Duration
               </label>
               <Input
                 value={editingExtracurricular.duration}
                 onChange={(e) => handleFieldChange("duration", e.target.value)}
                 placeholder="e.g., 2018 - 2020"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={25}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   editingExtracurricular.duration.length > 22 
                     ? editingExtracurricular.duration.length >= 25 
-                      ? 'text-red-500' 
-                      : 'text-orange-500'
-                    : 'text-gray-500'
+                      ? 'text-red-500 dark:text-red-400' 
+                      : 'text-orange-500 dark:text-orange-400'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {editingExtracurricular.duration.length}/25
                 </p>
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Location
               </label>
               <Input
                 value={editingExtracurricular.location}
                 onChange={(e) => handleFieldChange("location", e.target.value)}
                 placeholder="e.g., Berkeley, CA"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={40}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   editingExtracurricular.location.length > 36 
                     ? editingExtracurricular.location.length >= 40 
-                      ? 'text-red-500' 
-                      : 'text-orange-500'
-                    : 'text-gray-500'
+                      ? 'text-red-500 dark:text-red-400' 
+                      : 'text-orange-500 dark:text-orange-400'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {editingExtracurricular.location.length}/40
                 </p>
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Role
               </label>
               <Input
                 value={editingExtracurricular.role}
                 onChange={(e) => handleFieldChange("role", e.target.value)}
                 placeholder="e.g., Team Captain"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={60}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   editingExtracurricular.role.length > 54 
                     ? editingExtracurricular.role.length >= 60 
-                      ? 'text-red-500' 
-                      : 'text-orange-500'
-                    : 'text-gray-500'
+                      ? 'text-red-500 dark:text-red-400' 
+                      : 'text-orange-500 dark:text-orange-400'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {editingExtracurricular.role.length}/60
                 </p>
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Type
               </label>
               <Select
                 value={editingExtracurricular.type}
                 onValueChange={handleTypeChange}
               >
-                <SelectTrigger className="text-sm bg-gray-50 border-gray-200 text-gray-900 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium">
+                <SelectTrigger className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200">
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -508,18 +508,18 @@ const EditableExtracurricularItem = ({
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Image URL (Optional)
               </label>
               <Input
                 value={editingExtracurricular.imageUrl || ""}
                 onChange={(e) => handleFieldChange("imageUrl", e.target.value)}
                 placeholder="https://images.unsplash.com/photo-example.jpg"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
               />
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Website URL (Optional)
               </label>
               <Input
@@ -528,35 +528,35 @@ const EditableExtracurricularItem = ({
                   handleFieldChange("websiteUrl", e.target.value)
                 }
                 placeholder="e.g., https://organization.com"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
               />
             </div>
           </div>
 
           {/* Description */}
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-gray-800">
+            <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
               Description
             </label>
             <Textarea
               value={editingExtracurricular.description}
               onChange={(e) => handleFieldChange("description", e.target.value)}
               placeholder="Brief description of your role and activities..."
-              className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium min-h-20 resize-none"
+              className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium min-h-20 resize-none transition-colors duration-200"
               maxLength={350}
             />
             <div className="text-right">
-              <p className={`text-xs ${
+              <p className={`text-xs transition-colors duration-200 ${
                 editingExtracurricular.description.length > 315 
                   ? editingExtracurricular.description.length >= 350 
-                    ? 'text-red-500' 
-                    : 'text-orange-500'
-                  : 'text-gray-500'
+                    ? 'text-red-500 dark:text-red-400' 
+                    : 'text-orange-500 dark:text-orange-400'
+                  : 'text-gray-500 dark:text-zinc-400'
               }`}>
                 {editingExtracurricular.description.length}/350 characters
               </p>
               {editingExtracurricular.description.length >= 350 && (
-                <p className="text-xs text-red-500 mt-1">
+                <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                   Character limit reached
                 </p>
               )}
@@ -565,7 +565,7 @@ const EditableExtracurricularItem = ({
 
           {/* Icon Selection */}
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-gray-800">Icon</label>
+            <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">Icon</label>
             <IconPicker
               selectedIcon={editingExtracurricular.iconName ? getIconFromName(editingExtracurricular.iconName) : null}
               onIconSelect={(icon, iconName) => {
@@ -582,7 +582,7 @@ const EditableExtracurricularItem = ({
             editingExtracurricular.responsibilities.some(resp => resp.trim() !== '')) && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-semibold text-gray-800">
+                <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                   Key Responsibilities ({editingExtracurricular.responsibilities.length}/10)
                 </label>
                 <Button
@@ -590,10 +590,10 @@ const EditableExtracurricularItem = ({
                   variant="ghost"
                   size="sm"
                   disabled={editingExtracurricular.responsibilities.length >= 10}
-                  className={`h-7 px-2 text-xs ${
+                  className={`h-7 px-2 text-xs transition-colors duration-200 ${
                     editingExtracurricular.responsibilities.length >= 10
-                      ? 'text-gray-400 cursor-not-allowed'
-                      : 'text-gray-600 hover:text-gray-800'
+                      ? 'text-gray-400 dark:text-zinc-600 cursor-not-allowed'
+                      : 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200'
                   }`}
                 >
                   <Plus className="w-3 h-3 mr-1" />
@@ -612,21 +612,21 @@ const EditableExtracurricularItem = ({
                           handleResponsibilityChange(responsibilityIndex, e.target.value)
                         }
                         placeholder="Key responsibility description"
-                        className="text-xs bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 h-8"
+                        className="text-xs bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 h-8 transition-colors duration-200"
                         maxLength={150}
                       />
                       <div className="text-right">
-                        <span className={`text-xs ${
+                        <span className={`text-xs transition-colors duration-200 ${
                           responsibility.length > 135 
                             ? responsibility.length >= 150 
-                              ? 'text-red-500' 
-                              : 'text-orange-500'
-                            : 'text-gray-500'
+                              ? 'text-red-500 dark:text-red-400' 
+                              : 'text-orange-500 dark:text-orange-400'
+                            : 'text-gray-500 dark:text-zinc-400'
                         }`}>
                           {responsibility.length}/150
                         </span>
                         {responsibility.length >= 150 && (
-                          <span className="text-xs text-red-500 ml-1">• Limit reached</span>
+                          <span className="text-xs text-red-500 dark:text-red-400 ml-1 transition-colors duration-200">• Limit reached</span>
                         )}
                       </div>
                     </div>
@@ -636,8 +636,8 @@ const EditableExtracurricularItem = ({
                         disabled={responsibilityIndex === 0}
                         className={`w-5 h-5 flex items-center justify-center rounded transition-colors ${
                           responsibilityIndex === 0
-                            ? 'text-gray-300 cursor-not-allowed'
-                            : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                            ? 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
+                            : 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800'
                         }`}
                         title="Move up"
                       >
@@ -648,8 +648,8 @@ const EditableExtracurricularItem = ({
                         disabled={responsibilityIndex === editingExtracurricular.responsibilities.length - 1}
                         className={`w-5 h-5 flex items-center justify-center rounded transition-colors ${
                           responsibilityIndex === editingExtracurricular.responsibilities.length - 1
-                            ? 'text-gray-300 cursor-not-allowed'
-                            : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                            ? 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
+                            : 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800'
                         }`}
                         title="Move down"
                       >
@@ -659,7 +659,7 @@ const EditableExtracurricularItem = ({
                         onClick={() => handleRemoveResponsibility(responsibilityIndex)}
                         variant="ghost"
                         size="sm"
-                        className="text-red-500 hover:text-red-700 h-5 w-5 p-0"
+                        className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 h-5 w-5 p-0 transition-colors duration-200"
                       >
                         <X className="w-3 h-3" />
                       </Button>
@@ -678,7 +678,7 @@ const EditableExtracurricularItem = ({
                 onClick={handleAddResponsibility}
                 variant="ghost"
                 size="sm"
-                className="h-7 px-2 text-xs text-gray-600 hover:text-gray-800 w-full border border-dashed border-gray-300 hover:border-gray-400"
+                className="h-7 px-2 text-xs text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 w-full border border-dashed border-gray-300 dark:border-zinc-700 hover:border-gray-400 dark:hover:border-zinc-600 transition-colors duration-200"
               >
                 <Plus className="w-3 h-3 mr-1" />
                 Add Key Responsibilities
@@ -691,7 +691,7 @@ const EditableExtracurricularItem = ({
             editingExtracurricular.achievements.some(ach => ach.trim() !== '')) && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-semibold text-gray-800">
+                <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                   Notable Achievements ({editingExtracurricular.achievements.length}/8)
                 </label>
                 <Button
@@ -699,10 +699,10 @@ const EditableExtracurricularItem = ({
                 variant="ghost"
                 size="sm"
                 disabled={editingExtracurricular.achievements.length >= 8}
-                className={`h-7 px-2 text-xs ${
+                className={`h-7 px-2 text-xs transition-colors duration-200 ${
                   editingExtracurricular.achievements.length >= 8
-                    ? 'text-gray-400 cursor-not-allowed'
-                    : 'text-gray-600 hover:text-gray-800'
+                    ? 'text-gray-400 dark:text-zinc-600 cursor-not-allowed'
+                    : 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200'
                 }`}
               >
                 <Plus className="w-3 h-3 mr-1" />
@@ -728,21 +728,21 @@ const EditableExtracurricularItem = ({
                             )
                           }
                           placeholder="Achievement description"
-                          className="text-xs bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 h-8"
+                          className="text-xs bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 h-8 transition-colors duration-200"
                           maxLength={150}
                         />
                         <div className="text-right">
-                          <span className={`text-xs ${
+                          <span className={`text-xs transition-colors duration-200 ${
                             achievement.length > 135 
                               ? achievement.length >= 150 
-                                ? 'text-red-500' 
-                                : 'text-orange-500'
-                              : 'text-gray-500'
+                                ? 'text-red-500 dark:text-red-400' 
+                                : 'text-orange-500 dark:text-orange-400'
+                              : 'text-gray-500 dark:text-zinc-400'
                           }`}>
                             {achievement.length}/150
                           </span>
                           {achievement.length >= 150 && (
-                            <span className="text-xs text-red-500 ml-1">• Limit reached</span>
+                            <span className="text-xs text-red-500 dark:text-red-400 ml-1 transition-colors duration-200">• Limit reached</span>
                           )}
                         </div>
                       </div>
@@ -752,8 +752,8 @@ const EditableExtracurricularItem = ({
                           disabled={achievementIndex === 0}
                           className={`w-5 h-5 flex items-center justify-center rounded transition-colors ${
                             achievementIndex === 0
-                              ? 'text-gray-300 cursor-not-allowed'
-                              : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                              ? 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
+                              : 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800'
                           }`}
                           title="Move up"
                         >
@@ -764,8 +764,8 @@ const EditableExtracurricularItem = ({
                           disabled={achievementIndex === editingExtracurricular.achievements.length - 1}
                           className={`w-5 h-5 flex items-center justify-center rounded transition-colors ${
                             achievementIndex === editingExtracurricular.achievements.length - 1
-                              ? 'text-gray-300 cursor-not-allowed'
-                              : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                              ? 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
+                              : 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800'
                           }`}
                           title="Move down"
                         >
@@ -775,7 +775,7 @@ const EditableExtracurricularItem = ({
                           onClick={() => handleRemoveAchievement(achievementIndex)}
                           variant="ghost"
                           size="sm"
-                          className="text-red-500 hover:text-red-700 h-5 w-5 p-0"
+                          className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 h-5 w-5 p-0 transition-colors duration-200"
                         >
                           <X className="w-3 h-3" />
                         </Button>
@@ -795,7 +795,7 @@ const EditableExtracurricularItem = ({
                 onClick={handleAddAchievement}
                 variant="ghost"
                 size="sm"
-                className="h-7 px-2 text-xs text-gray-600 hover:text-gray-800 w-full border border-dashed border-gray-300 hover:border-gray-400"
+                className="h-7 px-2 text-xs text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 w-full border border-dashed border-gray-300 dark:border-zinc-700 hover:border-gray-400 dark:hover:border-zinc-600 transition-colors duration-200"
               >
                 <Plus className="w-3 h-3 mr-1" />
                 Add Notable Achievements
@@ -808,7 +808,7 @@ const EditableExtracurricularItem = ({
             editingExtracurricular.skillsDeveloped.some(skill => skill.trim() !== '')) && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-semibold text-gray-800">
+                <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                   Skills Developed ({editingExtracurricular.skillsDeveloped.length}/12)
                 </label>
                 <Button
@@ -816,10 +816,10 @@ const EditableExtracurricularItem = ({
                   variant="ghost"
                   size="sm"
                   disabled={editingExtracurricular.skillsDeveloped.length >= 12}
-                className={`h-7 px-2 text-xs ${
+                className={`h-7 px-2 text-xs transition-colors duration-200 ${
                   editingExtracurricular.skillsDeveloped.length >= 12
-                    ? 'text-gray-400 cursor-not-allowed'
-                    : 'text-gray-600 hover:text-gray-800'
+                    ? 'text-gray-400 dark:text-zinc-600 cursor-not-allowed'
+                    : 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200'
                 }`}
               >
                 <Plus className="w-3 h-3 mr-1" />
@@ -838,21 +838,21 @@ const EditableExtracurricularItem = ({
                           handleSkillChange(skillIndex, e.target.value)
                         }
                         placeholder="Skill name"
-                        className="text-xs bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 h-8"
+                        className="text-xs bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 h-8 transition-colors duration-200"
                         maxLength={40}
                       />
                       <div className="text-right">
-                        <span className={`text-xs ${
+                        <span className={`text-xs transition-colors duration-200 ${
                           skill.length > 36 
                             ? skill.length >= 40 
-                              ? 'text-red-500' 
-                              : 'text-orange-500'
-                            : 'text-gray-500'
+                              ? 'text-red-500 dark:text-red-400' 
+                              : 'text-orange-500 dark:text-orange-400'
+                            : 'text-gray-500 dark:text-zinc-400'
                         }`}>
                           {skill.length}/40
                         </span>
                         {skill.length >= 40 && (
-                          <span className="text-xs text-red-500 ml-1">• Limit reached</span>
+                          <span className="text-xs text-red-500 dark:text-red-400 ml-1 transition-colors duration-200">• Limit reached</span>
                         )}
                       </div>
                     </div>
@@ -862,8 +862,8 @@ const EditableExtracurricularItem = ({
                         disabled={skillIndex === 0}
                         className={`w-5 h-5 flex items-center justify-center rounded transition-colors ${
                           skillIndex === 0
-                            ? 'text-gray-300 cursor-not-allowed'
-                            : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                            ? 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
+                            : 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800'
                         }`}
                         title="Move up"
                       >
@@ -874,8 +874,8 @@ const EditableExtracurricularItem = ({
                         disabled={skillIndex === editingExtracurricular.skillsDeveloped.length - 1}
                         className={`w-5 h-5 flex items-center justify-center rounded transition-colors ${
                           skillIndex === editingExtracurricular.skillsDeveloped.length - 1
-                            ? 'text-gray-300 cursor-not-allowed'
-                            : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                            ? 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
+                            : 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800'
                         }`}
                         title="Move down"
                       >
@@ -885,7 +885,7 @@ const EditableExtracurricularItem = ({
                         onClick={() => handleRemoveSkill(skillIndex)}
                         variant="ghost"
                         size="sm"
-                        className="text-red-500 hover:text-red-700 h-5 w-5 p-0"
+                        className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 h-5 w-5 p-0 transition-colors duration-200"
                       >
                         <X className="w-3 h-3" />
                       </Button>
@@ -904,7 +904,7 @@ const EditableExtracurricularItem = ({
                 onClick={handleAddSkill}
                 variant="ghost"
                 size="sm"
-                className="h-7 px-2 text-xs text-gray-600 hover:text-gray-800 w-full border border-dashed border-gray-300 hover:border-gray-400"
+                className="h-7 px-2 text-xs text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 w-full border border-dashed border-gray-300 dark:border-zinc-700 hover:border-gray-400 dark:hover:border-zinc-600 transition-colors duration-200"
               >
                 <Plus className="w-3 h-3 mr-1" />
                 Add Skills Developed
@@ -913,12 +913,12 @@ const EditableExtracurricularItem = ({
           )}
 
           {/* Actions */}
-          <div className="flex justify-end items-center pt-2 border-t border-gray-100">
+          <div className="flex justify-end items-center pt-2 border-t border-gray-100 dark:border-zinc-800 transition-colors duration-200">
             <Button
               onClick={onDelete}
               variant="ghost"
               size="sm"
-              className="text-red-600 hover:text-white hover:bg-red-600 h-8 px-3 font-medium border border-red-200 hover:border-red-600 transition-all"
+              className="text-red-600 dark:text-red-400 hover:text-white hover:bg-red-600 dark:hover:bg-red-500 h-8 px-3 font-medium border border-red-200 dark:border-red-800 hover:border-red-600 dark:hover:border-red-500 transition-all duration-200"
             >
               <Trash2 className="w-3 h-3 mr-1" />
               Delete
@@ -930,27 +930,27 @@ const EditableExtracurricularItem = ({
   }
 
   return (
-    <button className="w-full bg-white hover:bg-gray-50 border border-gray-100 rounded-xl transition-all duration-200 group shadow-sm overflow-hidden">
+    <button className="w-full bg-white dark:bg-zinc-900 hover:bg-gray-50 dark:hover:bg-zinc-800 border border-gray-100 dark:border-zinc-800 rounded-xl transition-all duration-200 group shadow-sm overflow-hidden">
       <div className="p-4 flex items-center gap-4 text-left">
         {/* Icon */}
-        <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 group-hover:bg-gray-100 transition-colors duration-200">
+        <div className="w-10 h-10 rounded-lg bg-gray-50 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0 group-hover:bg-gray-100 dark:group-hover:bg-zinc-700 transition-colors duration-200">
           {extracurricular.iconName ? getIconFromName(extracurricular.iconName) : (
-            <Users className="w-4 h-4 text-gray-600" />
+            <Users className="w-4 h-4 text-gray-600 dark:text-zinc-400" />
           )}
         </div>
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <div className="text-gray-900 font-medium text-sm">
+          <div className="text-gray-900 dark:text-white font-medium text-sm transition-colors duration-200">
             {extracurricular.activityName}
           </div>
-          <div className="text-gray-500 text-xs mt-0.5 truncate">
+          <div className="text-gray-500 dark:text-zinc-400 text-xs mt-0.5 truncate transition-colors duration-200">
             {extracurricular.organization} • {extracurricular.duration}
           </div>
         </div>
 
         {/* View indicator */}
-        <Eye className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors duration-200" />
+        <Eye className="w-4 h-4 text-gray-400 dark:text-zinc-500 group-hover:text-gray-600 dark:group-hover:text-zinc-300 transition-colors duration-200" />
       </div>
     </button>
   );
@@ -1137,10 +1137,10 @@ export default function EditableExtracurricularSection({
       {/* Header with Edit Button */}
       <div className="flex items-center justify-between">
         <div className="text-center flex-1">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
             Extracurricular Activities
           </h2>
-          <p className="text-gray-600 text-sm">
+          <p className="text-gray-600 dark:text-zinc-400 text-sm transition-colors duration-300">
             {isEditing
               ? "Edit your community involvement and personal interests"
               : "Community involvement and personal interests"}
@@ -1154,15 +1154,15 @@ export default function EditableExtracurricularSection({
                 onClick={handleCancel}
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
+                className="h-9 w-9 p-2 rounded-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors duration-200"
               >
-                <X className="w-4 h-4 text-gray-600" />
+                <X className="w-4 h-4 text-gray-600 dark:text-zinc-400" />
               </Button>
               <Button
                 onClick={handleSave}
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 p-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white shadow-sm"
+                className="h-9 w-9 p-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white shadow-sm transition-colors duration-200"
               >
                 <Save className="w-4 h-4" />
               </Button>
@@ -1172,9 +1172,9 @@ export default function EditableExtracurricularSection({
               onClick={handleStartEdit}
               variant="ghost"
               size="sm"
-              className="h-9 w-9 p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
+              className="h-9 w-9 p-2 rounded-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors duration-200"
             >
-              <Edit3 className="w-4 h-4 text-gray-600" />
+              <Edit3 className="w-4 h-4 text-gray-600 dark:text-zinc-400" />
             </Button>
           )}
         </div>
@@ -1211,8 +1211,8 @@ export default function EditableExtracurricularSection({
               disabled={hasReachedLimit(editingExtracurriculars.length, 'EXTRACURRICULARS')}
               className={`w-full p-4 border-2 border-dashed rounded-xl transition-colors duration-200 flex items-center justify-center gap-2 ${
                 hasReachedLimit(editingExtracurriculars.length, 'EXTRACURRICULARS')
-                  ? 'border-gray-100 text-gray-300 cursor-not-allowed bg-gray-50'
-                  : 'border-gray-200 text-gray-500 hover:text-gray-600 hover:border-gray-300'
+                  ? 'border-gray-100 dark:border-zinc-800 text-gray-300 dark:text-zinc-600 cursor-not-allowed bg-gray-50 dark:bg-zinc-900'
+                  : 'border-gray-200 dark:border-zinc-700 text-gray-500 dark:text-zinc-400 hover:text-gray-600 dark:hover:text-zinc-300 hover:border-gray-300 dark:hover:border-zinc-600'
               }`}
             >
               <Plus className="w-4 h-4" />

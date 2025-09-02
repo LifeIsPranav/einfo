@@ -2,13 +2,25 @@ import AuthButton from "@/components/AuthButton";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
 import GlobalSEO from "@/components/SEO/GlobalSEO";
+import ThemeToggle from "@/components/common/ThemeToggle";
 import { trackPageView } from "@/utils/analytics";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useEffect } from "react";
+import { useThemeStore } from "@/stores/themeStore";
 
 const Index = () => {
   const navigate = useNavigate();
+  const { theme } = useThemeStore();
+  
+  // Apply theme to document
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
   
   // Non-visible SEO analytics tracking
   useEffect(() => {
@@ -56,11 +68,14 @@ const Index = () => {
         structuredData={homeStructuredData}
       />
       
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white dark:bg-black transition-colors duration-300">
         {/* Navigation Bar */}
         <nav className="w-full px-6 py-4 flex justify-between items-center">
           <Logo />
-          <AuthButton />
+          <div className="flex items-center gap-3">
+            <ThemeToggle />
+            <AuthButton />
+          </div>
         </nav>
 
         {/* Main Content - Centered */}
@@ -71,17 +86,17 @@ const Index = () => {
               <img 
                 src="/logo.png" 
                 alt="e-info.me logo" 
-                className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 object-contain"
+                className="w-32 h-32 md:w-40 md:h-40 lg:w-48 lg:h-48 object-contain dark:brightness-0 dark:invert transition-all duration-300"
               />
             </div>
 
             {/* Headline */}
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white leading-tight transition-colors duration-300">
               Your Digital Identity, Simplified
             </h1>
 
             {/* Subtitle */}
-            <p className="text-xl text-gray-600 leading-relaxed max-w-xl mx-auto">
+            <p className="text-xl text-gray-600 dark:text-zinc-300 leading-relaxed max-w-xl mx-auto transition-colors duration-300">
               Create a beautiful, unified profile to share all your work and
               links.
             </p>
@@ -90,13 +105,17 @@ const Index = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
               <Button
                 size="lg"
-                className="w-full sm:w-auto bg-white border-2 border-gray-900 text-gray-900 font-semibold hover:bg-gray-900 hover:text-white transition-all duration-300 shadow-sm hover:shadow-md"
+                className="w-full sm:w-auto bg-white dark:bg-zinc-900 border-2 border-gray-900 dark:border-zinc-200 text-gray-900 dark:text-zinc-200 font-semibold hover:bg-gray-900 dark:hover:bg-zinc-200 hover:text-white dark:hover:text-zinc-900 transition-all duration-300 shadow-sm hover:shadow-md"
                 onClick={() => navigate("/dashboard")}
               >
                 Get Started
               </Button>
               <Link to="/demo" className="w-full sm:w-auto">
-                <Button variant="outline" size="lg" className="w-full">
+                <Button 
+                  variant="outline" 
+                  size="lg" 
+                  className="w-full border-gray-300 dark:border-zinc-600 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 hover:text-gray-900 dark:hover:text-zinc-100 transition-all duration-300"
+                >
                   View Demo
                 </Button>
               </Link>

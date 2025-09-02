@@ -237,9 +237,9 @@ const EditableAchievementItem = ({
   if (isEditing) {
     return (
       <div
-        className={`bg-white border border-gray-200 rounded-xl p-4 space-y-4 transition-all duration-200 ${
+        className={`bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 rounded-xl p-4 space-y-4 transition-all duration-200 ${
           isDragging ? "opacity-50" : ""
-        } ${dragOverIndex === index ? "border-blue-300 bg-blue-50" : ""}`}
+        } ${dragOverIndex === index ? "border-blue-300 dark:border-blue-600 bg-blue-50 dark:bg-blue-950/30" : ""}`}
         onDragOver={(e) => {
           e.preventDefault();
           handleDragOver();
@@ -253,7 +253,7 @@ const EditableAchievementItem = ({
           {/* Drag Handle and Move Buttons */}
           <div className="flex items-center justify-between -mt-1 mb-2">
             <div 
-              className="flex items-center gap-2 text-gray-500 cursor-grab active:cursor-grabbing select-none"
+              className="flex items-center gap-2 text-gray-500 dark:text-zinc-400 cursor-grab active:cursor-grabbing select-none transition-colors duration-200"
               draggable
               onDragStart={handleDragStart}
             >
@@ -264,10 +264,10 @@ const EditableAchievementItem = ({
               <button
                 onClick={onMoveUp}
                 disabled={!canMoveUp}
-                className={`w-6 h-6 flex items-center justify-center rounded transition-colors ${
+                className={`w-6 h-6 flex items-center justify-center rounded transition-colors duration-200 ${
                   canMoveUp 
-                    ? 'text-gray-600 hover:text-gray-800 hover:bg-gray-100' 
-                    : 'text-gray-300 cursor-not-allowed'
+                    ? 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800' 
+                    : 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
                 }`}
                 title="Move up"
               >
@@ -276,10 +276,10 @@ const EditableAchievementItem = ({
               <button
                 onClick={onMoveDown}
                 disabled={!canMoveDown}
-                className={`w-6 h-6 flex items-center justify-center rounded transition-colors ${
+                className={`w-6 h-6 flex items-center justify-center rounded transition-colors duration-200 ${
                   canMoveDown 
-                    ? 'text-gray-600 hover:text-gray-800 hover:bg-gray-100' 
-                    : 'text-gray-300 cursor-not-allowed'
+                    ? 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800' 
+                    : 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
                 }`}
                 title="Move down"
               >
@@ -291,35 +291,35 @@ const EditableAchievementItem = ({
           {/* Basic Info */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Achievement Title
               </label>
               <Input
                 value={editingAchievement.title}
                 onChange={(e) => handleFieldChange("title", e.target.value)}
                 placeholder="e.g., 1st Place - Tech Innovation Hackathon"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={120}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   editingAchievement.title.length > 108 
                     ? editingAchievement.title.length >= 120 
-                      ? 'text-red-500' 
-                      : 'text-orange-500'
-                    : 'text-gray-500'
+                      ? 'text-red-500 dark:text-red-400' 
+                      : 'text-orange-500 dark:text-orange-400'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {editingAchievement.title.length}/120 characters
                 </p>
                 {editingAchievement.title.length >= 120 && (
-                  <p className="text-xs text-red-500 mt-1">
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                     Character limit reached
                   </p>
                 )}
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Organization
               </label>
               <Input
@@ -328,21 +328,21 @@ const EditableAchievementItem = ({
                   handleFieldChange("organization", e.target.value)
                 }
                 placeholder="e.g., Silicon Valley Tech Hub"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={80}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   editingAchievement.organization.length > 72 
                     ? editingAchievement.organization.length >= 80 
-                      ? 'text-red-500' 
-                      : 'text-orange-500'
-                    : 'text-gray-500'
+                      ? 'text-red-500 dark:text-red-400' 
+                      : 'text-orange-500 dark:text-orange-400'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {editingAchievement.organization.length}/80 characters
                 </p>
                 {editingAchievement.organization.length >= 80 && (
-                  <p className="text-xs text-red-500 mt-1">
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                     Character limit reached
                   </p>
                 )}
@@ -352,70 +352,70 @@ const EditableAchievementItem = ({
 
           <div className="grid grid-cols-3 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Duration
               </label>
               <Input
                 value={editingAchievement.duration}
                 onChange={(e) => handleFieldChange("duration", e.target.value)}
                 placeholder="e.g., March 2023"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={25}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   editingAchievement.duration.length > 22 
                     ? editingAchievement.duration.length >= 25 
-                      ? 'text-red-500' 
-                      : 'text-orange-500'
-                    : 'text-gray-500'
+                      ? 'text-red-500 dark:text-red-400' 
+                      : 'text-orange-500 dark:text-orange-400'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {editingAchievement.duration.length}/25 characters
                 </p>
                 {editingAchievement.duration.length >= 25 && (
-                  <p className="text-xs text-red-500 mt-1">
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                     Character limit reached
                   </p>
                 )}
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Location
               </label>
               <Input
                 value={editingAchievement.location}
                 onChange={(e) => handleFieldChange("location", e.target.value)}
                 placeholder="e.g., San Jose, CA"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={40}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   editingAchievement.location.length > 36 
                     ? editingAchievement.location.length >= 40 
-                      ? 'text-red-500' 
-                      : 'text-orange-500'
-                    : 'text-gray-500'
+                      ? 'text-red-500 dark:text-red-400' 
+                      : 'text-orange-500 dark:text-orange-400'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {editingAchievement.location.length}/40 characters
                 </p>
                 {editingAchievement.location.length >= 40 && (
-                  <p className="text-xs text-red-500 mt-1">
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                     Character limit reached
                   </p>
                 )}
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Type
               </label>
               <Select
                 value={editingAchievement.type}
                 onValueChange={handleTypeChange}
               >
-                <SelectTrigger className="text-sm bg-gray-50 border-gray-200 text-gray-900 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium">
+                <SelectTrigger className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200">
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -430,18 +430,18 @@ const EditableAchievementItem = ({
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Image URL (Optional)
               </label>
               <Input
                 value={editingAchievement.imageUrl || ""}
                 onChange={(e) => handleFieldChange("imageUrl", e.target.value)}
                 placeholder="https://images.unsplash.com/photo-example.jpg"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
               />
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Website URL (Optional)
               </label>
               <Input
@@ -450,35 +450,35 @@ const EditableAchievementItem = ({
                   handleFieldChange("websiteUrl", e.target.value)
                 }
                 placeholder="e.g., https://techcrunch.com/article"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
               />
             </div>
           </div>
 
           {/* Description */}
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-gray-800">
+            <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
               Description
             </label>
             <Textarea
               value={editingAchievement.description}
               onChange={(e) => handleFieldChange("description", e.target.value)}
               placeholder="Brief description of your achievement and its impact..."
-              className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium min-h-20 resize-none"
+              className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium min-h-20 resize-none transition-colors duration-200"
               maxLength={300}
             />
             <div className="text-right">
-              <p className={`text-xs ${
+              <p className={`text-xs transition-colors duration-200 ${
                 editingAchievement.description.length > 270 
                   ? editingAchievement.description.length >= 300 
-                    ? 'text-red-500' 
-                    : 'text-orange-500'
-                  : 'text-gray-500'
+                    ? 'text-red-500 dark:text-red-400' 
+                    : 'text-orange-500 dark:text-orange-400'
+                  : 'text-gray-500 dark:text-zinc-400'
               }`}>
                 {editingAchievement.description.length}/300 characters
               </p>
               {editingAchievement.description.length >= 300 && (
-                <p className="text-xs text-red-500 mt-1">
+                <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                   Character limit reached
                 </p>
               )}
@@ -487,7 +487,7 @@ const EditableAchievementItem = ({
 
           {/* Icon Selection */}
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-gray-800">Icon</label>
+            <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">Icon</label>
             <IconPicker
               selectedIcon={editingAchievement.iconName ? getIconFromName(editingAchievement.iconName) : null}
               onIconSelect={(icon, iconName) => {
@@ -504,7 +504,7 @@ const EditableAchievementItem = ({
             editingAchievement.skillsInvolved.some(skill => skill.trim() !== '')) && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-semibold text-gray-800">
+                <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                   Skills Involved ({editingAchievement.skillsInvolved.length}/15)
                 </label>
                 <Button
@@ -512,10 +512,10 @@ const EditableAchievementItem = ({
                   variant="ghost"
                   size="sm"
                   disabled={editingAchievement.skillsInvolved.length >= 15}
-                  className={`h-7 px-2 text-xs ${
+                  className={`h-7 px-2 text-xs transition-colors duration-200 ${
                     editingAchievement.skillsInvolved.length >= 15
-                      ? 'text-gray-400 cursor-not-allowed'
-                      : 'text-gray-600 hover:text-gray-800'
+                      ? 'text-gray-400 dark:text-zinc-600 cursor-not-allowed'
+                      : 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200'
                   }`}
                 >
                   <Plus className="w-3 h-3 mr-1" />
@@ -534,21 +534,21 @@ const EditableAchievementItem = ({
                           handleSkillChange(skillIndex, e.target.value)
                         }
                         placeholder="Skill name"
-                        className="text-xs bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 h-8"
+                        className="text-xs bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 h-8 transition-colors duration-200"
                         maxLength={40}
                       />
                       <div className="text-right">
-                        <span className={`text-xs ${
+                        <span className={`text-xs transition-colors duration-200 ${
                           skill.length > 36 
                             ? skill.length >= 40 
-                              ? 'text-red-500' 
-                              : 'text-orange-500'
-                            : 'text-gray-500'
+                              ? 'text-red-500 dark:text-red-400' 
+                              : 'text-orange-500 dark:text-orange-400'
+                            : 'text-gray-500 dark:text-zinc-400'
                         }`}>
                           {skill.length}/40
                         </span>
                         {skill.length >= 40 && (
-                          <span className="text-xs text-red-500 ml-1">• Limit reached</span>
+                          <span className="text-xs text-red-500 dark:text-red-400 ml-1 transition-colors duration-200">• Limit reached</span>
                         )}
                       </div>
                     </div>
@@ -556,10 +556,10 @@ const EditableAchievementItem = ({
                       <button
                         onClick={() => handleMoveSkillUp(skillIndex)}
                         disabled={skillIndex === 0}
-                        className={`w-5 h-5 flex items-center justify-center rounded transition-colors ${
+                        className={`w-5 h-5 flex items-center justify-center rounded transition-colors duration-200 ${
                           skillIndex === 0
-                            ? 'text-gray-300 cursor-not-allowed'
-                            : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                            ? 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
+                            : 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800'
                         }`}
                         title="Move up"
                       >
@@ -568,10 +568,10 @@ const EditableAchievementItem = ({
                       <button
                         onClick={() => handleMoveSkillDown(skillIndex)}
                         disabled={skillIndex === editingAchievement.skillsInvolved.length - 1}
-                        className={`w-5 h-5 flex items-center justify-center rounded transition-colors ${
+                        className={`w-5 h-5 flex items-center justify-center rounded transition-colors duration-200 ${
                           skillIndex === editingAchievement.skillsInvolved.length - 1
-                            ? 'text-gray-300 cursor-not-allowed'
-                            : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                            ? 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
+                            : 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800'
                         }`}
                         title="Move down"
                       >
@@ -600,7 +600,7 @@ const EditableAchievementItem = ({
                 onClick={handleAddSkill}
                 variant="ghost"
                 size="sm"
-                className="h-7 px-2 text-xs text-gray-600 hover:text-gray-800 w-full border border-dashed border-gray-300 hover:border-gray-400"
+                className="h-7 px-2 text-xs text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 w-full border border-dashed border-gray-300 dark:border-zinc-700 hover:border-gray-400 dark:hover:border-zinc-600 transition-colors duration-200"
               >
                 <Plus className="w-3 h-3 mr-1" />
                 Add Skills Involved
@@ -613,7 +613,7 @@ const EditableAchievementItem = ({
             editingAchievement.keyPoints.some(point => point.trim() !== '')) && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-semibold text-gray-800">
+                <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                   Key Points ({editingAchievement.keyPoints.length}/10)
                 </label>
               <Button
@@ -621,10 +621,10 @@ const EditableAchievementItem = ({
                 variant="ghost"
                 size="sm"
                 disabled={editingAchievement.keyPoints.length >= 10}
-                className={`h-7 px-2 text-xs ${
+                className={`h-7 px-2 text-xs transition-colors duration-200 ${
                   editingAchievement.keyPoints.length >= 10
-                    ? 'text-gray-400 cursor-not-allowed'
-                    : 'text-gray-600 hover:text-gray-800'
+                    ? 'text-gray-400 dark:text-zinc-600 cursor-not-allowed'
+                    : 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200'
                 }`}
               >
                 <Plus className="w-3 h-3 mr-1" />
@@ -650,21 +650,21 @@ const EditableAchievementItem = ({
                             )
                           }
                           placeholder="Key point description"
-                          className="text-xs bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 h-8"
+                          className="text-xs bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 h-8 transition-colors duration-200"
                           maxLength={200}
                         />
                         <div className="text-right">
-                          <span className={`text-xs ${
+                          <span className={`text-xs transition-colors duration-200 ${
                             point.length > 180 
                               ? point.length >= 200 
-                                ? 'text-red-500' 
-                                : 'text-orange-500'
-                              : 'text-gray-500'
+                                ? 'text-red-500 dark:text-red-400' 
+                                : 'text-orange-500 dark:text-orange-400'
+                              : 'text-gray-500 dark:text-zinc-400'
                           }`}>
                             {point.length}/200
                           </span>
                           {point.length >= 200 && (
-                            <span className="text-xs text-red-500 ml-1">• Limit reached</span>
+                            <span className="text-xs text-red-500 dark:text-red-400 ml-1 transition-colors duration-200">• Limit reached</span>
                           )}
                         </div>
                       </div>
@@ -672,10 +672,10 @@ const EditableAchievementItem = ({
                         <button
                           onClick={() => handleMoveKeyPointUp(pointIndex)}
                           disabled={pointIndex === 0}
-                          className={`w-5 h-5 flex items-center justify-center rounded transition-colors ${
+                          className={`w-5 h-5 flex items-center justify-center rounded transition-colors duration-200 ${
                             pointIndex === 0
-                              ? 'text-gray-300 cursor-not-allowed'
-                              : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                              ? 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
+                              : 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800'
                           }`}
                           title="Move up"
                         >
@@ -684,10 +684,10 @@ const EditableAchievementItem = ({
                         <button
                           onClick={() => handleMoveKeyPointDown(pointIndex)}
                           disabled={pointIndex === editingAchievement.keyPoints.length - 1}
-                          className={`w-5 h-5 flex items-center justify-center rounded transition-colors ${
+                          className={`w-5 h-5 flex items-center justify-center rounded transition-colors duration-200 ${
                             pointIndex === editingAchievement.keyPoints.length - 1
-                              ? 'text-gray-300 cursor-not-allowed'
-                              : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                              ? 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
+                              : 'text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 hover:bg-gray-100 dark:hover:bg-zinc-800'
                           }`}
                           title="Move down"
                         >
@@ -717,7 +717,7 @@ const EditableAchievementItem = ({
                 onClick={handleAddKeyPoint}
                 variant="ghost"
                 size="sm"
-                className="h-7 px-2 text-xs text-gray-600 hover:text-gray-800 w-full border border-dashed border-gray-300 hover:border-gray-400"
+                className="h-7 px-2 text-xs text-gray-600 dark:text-zinc-400 hover:text-gray-800 dark:hover:text-zinc-200 w-full border border-dashed border-gray-300 dark:border-zinc-700 hover:border-gray-400 dark:hover:border-zinc-600 transition-colors duration-200"
               >
                 <Plus className="w-3 h-3 mr-1" />
                 Add Key Points
@@ -726,12 +726,12 @@ const EditableAchievementItem = ({
           )}
 
           {/* Actions */}
-          <div className="flex justify-end items-center pt-2 border-t border-gray-100">
+          <div className="flex justify-end items-center pt-2 border-t border-gray-100 dark:border-zinc-800 transition-colors duration-200">
             <Button
               onClick={onDelete}
               variant="ghost"
               size="sm"
-              className="text-red-600 hover:text-white hover:bg-red-600 h-8 px-3 font-medium border border-red-200 hover:border-red-600 transition-all"
+              className="text-red-600 dark:text-red-400 hover:text-white hover:bg-red-600 dark:hover:bg-red-500 h-8 px-3 font-medium border border-red-200 dark:border-red-700 hover:border-red-600 dark:hover:border-red-500 transition-all duration-200"
             >
               <Trash2 className="w-3 h-3 mr-1" />
               Delete
@@ -743,27 +743,27 @@ const EditableAchievementItem = ({
   }
 
   return (
-    <button className="w-full bg-white hover:bg-gray-50 border border-gray-100 rounded-xl transition-all duration-200 group shadow-sm overflow-hidden">
+    <button className="w-full bg-white dark:bg-zinc-900 hover:bg-gray-50 dark:hover:bg-zinc-800 border border-gray-100 dark:border-zinc-700 rounded-xl transition-all duration-200 group shadow-sm overflow-hidden">
       <div className="p-4 flex items-center gap-4 text-left">
         {/* Icon */}
-        <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 group-hover:bg-gray-100 transition-colors duration-200">
+        <div className="w-10 h-10 rounded-lg bg-gray-50 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0 group-hover:bg-gray-100 dark:group-hover:bg-zinc-700 transition-colors duration-200">
           {achievement.iconName ? getIconFromName(achievement.iconName) : (
-            <Trophy className="w-4 h-4 text-gray-600" />
+            <Trophy className="w-4 h-4 text-gray-600 dark:text-zinc-400" />
           )}
         </div>
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <div className="text-gray-900 font-medium text-sm">
+          <div className="text-gray-900 dark:text-white font-medium text-sm transition-colors duration-200">
             {achievement.title}
           </div>
-          <div className="text-gray-500 text-xs mt-0.5 truncate">
+          <div className="text-gray-500 dark:text-zinc-400 text-xs mt-0.5 truncate transition-colors duration-200">
             {achievement.organization} • {achievement.duration}
           </div>
         </div>
 
         {/* View indicator */}
-        <Eye className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors duration-200" />
+        <Eye className="w-4 h-4 text-gray-400 dark:text-zinc-500 group-hover:text-gray-600 dark:group-hover:text-zinc-300 transition-colors duration-200" />
       </div>
     </button>
   );
@@ -947,10 +947,10 @@ export default function EditableAchievementSection({
       {/* Header with Edit Button */}
       <div className="flex items-center justify-between">
         <div className="text-center flex-1">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
             Achievements
           </h2>
-          <p className="text-gray-600 text-sm">
+          <p className="text-gray-600 dark:text-zinc-400 text-sm transition-colors duration-300">
             {isEditing
               ? "Edit your notable accomplishments and recognitions"
               : "Notable accomplishments and recognitions"}
@@ -964,9 +964,9 @@ export default function EditableAchievementSection({
                 onClick={handleCancel}
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
+                className="h-9 w-9 p-2 rounded-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors duration-200"
               >
-                <X className="w-4 h-4 text-gray-600" />
+                <X className="w-4 h-4 text-gray-600 dark:text-zinc-400" />
               </Button>
               <Button
                 onClick={handleSave}
@@ -982,9 +982,9 @@ export default function EditableAchievementSection({
               onClick={handleStartEdit}
               variant="ghost"
               size="sm"
-              className="h-9 w-9 p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
+              className="h-9 w-9 p-2 rounded-full bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors duration-200"
             >
-              <Edit3 className="w-4 h-4 text-gray-600" />
+              <Edit3 className="w-4 h-4 text-gray-600 dark:text-zinc-400" />
             </Button>
           )}
         </div>
@@ -1021,8 +1021,8 @@ export default function EditableAchievementSection({
               disabled={hasReachedLimit(editingAchievements.length, 'ACHIEVEMENTS')}
               className={`w-full p-4 border-2 border-dashed rounded-xl transition-colors duration-200 flex items-center justify-center gap-2 ${
                 hasReachedLimit(editingAchievements.length, 'ACHIEVEMENTS')
-                  ? 'border-gray-100 text-gray-300 cursor-not-allowed bg-gray-50'
-                  : 'border-gray-200 text-gray-500 hover:text-gray-600 hover:border-gray-300'
+                  ? 'border-gray-100 dark:border-zinc-800 text-gray-300 dark:text-zinc-600 cursor-not-allowed bg-gray-50 dark:bg-zinc-900'
+                  : 'border-gray-200 dark:border-zinc-700 text-gray-500 dark:text-zinc-400 hover:text-gray-600 dark:hover:text-zinc-300 hover:border-gray-300 dark:hover:border-zinc-600'
               }`}
             >
               <Plus className="w-4 h-4" />

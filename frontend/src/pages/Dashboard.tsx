@@ -2,10 +2,12 @@ import BaseLayout from "@/components/layout/BaseLayout";
 import Footer from "@/components/Footer";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
 import Navigation from "@/components/navigation/Navigation";
+import ThemeToggle from "@/components/common/ThemeToggle";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/constants";
 import { useAuthStore } from "@/stores";
+import { useThemeStore } from "@/stores/themeStore";
 import { formatNumber } from "@/utils";
 
 import {
@@ -20,12 +22,22 @@ import {
 
 const Dashboard: React.FC = () => {
   const { user, isAuthenticated, isLoading: authLoading } = useAuthStore();
+  const { theme } = useThemeStore();
   const navigate = useNavigate();
   const [stats, setStats] = useState({
     totalViews: 0,
     totalClicks: 0,
   });
   const [statsLoading, setStatsLoading] = useState(true);
+
+  // Apply theme to document
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
   // Redirect to auth if not authenticated
   useEffect(() => {
@@ -88,13 +100,13 @@ const Dashboard: React.FC = () => {
   // Show loading while checking auth
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center">
         <div className="text-center space-y-6">
           <div className="flex justify-center mb-6">
             <img 
               src="/logo.png" 
               alt="Logo" 
-              className="w-16 h-16 object-contain animate-pulse"
+              className="w-16 h-16 object-contain animate-pulse dark:brightness-0 dark:invert"
               style={{
                 filter: 'brightness(0)',
                 animation: 'logo-fade 2s ease-in-out infinite'
@@ -102,7 +114,7 @@ const Dashboard: React.FC = () => {
             />
           </div>
           <LoadingSpinner size="lg" />
-          <p className="text-gray-800 font-light">Turning Personality into Pixels...</p>
+          <p className="text-gray-800 dark:text-zinc-300 font-light">Turning Personality into Pixels...</p>
         </div>
       </div>
     );
@@ -122,9 +134,11 @@ const Dashboard: React.FC = () => {
         background="blur"
         rightContent={
           <div className="flex items-center gap-3">
+            <ThemeToggle />
+            
             <button
               onClick={() => navigate(ROUTES.HOME)}
-              className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors bg-white border border-gray-200 font-medium"
+              className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-zinc-400 dark:hover:text-zinc-200 dark:hover:bg-zinc-800/50 rounded-lg transition-colors bg-white dark:bg-zinc-900/50 border border-gray-200 dark:border-zinc-800/50 font-medium"
               aria-label="Go to homepage"
             >
               <Home className="w-4 h-4" />
@@ -133,7 +147,7 @@ const Dashboard: React.FC = () => {
 
             <button
               onClick={() => navigate(ROUTES.ACCOUNT)}
-              className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors bg-white border border-gray-200 font-medium"
+              className="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 dark:text-zinc-400 dark:hover:text-zinc-200 dark:hover:bg-zinc-800/50 rounded-lg transition-colors bg-white dark:bg-zinc-900/50 border border-gray-200 dark:border-zinc-800/50 font-medium"
               aria-label="Manage account settings"
             >
               <UserCog className="w-4 h-4" />
@@ -142,7 +156,7 @@ const Dashboard: React.FC = () => {
 
             <button
               onClick={() => navigate(user?.username ? `/@${user.username}` : ROUTES.DEMO)}
-              className="flex items-center gap-2 px-3 py-2 text-sm bg-gray-900 hover:bg-gray-800 text-white rounded-lg transition-colors font-medium"
+              className="flex items-center gap-2 px-3 py-2 text-sm bg-gray-900 hover:bg-gray-800 dark:bg-zinc-700 dark:hover:bg-zinc-600 text-white rounded-lg transition-colors font-medium"
               aria-label="View your profile card"
             >
               <CreditCard className="w-4 h-4" />
@@ -157,10 +171,10 @@ const Dashboard: React.FC = () => {
         <div className="w-full max-w-5xl mx-auto">
           {/* Welcome Section */}
           <header className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Welcome back, {firstName}!
             </h1>
-            <p className="text-gray-600 text-lg">
+            <p className="text-gray-600 dark:text-zinc-400 text-lg">
               Here's how your profile is performing
             </p>
           </header>
@@ -175,14 +189,14 @@ const Dashboard: React.FC = () => {
             </h2>
 
             {/* Total Views */}
-            <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 text-center hover:shadow-md transition-shadow duration-200">
+            <div className="bg-white dark:bg-zinc-900/20 rounded-xl border border-gray-100 dark:border-zinc-800/30 shadow-sm dark:shadow-none p-6 text-center hover:shadow-md dark:hover:bg-zinc-900/30 transition-all duration-200">
               <div className="flex justify-center mb-4">
-                <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center">
-                  <Eye className="w-6 h-6 text-gray-600" aria-hidden="true" />
+                <div className="w-12 h-12 bg-gray-50 dark:bg-zinc-800/30 rounded-full flex items-center justify-center">
+                  <Eye className="w-6 h-6 text-gray-600 dark:text-zinc-400" aria-hidden="true" />
                 </div>
               </div>
               <div className="space-y-2">
-                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                <h3 className="text-sm font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wider">
                   Total Views
                 </h3>
                 {statsLoading ? (
@@ -190,11 +204,11 @@ const Dashboard: React.FC = () => {
                     <LoadingSpinner size="md" />
                   </div>
                 ) : (
-                  <p className="text-4xl font-bold text-gray-900">
+                  <p className="text-4xl font-bold text-gray-900 dark:text-white">
                     {formatNumber(stats.totalViews)}
                   </p>
                 )}
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-zinc-400">
                   People who viewed your profile
                 </p>
               </div>
@@ -203,7 +217,7 @@ const Dashboard: React.FC = () => {
             {/* Brand Card with Logo */}
             <div 
               onClick={() => user?.username && (window.location.href = `/@${user.username}`)}
-              className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-sm p-6 text-center hover:shadow-md transition-all duration-200 cursor-pointer hover:scale-105 transform"
+              className="bg-gradient-to-br from-gray-900 to-gray-800 dark:from-zinc-800 dark:to-zinc-900 rounded-xl shadow-sm dark:shadow-none p-6 text-center hover:shadow-md dark:hover:from-zinc-700 dark:hover:to-zinc-800 transition-all duration-200 cursor-pointer hover:scale-105 transform"
             >
               <div className="flex justify-center mb-4">
                 <img 
@@ -213,27 +227,27 @@ const Dashboard: React.FC = () => {
                 />
               </div>
               <div className="space-y-2">
-                <h3 className="text-sm font-semibold text-gray-300 uppercase tracking-wider">
+                <h3 className="text-sm font-semibold text-gray-300 dark:text-zinc-400 uppercase tracking-wider">
                   Powered by
                 </h3>
-                <p className="text-lg font-bold text-white">
+                <p className="text-lg font-bold text-white dark:text-zinc-100">
                   E-Info
                 </p>
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-400 dark:text-zinc-400">
                   Simplifying Your Digital Presence
                 </p>
               </div>
             </div>
 
             {/* Total Clicks */}
-            <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-6 text-center hover:shadow-md transition-shadow duration-200">
+            <div className="bg-white dark:bg-zinc-900/20 rounded-xl border border-gray-100 dark:border-zinc-800/30 shadow-sm dark:shadow-none p-6 text-center hover:shadow-md dark:hover:bg-zinc-900/30 transition-all duration-200">
               <div className="flex justify-center mb-4">
-                <div className="w-12 h-12 bg-gray-50 rounded-full flex items-center justify-center">
-                  <MousePointer className="w-6 h-6 text-gray-600" aria-hidden="true" />
+                <div className="w-12 h-12 bg-gray-50 dark:bg-zinc-800/30 rounded-full flex items-center justify-center">
+                  <MousePointer className="w-6 h-6 text-gray-600 dark:text-zinc-400" aria-hidden="true" />
                 </div>
               </div>
               <div className="space-y-2">
-                <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
+                <h3 className="text-sm font-semibold text-gray-500 dark:text-zinc-500 uppercase tracking-wider">
                   Total Clicks
                 </h3>
                 {statsLoading ? (
@@ -241,11 +255,11 @@ const Dashboard: React.FC = () => {
                     <LoadingSpinner size="md" />
                   </div>
                 ) : (
-                  <p className="text-4xl font-bold text-gray-900">
+                  <p className="text-4xl font-bold text-gray-900 dark:text-white">
                     {formatNumber(stats.totalClicks)}
                   </p>
                 )}
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-zinc-400">
                   Clicks on all your links
                 </p>
               </div>
@@ -263,7 +277,7 @@ const Dashboard: React.FC = () => {
 
             <button
               onClick={() => navigate(ROUTES.EDIT_PROFILE)}
-              className="flex items-center gap-2 px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white font-medium rounded-lg transition-colors"
+              className="flex items-center gap-2 px-6 py-3 bg-gray-900 hover:bg-gray-800 dark:bg-zinc-700 dark:hover:bg-zinc-600 text-white font-medium rounded-lg transition-colors"
               aria-describedby="edit-card-description"
             >
               <Edit3 className="w-4 h-4" />
@@ -275,7 +289,7 @@ const Dashboard: React.FC = () => {
 
             <button
               onClick={() => navigate(user?.username ? `/@${user.username}` : ROUTES.DEMO)}
-              className="flex items-center gap-2 px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white font-medium rounded-lg transition-colors"
+              className="flex items-center gap-2 px-6 py-3 bg-gray-900 hover:bg-gray-800 dark:bg-zinc-700 dark:hover:bg-zinc-600 text-white font-medium rounded-lg transition-colors"
               aria-describedby="view-card-description"
             >
               <ExternalLink className="w-4 h-4" />

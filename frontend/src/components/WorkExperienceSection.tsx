@@ -74,12 +74,13 @@ export default function WorkExperienceSection({
   return (
     <div
       ref={containerRef}
-      className={`w-full max-w-lg mx-auto space-y-2 ${className}`}
+      className={`w-full max-w-lg mx-auto space-y-2 transition-colors duration-300 ${className}`}
     >
       {experiences.map((experience) => (
         <div
           key={experience.id}
           ref={(el) => (experienceRefs.current[experience.id] = el)}
+          className="transition-colors duration-300"
         >
           <WorkExperience
             experience={experience}

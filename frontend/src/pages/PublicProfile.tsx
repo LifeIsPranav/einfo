@@ -5,6 +5,7 @@ import ExtracurricularSection from "@/components/ExtracurricularSection";
 import Footer from "@/components/Footer";
 import LinkButton from "@/components/LinkButton";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+import ThemeToggle from "@/components/common/ThemeToggle";
 import Logo from "@/components/Logo";
 import PortfolioSection from "@/components/PortfolioSection";
 import ProfileSEO from "@/components/SEO/ProfileSEO";
@@ -21,6 +22,7 @@ import { defaultExtracurriculars } from "@/lib/extracurricularsData";
 import { getIconFromName } from "@/lib/iconUtils";
 import { api } from "@/services/api";
 import { useAuthStore } from "@/stores";
+import { useThemeStore } from "@/stores/themeStore";
 import { trackLinkClick, trackPageView, trackProfileView, trackShareEvent } from "@/utils/analytics";
 
 import {
@@ -36,6 +38,7 @@ const PublicProfile = () => {
   const { username } = useParams<{ username: string }>();
   const navigate = useNavigate();
   const { isAuthenticated, user } = useAuthStore();
+  const { theme } = useThemeStore();
   const location = useLocation();
 
   const [profile, setProfile] = useState<any | null>(null);
@@ -43,6 +46,15 @@ const PublicProfile = () => {
   const [error, setError] = useState<string | null>(null);
   const [isOwner, setIsOwner] = useState(false);
   const [showRedirectMessage, setShowRedirectMessage] = useState(false);
+
+  // Apply theme to document
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
   // Check if URL starts with @ (proper format)
   const hasAtSymbol = location.pathname.startsWith('/@');
@@ -190,21 +202,21 @@ const PublicProfile = () => {
   // Loading state
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-black flex items-center justify-center transition-colors duration-300">
         <div className="text-center space-y-6">
           <div className="flex justify-center mb-6">
             <img 
               src="/logo.png" 
               alt="Logo" 
-              className="w-16 h-16 object-contain animate-pulse"
+              className="w-16 h-16 object-contain animate-pulse dark:brightness-0 dark:invert transition-all duration-300"
               style={{
-                filter: 'brightness(0)',
+                filter: theme === 'dark' ? 'brightness(0) invert(1)' : 'brightness(0)',
                 animation: 'logo-fade 2s ease-in-out infinite'
               }}
             />
           </div>
           <LoadingSpinner size="lg" />
-          <p className="text-gray-800 font-light">Turning Personality into Pixels...</p>
+          <p className="text-gray-800 dark:text-zinc-200 font-light transition-colors duration-300">Turning Personality into Pixels...</p>
         </div>
       </div>
     );
@@ -213,19 +225,20 @@ const PublicProfile = () => {
   // Show redirect message for invalid URL format
   if (showRedirectMessage) {
     return (
-      <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+      <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 p-4 md:p-6 transition-colors duration-300">
         {/* Logo - Top Left */}
         <div className="absolute top-4 left-4 z-50">
           <Logo />
         </div>
 
         {/* Navigation - Top Right */}
-        <div className="absolute top-4 right-4 z-50">
+        <div className="absolute top-4 right-4 z-50 flex items-center gap-3">
+          <ThemeToggle />
           <Button
             onClick={() => navigate("/")}
             variant="outline"
             size="sm"
-            className="bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+            className="bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors duration-200"
           >
             <Home className="w-4 h-4 mr-2" />
             Home
@@ -235,15 +248,15 @@ const PublicProfile = () => {
         {/* Redirect Message Content */}
         <div className="min-h-screen flex items-center justify-center">
           <div className="max-w-md mx-auto text-center space-y-6">
-            <div className="w-16 h-16 mx-auto bg-blue-100 rounded-full flex items-center justify-center">
-              <AlertCircle className="w-8 h-8 text-blue-600" />
+            <div className="w-16 h-16 mx-auto bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center transition-colors duration-300">
+              <AlertCircle className="w-8 h-8 text-blue-600 dark:text-blue-400" />
             </div>
 
             <div className="space-y-2">
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100 transition-colors duration-300">
                 Looking for a profile?
               </h1>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-zinc-400 transition-colors duration-300">
                 User profiles start with the @ symbol
               </p>
             </div>
@@ -270,9 +283,10 @@ const PublicProfile = () => {
               <Button
                 onClick={() => navigate("/demo")}
                 variant="outline"
-                className="text-gray-600"
+                size="lg"
+                className="border-gray-300 dark:border-zinc-600 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 hover:text-gray-900 dark:hover:text-zinc-100 transition-all duration-300"
               >
-                View Demo Profile
+                View Demo
               </Button>
             </div>
           </div>
@@ -284,19 +298,20 @@ const PublicProfile = () => {
   // Error state
   if (error || !profile) {
     return (
-      <div className="min-h-screen bg-gray-50 p-4 md:p-6">
+      <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 p-4 md:p-6 transition-colors duration-300">
         {/* Logo - Top Left */}
         <div className="absolute top-4 left-4 z-50">
           <Logo />
         </div>
 
         {/* Navigation - Top Right */}
-        <div className="absolute top-4 right-4 z-50">
+        <div className="absolute top-4 right-4 z-50 flex items-center gap-3">
+          <ThemeToggle />
           <Button
             onClick={() => navigate("/")}
             variant="outline"
             size="sm"
-            className="bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+            className="bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors duration-200"
           >
             <Home className="w-4 h-4 mr-2" />
             Home
@@ -306,29 +321,34 @@ const PublicProfile = () => {
         {/* Error Content */}
         <div className="min-h-screen flex items-center justify-center">
           <div className="max-w-md mx-auto text-center space-y-6">
-            <div className="w-16 h-16 mx-auto bg-red-100 rounded-full flex items-center justify-center">
-              <AlertCircle className="w-8 h-8 text-red-600" />
+            <div className="w-16 h-16 mx-auto bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center transition-colors duration-300">
+              <AlertCircle className="w-8 h-8 text-red-600 dark:text-red-400" />
             </div>
 
             <div className="space-y-2">
-              <h1 className="text-2xl font-bold text-gray-900">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-zinc-100 transition-colors duration-300">
                 404 - Profile Not Found
               </h1>
-              <p className="text-gray-600">
+              <p className="text-gray-600 dark:text-zinc-400 transition-colors duration-300">
                 Looking for profile @{cleanUsername}? It doesn't exist or has been removed.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button onClick={() => navigate("/")} variant="default">
+              <Button 
+                onClick={() => navigate("/")} 
+                variant="default"
+                className="bg-gray-900 dark:bg-zinc-700 hover:bg-gray-800 dark:hover:bg-zinc-600 text-white transition-colors duration-200"
+              >
                 Go Home
               </Button>
               <Button
                 onClick={() => navigate("/demo")}
                 variant="outline"
-                className="text-gray-600"
+                size="lg"
+                className="border-gray-300 dark:border-zinc-600 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 hover:text-gray-900 dark:hover:text-zinc-100 transition-all duration-300"
               >
-                View Demo Profile
+                View Demo
               </Button>
             </div>
           </div>
@@ -344,7 +364,7 @@ const PublicProfile = () => {
         <ProfileSEO profile={profile} username={cleanUsername} />
       )}
       
-      <div className="min-h-screen bg-gray-50 p-4 md:p-6 relative">
+      <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 p-4 md:p-6 relative transition-colors duration-300">
       {/* Logo - Top Left */}
       <div className="absolute top-4 left-4 z-50">
         <Logo />
@@ -352,11 +372,12 @@ const PublicProfile = () => {
 
       {/* Navigation - Top Right */}
       <div className="absolute top-4 right-4 z-50 flex items-center gap-3">
+        <ThemeToggle />
         <Button
           onClick={handleShare}
           variant="outline"
           size="sm"
-          className="bg-white border-gray-200 text-gray-700 hover:bg-gray-50 px-4"
+          className="bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 px-4 transition-colors duration-200"
         >
           <Share2 className="w-4 h-4 mr-2" />
           Share
@@ -366,7 +387,7 @@ const PublicProfile = () => {
           <Link to="/mycard">
             <Button
               size="sm"
-              className="bg-gray-900 hover:bg-gray-800 text-white"
+              className="bg-gray-900 dark:bg-zinc-700 hover:bg-gray-800 dark:hover:bg-zinc-600 text-white transition-colors duration-200"
             >
               Edit Profile
             </Button>
@@ -375,7 +396,7 @@ const PublicProfile = () => {
           <Link to="/auth" className="hidden md:inline-flex">
             <Button
               size="sm"
-              className="bg-gray-700 hover:bg-gray-800 text-white"
+              className="bg-gray-700 dark:bg-zinc-700 hover:bg-gray-800 dark:hover:bg-zinc-600 text-white transition-colors duration-200"
             >
               Want Your Public Profile?
             </Button>
@@ -385,7 +406,7 @@ const PublicProfile = () => {
             <Button
               variant="outline"
               size="sm"
-              className="bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+              className="bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-700 text-gray-700 dark:text-zinc-300 hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors duration-200"
             >
               <LayoutGrid className="w-4 h-4 mr-2" />
               Dashboard
@@ -399,20 +420,20 @@ const PublicProfile = () => {
       {/* Owner Alert */}
       {isOwner && (
         <div className="max-w-lg mx-auto mt-20 mb-4">
-          <Alert className="bg-blue-50 border-blue-200">
-            <Eye className="h-4 w-4" />
-            <AlertDescription className="text-blue-800">
+          <Alert className="bg-blue-50 dark:bg-blue-950/30 border-blue-200 dark:border-blue-800">
+            <Eye className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <AlertDescription className="text-blue-800 dark:text-blue-200">
               This is how your profile appears to others. You can{" "}
               <Link
                 to="/mycard"
-                className="font-medium underline hover:no-underline"
+                className="font-medium underline hover:no-underline text-blue-700 dark:text-blue-300"
               >
                 edit your profile
               </Link>{" "}
               or view your{" "}
               <Link
                 to="/dashboard"
-                className="font-medium underline hover:no-underline"
+                className="font-medium underline hover:no-underline text-blue-700 dark:text-blue-300"
               >
                 analytics dashboard
               </Link>
@@ -423,8 +444,7 @@ const PublicProfile = () => {
       )}
 
       {/* Main Content Container */}
-      <div className="w-full max-w-lg mx-auto pt-40 pb-64">
-        {/* Profile Section */}
+      <div className="w-full max-w-lg mx-auto pt-40 pb-64 transition-colors duration-300">{/* Profile Section */}
         <UnifiedProfileSection profile={profile.profile} canEdit={false} />
 
         {/* Links Section */}
@@ -449,10 +469,10 @@ const PublicProfile = () => {
             <div className="space-y-4 mt-24">
               {profile.visibilitySettings.showTitles && (
                 <div className="text-center">
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-zinc-100 mb-2">
                     Experience
                   </h2>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-600 dark:text-zinc-400 text-sm">
                     Professional journey and key achievements
                   </p>
                 </div>
@@ -467,10 +487,10 @@ const PublicProfile = () => {
             <div className="space-y-4 mt-24">
               {profile.visibilitySettings.showTitles && (
                 <div className="text-center">
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-zinc-100 mb-2">
                     Portfolio
                   </h2>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-600 dark:text-zinc-400 text-sm">
                     Selected projects and creative work
                   </p>
                 </div>
@@ -485,10 +505,10 @@ const PublicProfile = () => {
             <div className="space-y-4 mt-24">
               {profile.visibilitySettings.showTitles && (
                 <div className="text-center">
-                  <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                  <h2 className="text-2xl font-semibold text-gray-900 dark:text-zinc-100 mb-2">
                     Education & Certifications
                   </h2>
-                  <p className="text-gray-600 text-sm">
+                  <p className="text-gray-600 dark:text-zinc-400 text-sm">
                     My educational journey and professional certifications
                   </p>
                 </div>
@@ -502,10 +522,10 @@ const PublicProfile = () => {
           <div className="space-y-4 mt-24">
             {profile.visibilitySettings.showTitles && (
               <div className="text-center">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-zinc-100 mb-2">
                   Achievements
                 </h2>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 dark:text-zinc-400 text-sm">
                   Notable accomplishments and recognitions
                 </p>
               </div>
@@ -519,10 +539,10 @@ const PublicProfile = () => {
           <div className="space-y-4 mt-24">
             {profile.visibilitySettings.showTitles && (
               <div className="text-center">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                <h2 className="text-2xl font-semibold dark:text-white text-gray-900 mb-2">
                   Extracurricular Activities
                 </h2>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 dark:text-white text-sm">
                   Community involvement and personal interests
                 </p>
               </div>

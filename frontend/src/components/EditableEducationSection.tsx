@@ -249,9 +249,9 @@ const EditableEducationItem = ({
   if (isEditing) {
     return (
       <div
-        className={`bg-white border border-gray-100 rounded-xl transition-all duration-200 overflow-hidden shadow-sm ${
+        className={`bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-700 rounded-xl transition-all duration-200 overflow-hidden shadow-sm ${
           isBeingDragged ? "opacity-50 scale-95" : ""
-        } ${isDraggedOver ? "border-gray-300 shadow-lg" : ""}`}
+        } ${isDraggedOver ? "border-gray-300 dark:border-zinc-600 shadow-lg" : ""}`}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
@@ -259,7 +259,7 @@ const EditableEducationItem = ({
           {/* Drag Handle and Move Buttons */}
           <div className="flex items-center justify-between -mt-1 mb-2">
             <div 
-              className="flex items-center gap-2 text-gray-500 cursor-grab active:cursor-grabbing select-none"
+              className="flex items-center gap-2 px-2 py-1 rounded-md bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 cursor-grab active:cursor-grabbing select-none hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors duration-200"
               draggable
               onDragStart={handleDragStart}
             >
@@ -270,10 +270,10 @@ const EditableEducationItem = ({
               <button
                 onClick={onMoveUp}
                 disabled={!canMoveUp}
-                className={`w-6 h-6 flex items-center justify-center rounded transition-colors ${
+                className={`w-7 h-7 flex items-center justify-center rounded-md border transition-all duration-200 ${
                   canMoveUp 
-                    ? 'text-gray-600 hover:text-gray-800 hover:bg-gray-100' 
-                    : 'text-gray-300 cursor-not-allowed'
+                    ? 'bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700 hover:border-gray-300 dark:hover:border-zinc-600' 
+                    : 'bg-gray-100 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-300 dark:text-zinc-600 cursor-not-allowed'
                 }`}
                 title="Move up"
               >
@@ -282,10 +282,10 @@ const EditableEducationItem = ({
               <button
                 onClick={onMoveDown}
                 disabled={!canMoveDown}
-                className={`w-6 h-6 flex items-center justify-center rounded transition-colors ${
+                className={`w-7 h-7 flex items-center justify-center rounded-md border transition-all duration-200 ${
                   canMoveDown 
-                    ? 'text-gray-600 hover:text-gray-800 hover:bg-gray-100' 
-                    : 'text-gray-300 cursor-not-allowed'
+                    ? 'bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700 hover:border-gray-300 dark:hover:border-zinc-600' 
+                    : 'bg-gray-100 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-300 dark:text-zinc-600 cursor-not-allowed'
                 }`}
                 title="Move down"
               >
@@ -297,35 +297,35 @@ const EditableEducationItem = ({
           {/* Basic Info */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Degree/Certificate
               </label>
               <Input
                 value={editingEducation.degree}
                 onChange={(e) => handleFieldChange("degree", e.target.value)}
                 placeholder="e.g., Bachelor of Science in Computer Science"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={60}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   editingEducation.degree.length > 54 
                     ? editingEducation.degree.length >= 60 
-                      ? 'text-red-500' 
-                      : 'text-orange-500'
-                    : 'text-gray-500'
+                      ? 'text-red-500 dark:text-red-400' 
+                      : 'text-orange-500 dark:text-orange-400'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {editingEducation.degree.length}/60 characters
                 </p>
                 {editingEducation.degree.length >= 60 && (
-                  <p className="text-xs text-red-500 mt-1">
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                     Character limit reached
                   </p>
                 )}
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Institution
               </label>
               <Input
@@ -334,21 +334,21 @@ const EditableEducationItem = ({
                   handleFieldChange("institution", e.target.value)
                 }
                 placeholder="e.g., University of California"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={60}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   editingEducation.institution.length > 54 
                     ? editingEducation.institution.length >= 60 
-                      ? 'text-red-500' 
-                      : 'text-orange-500'
-                    : 'text-gray-500'
+                      ? 'text-red-500 dark:text-red-400' 
+                      : 'text-orange-500 dark:text-orange-400'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {editingEducation.institution.length}/60 characters
                 </p>
                 {editingEducation.institution.length >= 60 && (
-                  <p className="text-xs text-red-500 mt-1">
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                     Character limit reached
                   </p>
                 )}
@@ -358,77 +358,77 @@ const EditableEducationItem = ({
 
           <div className="grid grid-cols-3 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Duration
               </label>
               <Input
                 value={editingEducation.duration}
                 onChange={(e) => handleFieldChange("duration", e.target.value)}
                 placeholder="e.g., 2016 - 2020"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={25}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   editingEducation.duration.length > 22 
                     ? editingEducation.duration.length >= 25 
-                      ? 'text-red-500' 
-                      : 'text-orange-500'
-                    : 'text-gray-500'
+                      ? 'text-red-500 dark:text-red-400' 
+                      : 'text-orange-500 dark:text-orange-400'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {editingEducation.duration.length}/25 characters
                 </p>
                 {editingEducation.duration.length >= 25 && (
-                  <p className="text-xs text-red-500 mt-1">
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                     Character limit reached
                   </p>
                 )}
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Location
               </label>
               <Input
                 value={editingEducation.location}
                 onChange={(e) => handleFieldChange("location", e.target.value)}
                 placeholder="e.g., Berkeley, CA"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={40}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   editingEducation.location.length > 36 
                     ? editingEducation.location.length >= 40 
-                      ? 'text-red-500' 
-                      : 'text-orange-500'
-                    : 'text-gray-500'
+                      ? 'text-red-500 dark:text-red-400' 
+                      : 'text-orange-500 dark:text-orange-400'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {editingEducation.location.length}/40 characters
                 </p>
                 {editingEducation.location.length >= 40 && (
-                  <p className="text-xs text-red-500 mt-1">
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                     Character limit reached
                   </p>
                 )}
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Type
               </label>
               <Select
                 value={editingEducation.type}
                 onValueChange={handleTypeChange}
               >
-                <SelectTrigger className="text-sm bg-gray-50 border-gray-200 text-gray-900 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium">
+                <SelectTrigger className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200">
                   <SelectValue placeholder="Select type" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="degree">Degree</SelectItem>
-                  <SelectItem value="certification">Certification</SelectItem>
-                  <SelectItem value="certificate">Certificate</SelectItem>
-                  <SelectItem value="course">Course</SelectItem>
+                <SelectContent className="bg-white dark:bg-zinc-800 border-gray-200 dark:border-zinc-700">
+                  <SelectItem value="degree" className="text-gray-900 dark:text-zinc-100 hover:bg-gray-100 dark:hover:bg-zinc-700">Degree</SelectItem>
+                  <SelectItem value="certification" className="text-gray-900 dark:text-zinc-100 hover:bg-gray-100 dark:hover:bg-zinc-700">Certification</SelectItem>
+                  <SelectItem value="certificate" className="text-gray-900 dark:text-zinc-100 hover:bg-gray-100 dark:hover:bg-zinc-700">Certificate</SelectItem>
+                  <SelectItem value="course" className="text-gray-900 dark:text-zinc-100 hover:bg-gray-100 dark:hover:bg-zinc-700">Course</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -436,35 +436,35 @@ const EditableEducationItem = ({
 
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 GPA (Optional)
               </label>
               <Input
                 value={editingEducation.gpa || ""}
                 onChange={(e) => handleFieldChange("gpa", e.target.value)}
                 placeholder="e.g., 3.8/4.0"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={20}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   (editingEducation.gpa || "").length > 18 
                     ? (editingEducation.gpa || "").length >= 20 
-                      ? 'text-red-500' 
-                      : 'text-orange-500'
-                    : 'text-gray-500'
+                      ? 'text-red-500 dark:text-red-400' 
+                      : 'text-orange-500 dark:text-orange-400'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {(editingEducation.gpa || "").length}/20 characters
                 </p>
                 {(editingEducation.gpa || "").length >= 20 && (
-                  <p className="text-xs text-red-500 mt-1">
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                     Character limit reached
                   </p>
                 )}
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Website URL (Optional)
               </label>
               <Input
@@ -473,35 +473,35 @@ const EditableEducationItem = ({
                   handleFieldChange("websiteUrl", e.target.value)
                 }
                 placeholder="e.g., https://university.edu"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
               />
             </div>
           </div>
 
           {/* Description */}
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-gray-800">
+            <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
               Description
             </label>
             <Textarea
               value={editingEducation.description}
               onChange={(e) => handleFieldChange("description", e.target.value)}
               placeholder="Brief description of your education and key learnings..."
-              className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium min-h-20 resize-none"
+              className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium min-h-20 resize-none transition-colors duration-200"
               maxLength={250}
             />
             <div className="text-right">
-              <p className={`text-xs ${
+              <p className={`text-xs transition-colors duration-200 ${
                 editingEducation.description.length > 225 
                   ? editingEducation.description.length >= 250 
-                    ? 'text-red-500' 
-                    : 'text-orange-500'
-                  : 'text-gray-500'
+                    ? 'text-red-500 dark:text-red-400' 
+                    : 'text-orange-500 dark:text-orange-400'
+                  : 'text-gray-500 dark:text-zinc-400'
               }`}>
                 {editingEducation.description.length}/250 characters
               </p>
               {editingEducation.description.length >= 250 && (
-                <p className="text-xs text-red-500 mt-1">
+                <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                   Character limit reached
                 </p>
               )}
@@ -510,20 +510,20 @@ const EditableEducationItem = ({
 
           {/* Image URL */}
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-gray-800">
+            <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
               Image URL (Optional)
             </label>
             <Input
               value={editingEducation.imageUrl || ""}
               onChange={(e) => handleFieldChange("imageUrl", e.target.value)}
               placeholder="https://images.unsplash.com/photo-example.jpg"
-              className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+              className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
             />
           </div>
 
           {/* Icon Selection */}
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-gray-800">Icon</label>
+            <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">Icon</label>
             <IconPicker
               selectedIcon={editingEducation.iconName ? getIconFromName(editingEducation.iconName) : null}
               onIconSelect={(icon, iconName) => {
@@ -540,7 +540,7 @@ const EditableEducationItem = ({
             editingEducation.courses.some(course => course.trim() !== '')) && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-semibold text-gray-800">
+                <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                   Key Courses ({editingEducation.courses.length}/25)
                 </label>
                 <Button
@@ -548,10 +548,10 @@ const EditableEducationItem = ({
                   variant="ghost"
                   size="sm"
                   disabled={editingEducation.courses.length >= 25}
-                  className={`h-7 px-2 text-xs ${
+                  className={`h-7 px-2 text-xs transition-colors duration-200 ${
                     editingEducation.courses.length >= 25
-                      ? 'text-gray-400 cursor-not-allowed'
-                      : 'text-gray-600 hover:text-gray-800'
+                      ? 'text-gray-400 dark:text-zinc-500 cursor-not-allowed'
+                      : 'text-gray-600 dark:text-zinc-300 hover:text-gray-800 dark:hover:text-zinc-100'
                   }`}
                 >
                   <Plus className="w-3 h-3 mr-1" />
@@ -570,21 +570,21 @@ const EditableEducationItem = ({
                           handleCourseChange(courseIndex, e.target.value)
                         }
                         placeholder="Course name"
-                        className="text-xs bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 h-8"
+                        className="text-xs bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 h-8 transition-colors duration-200"
                         maxLength={50}
                       />
                       <div className="text-right">
-                        <span className={`text-xs ${
+                        <span className={`text-xs transition-colors duration-200 ${
                           course.length > 45 
                             ? course.length >= 50 
-                              ? 'text-red-500' 
-                              : 'text-orange-500'
-                            : 'text-gray-500'
+                              ? 'text-red-500 dark:text-red-400' 
+                              : 'text-orange-500 dark:text-orange-400'
+                            : 'text-gray-500 dark:text-zinc-400'
                         }`}>
                           {course.length}/50
                         </span>
                         {course.length >= 50 && (
-                          <span className="text-xs text-red-500 ml-1">• Limit reached</span>
+                          <span className="text-xs text-red-500 dark:text-red-400 ml-1 transition-colors duration-200">• Limit reached</span>
                         )}
                       </div>
                     </div>
@@ -592,10 +592,10 @@ const EditableEducationItem = ({
                       <button
                         onClick={() => handleMoveCourseUp(courseIndex)}
                         disabled={courseIndex === 0}
-                        className={`w-5 h-5 flex items-center justify-center rounded transition-colors ${
+                        className={`w-5 h-5 flex items-center justify-center rounded transition-colors duration-200 ${
                           courseIndex === 0
-                            ? 'text-gray-300 cursor-not-allowed'
-                            : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                            ? 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
+                            : 'text-gray-600 dark:text-zinc-300 hover:text-gray-800 dark:hover:text-zinc-100 hover:bg-gray-100 dark:hover:bg-zinc-700'
                         }`}
                         title="Move up"
                       >
@@ -604,10 +604,10 @@ const EditableEducationItem = ({
                       <button
                         onClick={() => handleMoveCourseDown(courseIndex)}
                         disabled={courseIndex === editingEducation.courses.length - 1}
-                        className={`w-5 h-5 flex items-center justify-center rounded transition-colors ${
+                        className={`w-5 h-5 flex items-center justify-center rounded transition-colors duration-200 ${
                           courseIndex === editingEducation.courses.length - 1
-                            ? 'text-gray-300 cursor-not-allowed'
-                            : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                            ? 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
+                            : 'text-gray-600 dark:text-zinc-300 hover:text-gray-800 dark:hover:text-zinc-100 hover:bg-gray-100 dark:hover:bg-zinc-700'
                         }`}
                         title="Move down"
                       >
@@ -636,7 +636,7 @@ const EditableEducationItem = ({
                 onClick={handleAddCourse}
                 variant="ghost"
                 size="sm"
-                className="h-7 px-2 text-xs text-gray-600 hover:text-gray-800 w-full border border-dashed border-gray-300 hover:border-gray-400"
+                className="h-7 px-2 text-xs text-gray-600 dark:text-zinc-300 hover:text-gray-800 dark:hover:text-zinc-100 w-full border border-dashed border-gray-300 dark:border-zinc-600 hover:border-gray-400 dark:hover:border-zinc-500 transition-colors duration-200"
               >
                 <Plus className="w-3 h-3 mr-1" />
                 Add Key Courses
@@ -649,7 +649,7 @@ const EditableEducationItem = ({
             editingEducation.achievements.some(ach => ach.trim() !== '')) && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-semibold text-gray-800">
+                <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                   Key Achievements ({editingEducation.achievements.length}/10)
                 </label>
                 <Button
@@ -657,10 +657,10 @@ const EditableEducationItem = ({
                   variant="ghost"
                   size="sm"
                 disabled={editingEducation.achievements.length >= 10}
-                className={`h-7 px-2 text-xs ${
+                className={`h-7 px-2 text-xs transition-colors duration-200 ${
                   editingEducation.achievements.length >= 10
-                    ? 'text-gray-400 cursor-not-allowed'
-                    : 'text-gray-600 hover:text-gray-800'
+                    ? 'text-gray-400 dark:text-zinc-500 cursor-not-allowed'
+                    : 'text-gray-600 dark:text-zinc-300 hover:text-gray-800 dark:hover:text-zinc-100'
                 }`}
               >
                 <Plus className="w-3 h-3 mr-1" />
@@ -686,21 +686,21 @@ const EditableEducationItem = ({
                             )
                           }
                           placeholder="Achievement description"
-                          className="text-xs bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 h-8"
+                          className="text-xs bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 h-8 transition-colors duration-200"
                           maxLength={180}
                         />
                         <div className="text-right">
-                          <span className={`text-xs ${
+                          <span className={`text-xs transition-colors duration-200 ${
                             achievement.length > 162 
                               ? achievement.length >= 180 
-                                ? 'text-red-500' 
-                                : 'text-orange-500'
-                              : 'text-gray-500'
+                                ? 'text-red-500 dark:text-red-400' 
+                                : 'text-orange-500 dark:text-orange-400'
+                              : 'text-gray-500 dark:text-zinc-400'
                           }`}>
                             {achievement.length}/180
                           </span>
                           {achievement.length >= 180 && (
-                            <span className="text-xs text-red-500 ml-1">• Limit reached</span>
+                            <span className="text-xs text-red-500 dark:text-red-400 ml-1 transition-colors duration-200">• Limit reached</span>
                           )}
                         </div>
                       </div>
@@ -708,10 +708,10 @@ const EditableEducationItem = ({
                         <button
                           onClick={() => handleMoveAchievementUp(achievementIndex)}
                           disabled={achievementIndex === 0}
-                          className={`w-5 h-5 flex items-center justify-center rounded transition-colors ${
+                          className={`w-5 h-5 flex items-center justify-center rounded transition-colors duration-200 ${
                             achievementIndex === 0
-                              ? 'text-gray-300 cursor-not-allowed'
-                              : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                              ? 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
+                              : 'text-gray-600 dark:text-zinc-300 hover:text-gray-800 dark:hover:text-zinc-100 hover:bg-gray-100 dark:hover:bg-zinc-700'
                           }`}
                           title="Move up"
                         >
@@ -720,10 +720,10 @@ const EditableEducationItem = ({
                         <button
                           onClick={() => handleMoveAchievementDown(achievementIndex)}
                           disabled={achievementIndex === editingEducation.achievements.length - 1}
-                          className={`w-5 h-5 flex items-center justify-center rounded transition-colors ${
+                          className={`w-5 h-5 flex items-center justify-center rounded transition-colors duration-200 ${
                             achievementIndex === editingEducation.achievements.length - 1
-                              ? 'text-gray-300 cursor-not-allowed'
-                              : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                              ? 'text-gray-300 dark:text-zinc-600 cursor-not-allowed'
+                              : 'text-gray-600 dark:text-zinc-300 hover:text-gray-800 dark:hover:text-zinc-100 hover:bg-gray-100 dark:hover:bg-zinc-700'
                           }`}
                           title="Move down"
                         >
@@ -753,7 +753,7 @@ const EditableEducationItem = ({
                 onClick={handleAddAchievement}
                 variant="ghost"
                 size="sm"
-                className="h-7 px-2 text-xs text-gray-600 hover:text-gray-800 w-full border border-dashed border-gray-300 hover:border-gray-400"
+                className="h-7 px-2 text-xs text-gray-600 dark:text-zinc-300 hover:text-gray-800 dark:hover:text-zinc-100 w-full border border-dashed border-gray-300 dark:border-zinc-600 hover:border-gray-400 dark:hover:border-zinc-500 transition-colors duration-200"
               >
                 <Plus className="w-3 h-3 mr-1" />
                 Add Key Achievements
@@ -762,12 +762,12 @@ const EditableEducationItem = ({
           )}
 
           {/* Actions */}
-          <div className="flex justify-end items-center pt-2 border-t border-gray-100">
+          <div className="flex justify-end items-center pt-2 border-t border-gray-100 dark:border-zinc-700 transition-colors duration-200">
             <Button
               onClick={onDelete}
               variant="ghost"
               size="sm"
-              className="text-red-600 hover:text-white hover:bg-red-600 h-8 px-3 font-medium border border-red-200 hover:border-red-600 transition-all"
+              className="text-red-600 dark:text-red-400 hover:text-white dark:hover:text-white hover:bg-red-600 dark:hover:bg-red-600 h-8 px-3 font-medium border border-red-200 dark:border-red-700 hover:border-red-600 dark:hover:border-red-600 transition-all duration-200"
             >
               <Trash2 className="w-3 h-3 mr-1" />
               Delete
@@ -779,27 +779,27 @@ const EditableEducationItem = ({
   }
 
   return (
-    <button className="w-full bg-white hover:bg-gray-50 border border-gray-100 rounded-xl transition-all duration-200 group shadow-sm overflow-hidden">
-      <div className="p-4 flex items-center gap-4 text-left">
+    <button className="w-full bg-white dark:bg-zinc-900 hover:bg-gray-50 dark:hover:bg-zinc-800 border border-gray-100 dark:border-zinc-700 rounded-xl transition-all duration-200 group shadow-sm overflow-hidden">
+      <div className="p-4  flex items-center gap-4 text-left">
         {/* Icon */}
-        <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 group-hover:bg-gray-100 transition-colors duration-200">
+        <div className="w-10 h-10 rounded-lg bg-gray-50 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0 group-hover:bg-gray-100 dark:group-hover:bg-zinc-700 transition-colors duration-200">
           {education.iconName ? getIconFromName(education.iconName) : (
-            <GraduationCap className="w-4 h-4 text-gray-600" />
+            <GraduationCap className="w-4 h-4 text-gray-600 dark:text-zinc-400" />
           )}
         </div>
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <div className="text-gray-900 font-medium text-sm">
+          <div className="text-gray-900 dark:text-zinc-100 font-medium text-sm transition-colors duration-200">
             {education.degree}
           </div>
-          <div className="text-gray-500 text-xs mt-0.5 truncate">
+          <div className="text-gray-500 dark:text-zinc-400 text-xs mt-0.5 truncate transition-colors duration-200">
             {education.institution} • {education.duration}
           </div>
         </div>
 
         {/* View indicator */}
-        <Eye className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors duration-200" />
+        <Eye className="w-4 h-4 text-gray-400 dark:text-zinc-500 group-hover:text-gray-600 dark:group-hover:text-zinc-400 transition-colors duration-200" />
       </div>
     </button>
   );
@@ -983,10 +983,10 @@ export default function EditableEducationSection({
       {/* Header with Edit Button */}
       <div className="flex items-center justify-between">
         <div className="text-center flex-1">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
             Education & Certifications
           </h2>
-          <p className="text-gray-600 text-sm">
+          <p className="text-gray-600 dark:text-zinc-400 text-sm transition-colors duration-300">
             {isEditing
               ? "Edit your education background and certifications"
               : "My educational journey and professional certifications"}
@@ -1000,9 +1000,9 @@ export default function EditableEducationSection({
                 onClick={handleCancel}
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
+                className="h-9 w-9 p-2 rounded-full bg-white dark:bg-zinc-900 border border-gray-200 dark:border-zinc-700 shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-800 transition-colors duration-200"
               >
-                <X className="w-4 h-4 text-gray-600" />
+                <X className="w-4 h-4 text-gray-600 dark:text-zinc-400" />
               </Button>
               <Button
                 onClick={handleSave}
@@ -1018,9 +1018,9 @@ export default function EditableEducationSection({
               onClick={handleStartEdit}
               variant="ghost"
               size="sm"
-              className="h-9 w-9 p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
+              className="h-9 w-9 p-2 rounded-full bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors duration-200"
             >
-              <Edit3 className="w-4 h-4 text-gray-600" />
+              <Edit3 className="w-4 h-4 text-gray-600 dark:text-zinc-400" />
             </Button>
           )}
         </div>
@@ -1057,8 +1057,8 @@ export default function EditableEducationSection({
               disabled={hasReachedLimit(editingEducation.length, 'EDUCATION')}
               className={`w-full p-4 border-2 border-dashed rounded-xl transition-colors duration-200 flex items-center justify-center gap-2 ${
                 hasReachedLimit(editingEducation.length, 'EDUCATION')
-                  ? 'border-gray-100 text-gray-300 cursor-not-allowed bg-gray-50'
-                  : 'border-gray-200 text-gray-500 hover:text-gray-600 hover:border-gray-300'
+                  ? 'border-gray-100 dark:border-zinc-800 text-gray-300 dark:text-zinc-600 cursor-not-allowed bg-gray-50 dark:bg-zinc-900'
+                  : 'border-gray-200 dark:border-zinc-700 text-gray-500 dark:text-zinc-400 hover:text-gray-600 dark:hover:text-zinc-300 hover:border-gray-300 dark:hover:border-zinc-600'
               }`}
             >
               <Plus className="w-4 h-4" />

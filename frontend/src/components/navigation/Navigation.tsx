@@ -29,8 +29,8 @@ interface NavigationProps extends WithClassName {
 
 const backgroundClasses = {
   transparent: "bg-transparent",
-  white: "bg-white",
-  blur: "bg-white/80 backdrop-blur-md",
+  white: "bg-white dark:bg-black",
+  blur: "bg-white/80 dark:bg-black/80 backdrop-blur-md",
 };
 
 const positionClasses = {
@@ -53,7 +53,7 @@ export const Navigation: React.FC<NavigationProps> = ({
         "w-full px-6 py-4 flex justify-between items-center",
         backgroundClasses[background],
         positionClasses[position],
-        bordered && "border-b border-gray-200",
+        bordered && "border-b border-gray-200 dark:border-zinc-800",
         className,
       )}
       role="navigation"

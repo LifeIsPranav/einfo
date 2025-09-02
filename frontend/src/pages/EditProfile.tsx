@@ -7,6 +7,7 @@ import EditableLinksSection from "@/components/EditableLinksSection";
 import EditablePortfolioSection from "@/components/EditablePortfolioSection";
 import Footer from "@/components/Footer";
 import LoadingSpinner from "@/components/common/LoadingSpinner";
+import ThemeToggle from "@/components/common/ThemeToggle";
 import Logo from "@/components/Logo";
 import UnifiedProfileSection from "@/components/UnifiedProfileSection";
 import { Eye, EyeOff, LayoutDashboard, Settings } from "lucide-react";
@@ -26,6 +27,7 @@ import type { PortfolioProject } from "@/lib/portfolioData";
 import type { PersonProfile, ProjectLink } from "@/lib/profileData";
 import { api } from "@/services/api";
 import { useAuthStore, useProfileStore } from "@/stores";
+import { useThemeStore } from "@/stores/themeStore";
 import type { VisibilitySettings } from "@/stores/profileStore";
 import type { AchievementData, ExtracurricularData } from "@/types/newSections";
 
@@ -46,12 +48,22 @@ const EditProfile = () => {
     updateVisibilitySettings,
     initializeWithUserData,
   } = useProfileStore();
+  const { theme } = useThemeStore();
   const navigate = useNavigate();
   const [isLoadingProfile, setIsLoadingProfile] = useState(false);
   
   // Local state for new sections (hardcoded for now)
   const [achievements, setAchievements] = useState<AchievementData[]>(defaultAchievements);
   const [extracurriculars, setExtracurriculars] = useState<ExtracurricularData[]>(defaultExtracurriculars);
+
+  // Apply theme to document
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
   // Redirect to auth if not authenticated
   useEffect(() => {
@@ -311,7 +323,7 @@ const EditProfile = () => {
   // Show loading while checking auth or loading profile data
   if (authLoading || isLoadingProfile) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
+      <div className="min-h-screen bg-white dark:bg-zinc-950 flex items-center justify-center transition-colors duration-300">
         <div className="text-center space-y-6">
           <div className="flex justify-center mb-6">
             <img 
@@ -325,7 +337,7 @@ const EditProfile = () => {
             />
           </div>
           <LoadingSpinner size="lg" />
-          <p className="text-gray-800 font-light">Turning Personality into Pixels...</p>
+          <p className="text-gray-800 dark:text-zinc-200 font-light transition-colors duration-300">Turning Personality into Pixels...</p>
         </div>
       </div>
     );
@@ -337,7 +349,7 @@ const EditProfile = () => {
   }
 
   return (
-    <div className="bg-gray-50 p-4 md:p-6 relative">
+    <div className="bg-gray-50 dark:bg-zinc-950 p-4 md:p-6 relative transition-colors duration-300">
       {/* Logo - Top Left */}
       <div className="absolute top-4 left-4 z-50">
         <Logo />
@@ -345,11 +357,12 @@ const EditProfile = () => {
 
       {/* Navigation - Top Right */}
       <div className="absolute top-4 right-4 z-50 flex items-center gap-3">
+        <ThemeToggle />
         <Button
           onClick={() => (window.location.href = "/dashboard")}
           variant="outline"
           size="sm"
-          className="bg-white border-gray-200 text-gray-700 hover:bg-gray-50 font-medium"
+          className="bg-white dark:bg-zinc-900 border-gray-200 dark:border-zinc-800 text-gray-700 dark:text-zinc-200 hover:bg-gray-50 dark:hover:bg-zinc-800 font-medium transition-colors duration-200"
         >
           <LayoutDashboard className="w-4 h-4 mr-2" />
           Dashboard
@@ -361,10 +374,10 @@ const EditProfile = () => {
       <div className="w-full max-w-lg mx-auto pt-40 pb-64">
         {/* Info Section */}
         <div className="text-center mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
             My Profile
           </h2>
-          <p className="text-gray-600 text-sm">
+          <p className="text-gray-600 dark:text-zinc-400 text-sm transition-colors duration-300">
             Customize your digital card and links below
           </p>
         </div>
@@ -379,25 +392,25 @@ const EditProfile = () => {
         </div>
 
         {/* Visibility Controls Section */}
-        <div className="bg-white border border-gray-100 rounded-xl p-6 shadow-sm mb-20">
+        <div className="bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-800 rounded-xl p-6 shadow-sm mb-20 transition-colors duration-300">
           <div className="flex items-center gap-2 mb-4">
-            <Settings className="w-5 h-5 text-gray-600" />
-            <h3 className="text-lg font-semibold text-gray-900">
+            <Settings className="w-5 h-5 text-gray-600 dark:text-zinc-400" />
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white transition-colors duration-300">
               Visibility Settings
             </h3>
           </div>
-          <p className="text-sm text-gray-600 mb-6">
+          <p className="text-sm text-gray-600 dark:text-zinc-400 mb-6 transition-colors duration-300">
             Control which sections are visible on your public profile
           </p>
 
           <div className="space-y-4">
             {/* Section Visibility Controls */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-zinc-800 rounded-lg transition-colors duration-300">
                 <div className="flex items-center gap-2">
                   <Label
                     htmlFor="show-links"
-                    className="text-sm font-medium text-gray-700"
+                    className="text-sm font-medium text-gray-700 dark:text-zinc-200 transition-colors duration-300"
                   >
                     Links Section
                   </Label>
@@ -414,11 +427,11 @@ const EditProfile = () => {
                 />
               </div>
 
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-zinc-800 rounded-lg transition-colors duration-300">
                 <div className="flex items-center gap-2">
                   <Label
                     htmlFor="show-experience"
-                    className="text-sm font-medium text-gray-700"
+                    className="text-sm font-medium text-gray-700 dark:text-zinc-200 transition-colors duration-300"
                   >
                     Experience Section
                   </Label>
@@ -435,11 +448,11 @@ const EditProfile = () => {
                 />
               </div>
 
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-zinc-800 rounded-lg transition-colors duration-300">
                 <div className="flex items-center gap-2">
                   <Label
                     htmlFor="show-portfolio"
-                    className="text-sm font-medium text-gray-700"
+                    className="text-sm font-medium text-gray-700 dark:text-zinc-200 transition-colors duration-300"
                   >
                     Portfolio Section
                   </Label>
@@ -456,11 +469,11 @@ const EditProfile = () => {
                 />
               </div>
 
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-zinc-800 rounded-lg transition-colors duration-300">
                 <div className="flex items-center gap-2">
                   <Label
                     htmlFor="show-education"
-                    className="text-sm font-medium text-gray-700"
+                    className="text-sm font-medium text-gray-700 dark:text-zinc-200 transition-colors duration-300"
                   >
                     Education Section
                   </Label>
@@ -477,11 +490,11 @@ const EditProfile = () => {
                 />
               </div>
 
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-zinc-800 rounded-lg transition-colors duration-300">
                 <div className="flex items-center gap-2">
                   <Label
                     htmlFor="show-achievements"
-                    className="text-sm font-medium text-gray-700"
+                    className="text-sm font-medium text-gray-700 dark:text-zinc-200 transition-colors duration-300"
                   >
                     Achievements
                   </Label>
@@ -498,11 +511,11 @@ const EditProfile = () => {
                 />
               </div>
 
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-zinc-800 rounded-lg transition-colors duration-300">
                 <div className="flex items-center gap-2">
                   <Label
                     htmlFor="show-extracurriculars"
-                    className="text-sm font-medium text-gray-700"
+                    className="text-sm font-medium text-gray-700 dark:text-zinc-200 transition-colors duration-300"
                   >
                     Extracurriculars
                   </Label>
@@ -521,16 +534,16 @@ const EditProfile = () => {
             </div>
 
             {/* Title Visibility Control */}
-            <div className="border-t border-gray-200 pt-4">
-              <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <div className="border-t border-gray-200 dark:border-zinc-700 pt-4">
+              <div className="flex items-center justify-between p-4 bg-blue-50 dark:bg-zinc-800 rounded-lg border border-blue-200 dark:border-zinc-600 transition-colors duration-300">
                 <div>
                   <Label
                     htmlFor="show-titles"
-                    className="text-sm font-semibold text-gray-800"
+                    className="text-sm font-semibold text-gray-800 dark:text-zinc-100 transition-colors duration-300"
                   >
                     Show Section Titles & Descriptions
                   </Label>
-                  <p className="text-xs text-gray-600 mt-1">
+                  <p className="text-xs text-gray-600 dark:text-zinc-400 mt-1 transition-colors duration-300">
                     When disabled, only content will be shown without section
                     headers
                   </p>

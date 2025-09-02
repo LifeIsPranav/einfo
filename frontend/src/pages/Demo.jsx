@@ -1,16 +1,20 @@
 import AuthButton from "@/components/AuthButton";
 import EducationSection from "@/components/EducationSection";
+import AchievementSection from "@/components/AchievementSection";
 import Footer from "@/components/Footer";
 import LinkButton from "@/components/LinkButton";
 import Logo from "@/components/Logo";
 import PortfolioSection from "@/components/PortfolioSection";
 import UnifiedProfileSection from "@/components/UnifiedProfileSection";
 import WorkExperienceSection from "@/components/WorkExperienceSection";
+import ThemeToggle from "@/components/common/ThemeToggle";
 import { Home } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { getIconFromName } from "@/lib/iconUtils";
 import { useProfileStore } from "@/stores";
+import { useThemeStore } from "@/stores/themeStore";
+import { useEffect } from "react";
 
 const Demo = () => {
   const {
@@ -19,11 +23,23 @@ const Demo = () => {
     portfolioProjects,
     workExperiences,
     education,
+    achievements,
     visibilitySettings,
   } = useProfileStore();
+  
+  const { theme } = useThemeStore();
+
+  // Apply theme to document
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4 md:p-6 relative">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-950 p-4 md:p-6 relative transition-colors duration-300">
       {/* Logo - Top Left */}
       <div className="absolute top-4 left-4 z-50">
         <Logo />
@@ -31,6 +47,7 @@ const Demo = () => {
 
       {/* Navigation - Top Right */}
       <div className="absolute top-4 right-4 z-50 flex items-center gap-3">
+        <ThemeToggle />
         <AuthButton />
       </div>
 
@@ -62,10 +79,10 @@ const Demo = () => {
           <div className="space-y-4 mt-24">
             {visibilitySettings.showTitles && (
               <div className="text-center">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
                   Experience
                 </h2>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 dark:text-zinc-400 text-sm transition-colors duration-300">
                   My professional journey and key achievements
                 </p>
               </div>
@@ -74,15 +91,32 @@ const Demo = () => {
           </div>
         )}
 
+        {/* Achievements Section */}
+        {visibilitySettings.showAchievements && achievements.length > 0 && (
+          <div className="space-y-4 mt-24">
+            {visibilitySettings.showTitles && (
+              <div className="text-center">
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
+                  Achievements
+                </h2>
+                <p className="text-gray-600 dark:text-zinc-400 text-sm transition-colors duration-300">
+                  Recognition and accomplishments throughout my career
+                </p>
+              </div>
+            )}
+            <AchievementSection achievements={achievements} />
+          </div>
+        )}
+
         {/* Portfolio Section */}
         {visibilitySettings.showPortfolio && portfolioProjects.length > 0 && (
           <div className="space-y-4 mt-24">
             {visibilitySettings.showTitles && (
               <div className="text-center">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
                   Portfolio
                 </h2>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 dark:text-zinc-400 text-sm transition-colors duration-300">
                   Explore my latest projects and creative work
                 </p>
               </div>
@@ -96,10 +130,10 @@ const Demo = () => {
           <div className="space-y-4 mt-24 mb-16">
             {visibilitySettings.showTitles && (
               <div className="text-center">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2 transition-colors duration-300">
                   Education & Certifications
                 </h2>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 dark:text-zinc-400 text-sm transition-colors duration-300">
                   My educational journey and professional certifications
                 </p>
               </div>

@@ -164,9 +164,9 @@ const EditablePortfolioItem = ({
   if (isEditing) {
     return (
       <div
-        className={`bg-white border border-gray-100 rounded-xl transition-all duration-200 overflow-hidden shadow-sm ${
+        className={`bg-white dark:bg-zinc-900 border border-gray-100 dark:border-zinc-700 rounded-xl transition-all duration-200 overflow-hidden shadow-sm ${
           isBeingDragged ? "opacity-50 scale-95" : ""
-        } ${isDraggedOver ? "border-gray-300 shadow-lg" : ""}`}
+        } ${isDraggedOver ? "border-gray-300 dark:border-zinc-500 shadow-lg" : ""}`}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
       >
@@ -174,7 +174,7 @@ const EditablePortfolioItem = ({
           {/* Drag Handle and Move Buttons */}
           <div className="flex items-center justify-between -mt-1 mb-2">
             <div 
-              className="flex items-center gap-2 text-gray-500 cursor-grab active:cursor-grabbing select-none"
+              className="flex items-center gap-2 px-2 py-1 rounded-md bg-gray-50 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 cursor-grab active:cursor-grabbing select-none hover:bg-gray-100 dark:hover:bg-zinc-700 transition-colors duration-200"
               draggable
               onDragStart={handleDragStart}
             >
@@ -185,10 +185,10 @@ const EditablePortfolioItem = ({
               <button
                 onClick={onMoveUp}
                 disabled={!canMoveUp}
-                className={`w-6 h-6 flex items-center justify-center rounded transition-colors ${
+                className={`w-7 h-7 flex items-center justify-center rounded-md border transition-all duration-200 ${
                   canMoveUp 
-                    ? 'text-gray-600 hover:text-gray-800 hover:bg-gray-100' 
-                    : 'text-gray-300 cursor-not-allowed'
+                    ? 'bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700 hover:border-gray-300 dark:hover:border-zinc-600' 
+                    : 'bg-gray-100 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-300 dark:text-zinc-600 cursor-not-allowed'
                 }`}
                 title="Move up"
               >
@@ -197,10 +197,10 @@ const EditablePortfolioItem = ({
               <button
                 onClick={onMoveDown}
                 disabled={!canMoveDown}
-                className={`w-6 h-6 flex items-center justify-center rounded transition-colors ${
+                className={`w-7 h-7 flex items-center justify-center rounded-md border transition-all duration-200 ${
                   canMoveDown 
-                    ? 'text-gray-600 hover:text-gray-800 hover:bg-gray-100' 
-                    : 'text-gray-300 cursor-not-allowed'
+                    ? 'bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-600 dark:text-zinc-300 hover:bg-gray-100 dark:hover:bg-zinc-700 hover:border-gray-300 dark:hover:border-zinc-600' 
+                    : 'bg-gray-100 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-300 dark:text-zinc-600 cursor-not-allowed'
                 }`}
                 title="Move down"
               >
@@ -212,56 +212,56 @@ const EditablePortfolioItem = ({
           {/* Basic Info */}
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Project Title
               </label>
               <Input
                 value={editingProject.title}
                 onChange={(e) => handleFieldChange("title", e.target.value)}
                 placeholder="e.g., Mobile App Design"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={50}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   editingProject.title.length > 45 
                     ? editingProject.title.length >= 50 
-                      ? 'text-red-500' 
-                      : 'text-orange-500'
-                    : 'text-gray-500'
+                      ? 'text-red-500 dark:text-red-400' 
+                      : 'text-orange-500 dark:text-orange-400'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {editingProject.title.length}/50 characters
                 </p>
                 {editingProject.title.length >= 50 && (
-                  <p className="text-xs text-red-500 mt-1">
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                     Character limit reached
                   </p>
                 )}
               </div>
             </div>
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Category
               </label>
               <Input
                 value={editingProject.category}
                 onChange={(e) => handleFieldChange("category", e.target.value)}
                 placeholder="e.g., UI/UX Design"
-                className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+                className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
                 maxLength={60}
               />
               <div className="text-right">
-                <p className={`text-xs ${
+                <p className={`text-xs transition-colors duration-200 ${
                   editingProject.category.length > 54 
                     ? editingProject.category.length >= 60 
-                      ? 'text-red-500' 
-                      : 'text-orange-500'
-                    : 'text-gray-500'
+                      ? 'text-red-500 dark:text-red-400' 
+                      : 'text-orange-500 dark:text-orange-400'
+                    : 'text-gray-500 dark:text-zinc-400'
                 }`}>
                   {editingProject.category.length}/60 characters
                 </p>
                 {editingProject.category.length >= 60 && (
-                  <p className="text-xs text-red-500 mt-1">
+                  <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                     Character limit reached
                   </p>
                 )}
@@ -271,28 +271,28 @@ const EditablePortfolioItem = ({
 
           {/* Description */}
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-gray-800">
+            <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
               Description
             </label>
             <Input
               value={editingProject.description}
               onChange={(e) => handleFieldChange("description", e.target.value)}
               placeholder="Brief project description"
-              className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+              className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
               maxLength={80}
             />
             <div className="text-right">
-              <p className={`text-xs ${
+              <p className={`text-xs transition-colors duration-200 ${
                 editingProject.description.length > 72 
                   ? editingProject.description.length >= 80 
-                    ? 'text-red-500' 
-                    : 'text-orange-500'
-                  : 'text-gray-500'
+                    ? 'text-red-500 dark:text-red-400' 
+                    : 'text-orange-500 dark:text-orange-400'
+                  : 'text-gray-500 dark:text-zinc-400'
               }`}>
                 {editingProject.description.length}/80 characters
               </p>
               {editingProject.description.length >= 80 && (
-                <p className="text-xs text-red-500 mt-1">
+                <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                   Character limit reached
                 </p>
               )}
@@ -301,20 +301,20 @@ const EditablePortfolioItem = ({
 
           {/* Project URL */}
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-gray-800">
+            <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
               Project URL (Optional)
             </label>
             <Input
               value={editingProject.href || ""}
               onChange={(e) => handleFieldChange("href", e.target.value)}
               placeholder="https://github.com/username/project"
-              className="text-sm bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400 focus:border-gray-400 focus:ring-1 focus:ring-gray-400 font-medium"
+              className="text-sm bg-gray-50 dark:bg-zinc-800 border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 focus:border-gray-400 dark:focus:border-zinc-500 focus:ring-1 focus:ring-gray-400 dark:focus:ring-zinc-500 font-medium transition-colors duration-200"
             />
           </div>
 
           {/* Icon Selection */}
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-gray-800">Icon</label>
+            <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">Icon</label>
             <IconPicker
               selectedIcon={editingProject.iconName ? getIconFromName(editingProject.iconName) : null}
               onIconSelect={(icon, iconName) => {
@@ -329,7 +329,7 @@ const EditablePortfolioItem = ({
           {/* Images Section */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-semibold text-gray-800">
+              <label className="text-xs font-semibold text-gray-800 dark:text-zinc-200 transition-colors duration-200">
                 Project Images ({editingProject.images.length}/8)
               </label>
               <Button
@@ -337,10 +337,10 @@ const EditablePortfolioItem = ({
                 variant="ghost"
                 size="sm"
                 disabled={editingProject.images.length >= 8}
-                className={`h-7 px-2 text-xs ${
+                className={`h-7 px-2 text-xs transition-colors duration-200 ${
                   editingProject.images.length >= 8
-                    ? 'text-gray-400 cursor-not-allowed'
-                    : 'text-gray-600 hover:text-gray-800'
+                    ? 'text-gray-400 dark:text-zinc-500 cursor-not-allowed'
+                    : 'text-gray-600 dark:text-zinc-300 hover:text-gray-800 dark:hover:text-zinc-100'
                 }`}
               >
                 <Plus className="w-3 h-3 mr-1" />
@@ -352,17 +352,17 @@ const EditablePortfolioItem = ({
               {editingProject.images.map((image, imageIndex) => (
                 <div
                   key={image.id}
-                  className="bg-gray-50 rounded-lg p-3 space-y-2"
+                  className="bg-gray-50 dark:bg-zinc-800 rounded-lg p-3 space-y-2 transition-colors duration-200"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-medium text-gray-700">
+                    <span className="text-xs font-medium text-gray-700 dark:text-zinc-300 transition-colors duration-200">
                       Image {imageIndex + 1}
                     </span>
                     <Button
                       onClick={() => handleRemoveImage(imageIndex)}
                       variant="ghost"
                       size="sm"
-                      className="text-red-500 hover:text-red-700 h-6 w-6 p-1"
+                      className="text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 h-6 w-6 p-1 transition-colors duration-200"
                     >
                       <X className="w-3 h-3" />
                     </Button>
@@ -370,7 +370,7 @@ const EditablePortfolioItem = ({
 
                   <div className="grid grid-cols-2 gap-2">
                     <div className="space-y-1">
-                      <label className="text-xs text-gray-600">Image URL</label>
+                      <label className="text-xs text-gray-600 dark:text-zinc-400 transition-colors duration-200">Image URL</label>
                       <Input
                         value={image.url}
                         onChange={(e) =>
@@ -381,11 +381,11 @@ const EditablePortfolioItem = ({
                           )
                         }
                         placeholder="Image URL"
-                        className="text-xs bg-white border-gray-300 text-gray-900 placeholder-gray-400 h-7"
+                        className="text-xs bg-white dark:bg-zinc-700 border-gray-300 dark:border-zinc-600 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 h-7 transition-colors duration-200"
                       />
                     </div>
                     <div className="space-y-1">
-                      <label className="text-xs text-gray-600">Title</label>
+                      <label className="text-xs text-gray-600 dark:text-zinc-400 transition-colors duration-200">Title</label>
                       <Input
                         value={image.title}
                         onChange={(e) =>
@@ -396,21 +396,21 @@ const EditablePortfolioItem = ({
                           )
                         }
                         placeholder="Image title"
-                        className="text-xs bg-white border-gray-300 text-gray-900 placeholder-gray-400 h-7"
+                        className="text-xs bg-white dark:bg-zinc-700 border-gray-300 dark:border-zinc-600 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 h-7 transition-colors duration-200"
                         maxLength={75}
                       />
                       <div className="text-right">
-                        <p className={`text-xs ${
+                        <p className={`text-xs transition-colors duration-200 ${
                           image.title.length > 67 
                             ? image.title.length >= 75 
-                              ? 'text-red-500' 
-                              : 'text-orange-500'
-                            : 'text-gray-500'
+                              ? 'text-red-500 dark:text-red-400' 
+                              : 'text-orange-500 dark:text-orange-400'
+                            : 'text-gray-500 dark:text-zinc-400'
                         }`}>
                           {image.title.length}/75 characters
                         </p>
                         {image.title.length >= 75 && (
-                          <p className="text-xs text-red-500 mt-1">
+                          <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                             Character limit reached
                           </p>
                         )}
@@ -419,7 +419,7 @@ const EditablePortfolioItem = ({
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-xs text-gray-600">Description</label>
+                    <label className="text-xs text-gray-600 dark:text-zinc-400 transition-colors duration-200">Description</label>
                     <Textarea
                       value={image.description}
                       onChange={(e) =>
@@ -430,21 +430,21 @@ const EditablePortfolioItem = ({
                         )
                       }
                       placeholder="Image description"
-                      className="text-xs bg-white border-gray-300 text-gray-900 placeholder-gray-400 min-h-16 resize-none"
+                      className="text-xs bg-white dark:bg-zinc-700 border-gray-300 dark:border-zinc-600 text-gray-900 dark:text-zinc-100 placeholder-gray-400 dark:placeholder-zinc-500 min-h-16 resize-none transition-colors duration-200"
                       maxLength={600}
                     />
                     <div className="text-right">
-                      <p className={`text-xs ${
+                      <p className={`text-xs transition-colors duration-200 ${
                         image.description.length > 540 
                           ? image.description.length >= 600 
-                            ? 'text-red-500' 
-                            : 'text-orange-500'
-                          : 'text-gray-500'
+                            ? 'text-red-500 dark:text-red-400' 
+                            : 'text-orange-500 dark:text-orange-400'
+                          : 'text-gray-500 dark:text-zinc-400'
                       }`}>
                         {image.description.length}/600 characters
                       </p>
                       {image.description.length >= 600 && (
-                        <p className="text-xs text-red-500 mt-1">
+                        <p className="text-xs text-red-500 dark:text-red-400 mt-1 transition-colors duration-200">
                           Character limit reached
                         </p>
                       )}
@@ -456,12 +456,12 @@ const EditablePortfolioItem = ({
           </div>
 
           {/* Actions */}
-          <div className="flex justify-end items-center pt-2 border-t border-gray-100">
+          <div className="flex justify-end items-center pt-2 border-t border-gray-100 dark:border-zinc-700 transition-colors duration-200">
             <Button
               onClick={onDelete}
               variant="ghost"
               size="sm"
-              className="text-red-600 hover:text-white hover:bg-red-600 h-8 px-3 font-medium border border-red-200 hover:border-red-600 transition-all"
+              className="text-red-600 dark:text-red-400 hover:text-white dark:hover:text-white hover:bg-red-600 dark:hover:bg-red-600 h-8 px-3 font-medium border border-red-200 dark:border-red-700 hover:border-red-600 dark:hover:border-red-600 transition-all duration-200"
             >
               <Trash2 className="w-3 h-3 mr-1" />
               Delete
@@ -475,24 +475,24 @@ const EditablePortfolioItem = ({
   return (
     <button
       onClick={handleClick}
-      className="w-full bg-white hover:bg-gray-50 border border-gray-100 rounded-xl transition-all duration-200 group shadow-sm overflow-hidden"
+      className="w-full bg-white dark:bg-zinc-900 hover:bg-gray-50 dark:hover:bg-zinc-800 border border-gray-100 dark:border-zinc-700 rounded-xl transition-all duration-200 group shadow-sm overflow-hidden"
     >
       <div className="p-4 flex items-center gap-4 text-left">
         {/* Icon */}
-        <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center flex-shrink-0 group-hover:bg-gray-100 transition-colors duration-200">
-          {project.iconName ? getIconFromName(project.iconName) : <Folder className="w-4 h-4 text-gray-600" />}
+        <div className="w-10 h-10 rounded-lg bg-gray-50 dark:bg-zinc-800 flex items-center justify-center flex-shrink-0 group-hover:bg-gray-100 dark:group-hover:bg-zinc-700 transition-colors duration-200">
+          {project.iconName ? getIconFromName(project.iconName) : <Folder className="w-4 h-4 text-gray-600 dark:text-zinc-400" />}
         </div>
 
         {/* Content */}
         <div className="flex-1 min-w-0">
-          <div className="text-gray-900 font-medium text-sm">
+          <div className="text-gray-900 dark:text-zinc-100 font-medium text-sm transition-colors duration-200">
             {project.title}
           </div>
-          <div className="text-gray-500 text-xs mt-0.5 truncate">
+          <div className="text-gray-500 dark:text-zinc-400 text-xs mt-0.5 truncate transition-colors duration-200">
             {project.description}
           </div>
           {project.category && (
-            <div className="text-gray-400 text-xs mt-0.5">
+            <div className="text-gray-400 dark:text-zinc-500 text-xs mt-0.5 transition-colors duration-200">
               {project.category}
             </div>
           )}
@@ -500,9 +500,9 @@ const EditablePortfolioItem = ({
 
         {/* Arrow indicator or preview icon */}
         {project.href ? (
-          <ExternalLink className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors duration-200" />
+          <ExternalLink className="w-4 h-4 text-gray-400 dark:text-zinc-500 group-hover:text-gray-600 dark:group-hover:text-zinc-400 transition-colors duration-200" />
         ) : (
-          <Eye className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors duration-200" />
+          <Eye className="w-4 h-4 text-gray-400 dark:text-zinc-500 group-hover:text-gray-600 dark:group-hover:text-zinc-400 transition-colors duration-200" />
         )}
       </div>
     </button>
@@ -681,10 +681,10 @@ export default function EditablePortfolioSection({
       {/* Header with Edit Button */}
       <div className="flex items-center justify-between">
         <div className="text-center flex-1">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-zinc-100 mb-2 transition-colors duration-200">
             Portfolio
           </h2>
-          <p className="text-gray-600 text-sm">
+          <p className="text-gray-600 dark:text-zinc-400 text-sm transition-colors duration-200">
             {isEditing
               ? "Edit your portfolio projects and showcases"
               : "Explore my latest projects and creative work"}
@@ -698,15 +698,15 @@ export default function EditablePortfolioSection({
                 onClick={handleCancel}
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
+                className="h-9 w-9 p-2 rounded-full bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors duration-200"
               >
-                <X className="w-4 h-4 text-gray-600" />
+                <X className="w-4 h-4 text-gray-600 dark:text-zinc-400" />
               </Button>
               <Button
                 onClick={handleSave}
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 p-2 rounded-full bg-blue-500 hover:bg-blue-600 text-white shadow-sm"
+                className="h-9 w-9 p-2 rounded-full bg-blue-500 dark:bg-blue-600 hover:bg-blue-600 dark:hover:bg-blue-700 text-white shadow-sm transition-colors duration-200"
               >
                 <Save className="w-4 h-4" />
               </Button>
@@ -716,9 +716,9 @@ export default function EditablePortfolioSection({
               onClick={handleStartEdit}
               variant="ghost"
               size="sm"
-              className="h-9 w-9 p-2 rounded-full bg-white border border-gray-200 shadow-sm hover:bg-gray-50"
+              className="h-9 w-9 p-2 rounded-full bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 shadow-sm hover:bg-gray-50 dark:hover:bg-zinc-700 transition-colors duration-200"
             >
-              <Edit3 className="w-4 h-4 text-gray-600" />
+              <Edit3 className="w-4 h-4 text-gray-600 dark:text-zinc-400" />
             </Button>
           )}
         </div>
@@ -755,8 +755,8 @@ export default function EditablePortfolioSection({
               disabled={hasReachedLimit(editingProjects.length, 'PORTFOLIO')}
               className={`w-full p-4 border-2 border-dashed rounded-xl transition-colors duration-200 flex items-center justify-center gap-2 ${
                 hasReachedLimit(editingProjects.length, 'PORTFOLIO')
-                  ? 'border-gray-100 text-gray-300 cursor-not-allowed bg-gray-50'
-                  : 'border-gray-200 text-gray-500 hover:text-gray-600 hover:border-gray-300'
+                  ? 'border-gray-100 dark:border-zinc-700 text-gray-300 dark:text-zinc-600 cursor-not-allowed bg-gray-50 dark:bg-zinc-800'
+                  : 'border-gray-200 dark:border-zinc-600 text-gray-500 dark:text-zinc-400 hover:text-gray-600 dark:hover:text-zinc-300 hover:border-gray-300 dark:hover:border-zinc-500 hover:bg-gray-50 dark:hover:bg-zinc-800'
               }`}
             >
               <Plus className="w-4 h-4" />

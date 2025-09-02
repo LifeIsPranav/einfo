@@ -27,9 +27,9 @@ interface BaseLayoutProps extends WithChildren, WithClassName {
 }
 
 const backgroundClasses = {
-  white: "bg-white",
-  gray: "bg-gray-50",
-  gradient: "bg-gradient-to-br from-gray-50 to-white",
+  white: "bg-white dark:bg-black",
+  gray: "bg-gray-50 dark:bg-zinc-950",
+  gradient: "bg-gradient-to-br from-gray-50 to-white dark:from-zinc-950 dark:to-black",
 };
 
 const maxWidthClasses = {
