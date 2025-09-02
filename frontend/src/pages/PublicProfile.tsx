@@ -539,10 +539,10 @@ const PublicProfile = () => {
           <div className="space-y-4 mt-24">
             {profile.visibilitySettings.showTitles && (
               <div className="text-center">
-                <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+                <h2 className="text-2xl font-semibold dark:text-white text-gray-900 mb-2">
                   Extracurricular Activities
                 </h2>
-                <p className="text-gray-600 text-sm">
+                <p className="text-gray-600 dark:text-white text-sm">
                   Community involvement and personal interests
                 </p>
               </div>
