@@ -64,7 +64,7 @@ const App = () => {
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
                     <Suspense fallback={<PageLoader message="Turning Personality into Pixels..." />}>
-            <BrowserRouter>
+            <BrowserRouter future={{ v7_relativeSplatPath: true, v7_startTransition: true }}>
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/demo" element={<Demo />} />
