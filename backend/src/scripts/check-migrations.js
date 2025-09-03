@@ -14,6 +14,19 @@ async function checkMigrations() {
     
     // Get all migration folders from the filesystem
     const migrationsDir = path.join(__dirname, '../../prisma/migrations');
+    
+    // Check if migrations directory exists
+    if (!fs.existsSync(migrationsDir)) {
+      logger.warn('Migrations directory does not exist. This might be a fresh deployment.');
+      return {
+        status: 'no-migrations',
+        totalMigrations: 0,
+        appliedMigrations: 0,
+        pendingMigrations: [],
+        message: 'No migrations directory found. Database schema should be managed via Prisma generate.'
+      };
+    }
+    
     const migrationFolders = fs.readdirSync(migrationsDir)
       .filter(item => {
         const itemPath = path.join(migrationsDir, item);

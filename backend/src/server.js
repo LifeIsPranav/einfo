@@ -173,7 +173,7 @@ async function startServer() {
       logger.info('Checking migration status before startup...');
       const migrationStatus = await checkMigrations();
       
-      if (migrationStatus.status !== 'current') {
+      if (migrationStatus.status === 'pending') {
         logger.error('Cannot start server: pending migrations detected', {
           pendingMigrations: migrationStatus.pendingMigrations
         });
@@ -183,7 +183,11 @@ async function startServer() {
         process.exit(1);
       }
       
-      logger.info('✅ All migrations are current, starting server...');
+      if (migrationStatus.status === 'no-migrations') {
+        logger.info('✅ No migrations directory found, using schema push deployment...');
+      } else {
+        logger.info('✅ All migrations are current, starting server...');
+      }
     }
     
     // Start the server
