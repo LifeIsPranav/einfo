@@ -10,6 +10,7 @@ require("dotenv").config();
 
 const logger = require("./utils/logger");
 const { checkMigrations } = require("./scripts/check-migrations");
+const { checkDatabaseHealth } = require("./config/database");
 
 // Import routes
 const authRoutes = require("./routes/auth");
@@ -123,13 +124,35 @@ if (process.env.NODE_ENV === "production") {
 app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
 
 // Health check endpoint
-app.get("/health", (req, res) => {
-  res.json({ 
-    status: "OK", 
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime(),
-    memory: process.memoryUsage(),
-  });
+app.get("/health", async (req, res) => {
+  try {
+    const dbHealth = await checkDatabaseHealth();
+    const health = {
+      status: dbHealth.status === "healthy" ? "OK" : "DEGRADED",
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      memory: process.memoryUsage(),
+      database: dbHealth,
+      version: process.env.npm_package_version || "unknown",
+      environment: process.env.NODE_ENV || "development"
+    };
+
+    const statusCode = dbHealth.status === "healthy" ? 200 : 503;
+    res.status(statusCode).json(health);
+    
+    logger.debug("Health check performed", { 
+      status: health.status, 
+      dbStatus: dbHealth.status 
+    });
+  } catch (error) {
+    logger.error("Health check failed", { error: error.message });
+    res.status(503).json({
+      status: "ERROR",
+      timestamp: new Date().toISOString(),
+      error: "Health check failed",
+      uptime: process.uptime(),
+    });
+  }
 });
 
 // API Routes
