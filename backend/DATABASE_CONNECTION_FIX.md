@@ -52,10 +52,30 @@ The issue was related to SSL/TLS compatibility between Render's infrastructure a
 
 ## Connection Strategies Tried (in order)
 
-1. **pg.connect()** - Native PostgreSQL connection method
-2. **Pool** - Connection pooling for better performance
-3. **Client** - Direct client connection
-4. **Prisma** - Fallback to existing Prisma configuration
+1. **Pool-SSL-Prefer** - Connection pool with `sslmode=prefer` (flexible SSL)
+2. **Client-SSL-Prefer** - Direct client with `sslmode=prefer`
+3. **Pool-No-SSL** - Connection pool with `sslmode=disable` (no SSL)
+4. **Client-No-SSL** - Direct client with `sslmode=disable`
+5. **pg.connect()** - Native PostgreSQL connection method (if available)
+
+The system automatically tries these in order and uses the first successful one.
+
+## Troubleshooting
+
+### If deployment still fails:
+1. **Add FORCE_NO_SSL=true** to your Render environment variables
+2. **Check logs** for which strategy is being attempted
+3. **Verify DATABASE_URL** doesn't have extra parameters
+4. **Try direct connection** (remove `-pooler` from hostname)
+
+### Alternative connection strings to try:
+```bash
+# Option 1: Direct connection (non-pooled)
+postgresql://neondb_owner:npg_q43rYdBNRltZ@ep-curly-cherry-a14y2tex.ap-southeast-1.aws.neon.tech/neondb?sslmode=prefer
+
+# Option 2: No SSL at all
+postgresql://neondb_owner:npg_q43rYdBNRltZ@ep-curly-cherry-a14y2tex-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=disable
+```
 
 ## Local Testing Results
 ✅ Database connected using Pool strategy
@@ -66,10 +86,35 @@ The issue was related to SSL/TLS compatibility between Render's infrastructure a
 ## For Render Deployment
 
 ### Environment Variables to Set in Render:
+
+#### Standard Configuration (try this first):
 ```
 DATABASE_URL=postgresql://neondb_owner:npg_q43rYdBNRltZ@ep-curly-cherry-a14y2tex-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
 NODE_ENV=production
 ```
+
+#### If SSL Issues Persist (fallback option):
+```
+DATABASE_URL=postgresql://neondb_owner:npg_q43rYdBNRltZ@ep-curly-cherry-a14y2tex-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require
+NODE_ENV=production
+FORCE_NO_SSL=true
+```
+
+### Connection Strategies (in order of preference):
+
+#### Standard Mode:
+1. **Pool-SSL-Prefer** - Connection pool with SSL prefer mode
+2. **Client-SSL-Prefer** - Direct client with SSL prefer mode  
+3. **Pool-No-SSL** - Connection pool without SSL
+4. **Client-No-SSL** - Direct client without SSL
+5. **pg.connect** - Legacy connection method (if available)
+
+#### Force No-SSL Mode (when FORCE_NO_SSL=true):
+1. **Pool-No-SSL** - Connection pool without SSL (tried first)
+2. **Client-No-SSL** - Direct client without SSL
+3. **Pool-SSL-Prefer** - Connection pool with SSL prefer mode
+4. **Client-SSL-Prefer** - Direct client with SSL prefer mode
+5. **pg.connect** - Legacy connection method
 
 ### Key Features for Production:
 - **SSL Configuration**: `rejectUnauthorized: false` for production compatibility

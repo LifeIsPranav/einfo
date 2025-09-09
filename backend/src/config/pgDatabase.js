@@ -16,7 +16,28 @@ class PgDatabaseManager {
     }
     
     // Remove channel_binding parameter which causes SSL issues on Render
-    return this.connectionString.replace(/[?&]channel_binding=require/g, '');
+    let cleanString = this.connectionString.replace(/[?&]channel_binding=require/g, '');
+    
+    // For production on Render, try different SSL modes
+    if (process.env.NODE_ENV === 'production') {
+      // Try with sslmode=prefer first (less strict)
+      cleanString = cleanString.replace(/sslmode=require/g, 'sslmode=prefer');
+    }
+    
+    return cleanString;
+  }
+
+  // Alternative method: try with no SSL for Render compatibility
+  getNoSSLConnectionString() {
+    if (!this.connectionString) {
+      throw new Error('DATABASE_URL not configured');
+    }
+    
+    let cleanString = this.connectionString.replace(/[?&]channel_binding=require/g, '');
+    cleanString = cleanString.replace(/[?&]sslmode=[^&]*/g, '');
+    cleanString += cleanString.includes('?') ? '&sslmode=disable' : '?sslmode=disable';
+    
+    return cleanString;
   }
 
   // Method 1: Use pg.connect() as suggested from Stack Overflow
@@ -27,6 +48,12 @@ class PgDatabaseManager {
       const cleanConnectionString = this.getCleanConnectionString();
       
       logger.info('Attempting pg.connect with connection string...');
+      
+      // Check if pg.connect is available
+      if (typeof pg.connect !== 'function') {
+        reject(new Error('pg.connect is not available in this pg version'));
+        return;
+      }
       
       pg.connect(cleanConnectionString, (err, client, done) => {
         if (err) {
@@ -100,12 +127,70 @@ class PgDatabaseManager {
     }
   }
 
+  // Method 4: Use connection pool without SSL
+  async connectWithPoolNoSSL() {
+    try {
+      const noSSLConnectionString = this.getNoSSLConnectionString();
+      
+      this.pool = new Pool({
+        connectionString: noSSLConnectionString,
+        ssl: false,
+        max: 20,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 5000,
+      });
+
+      // Test the connection
+      const client = await this.pool.connect();
+      await client.query('SELECT 1 as test');
+      client.release();
+      
+      logger.info('✅ Pool connection (No SSL) successful');
+      return this.pool;
+    } catch (error) {
+      logger.error('❌ Pool connection (No SSL) failed:', { error: error.message });
+      throw error;
+    }
+  }
+
+  // Method 5: Use direct client connection without SSL
+  async connectWithClientNoSSL() {
+    try {
+      const noSSLConnectionString = this.getNoSSLConnectionString();
+      
+      this.client = new Client({
+        connectionString: noSSLConnectionString,
+        ssl: false,
+      });
+
+      await this.client.connect();
+      await this.client.query('SELECT 1 as test');
+      
+      logger.info('✅ Client connection (No SSL) successful');
+      return this.client;
+    } catch (error) {
+      logger.error('❌ Client connection (No SSL) failed:', { error: error.message });
+      throw error;
+    }
+  }
+
   // Test all connection strategies and return the first successful one
   async testConnection() {
-    const strategies = [
+    // If FORCE_NO_SSL is set, try no-SSL strategies first
+    const forceNoSSL = process.env.FORCE_NO_SSL === 'true';
+    
+    const strategies = forceNoSSL ? [
+      { name: 'Pool-No-SSL', method: () => this.connectWithPoolNoSSL() },
+      { name: 'Client-No-SSL', method: () => this.connectWithClientNoSSL() },
+      { name: 'Pool-SSL-Prefer', method: () => this.connectWithPool() },
+      { name: 'Client-SSL-Prefer', method: () => this.connectWithClient() },
       { name: 'pg.connect', method: () => this.connectWithPgConnect() },
-      { name: 'Pool', method: () => this.connectWithPool() },
-      { name: 'Client', method: () => this.connectWithClient() },
+    ] : [
+      { name: 'Pool-SSL-Prefer', method: () => this.connectWithPool() },
+      { name: 'Client-SSL-Prefer', method: () => this.connectWithClient() },
+      { name: 'Pool-No-SSL', method: () => this.connectWithPoolNoSSL() },
+      { name: 'Client-No-SSL', method: () => this.connectWithClientNoSSL() },
+      { name: 'pg.connect', method: () => this.connectWithPgConnect() },
     ];
 
     let lastError;
@@ -124,7 +209,7 @@ class PgDatabaseManager {
           });
           return { strategy: strategy.name, connection: this.client };
           
-        } else if (strategy.name === 'Pool') {
+        } else if (strategy.name.includes('Pool')) {
           const client = await this.pool.connect();
           const result = await client.query('SELECT NOW() as current_time, 1 as health_check');
           client.release();
@@ -177,9 +262,9 @@ class PgDatabaseManager {
       const start = Date.now();
       let result;
 
-      if (strategy === 'pg.connect' || strategy === 'Client') {
+      if (strategy === 'pg.connect' || strategy.includes('Client')) {
         result = await connection.query('SELECT 1 as health_check, NOW() as current_time');
-      } else if (strategy === 'Pool') {
+      } else if (strategy.includes('Pool')) {
         const client = await connection.connect();
         try {
           result = await client.query('SELECT 1 as health_check, NOW() as current_time');

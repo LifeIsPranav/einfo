@@ -62,8 +62,8 @@ prisma.$on('warn', (e) => {
 // Test database connection and log the result
 async function testDatabaseConnection() {
   try {
-    // First, try the pg.connect() approach for better compatibility
-    logger.info("Testing database connection strategies...");
+    // First, try the pg direct connection approaches for better compatibility
+    logger.info("Testing PostgreSQL direct connection strategies...");
     
     try {
       const pgResult = await pgDatabase.testConnection();
@@ -76,37 +76,33 @@ async function testDatabaseConnection() {
       global.dbConnection = pgResult.connection;
       global.dbStrategy = pgResult.strategy;
       
-      // Test Prisma with the same connection string
-      await prisma.$connect();
-      await prisma.$queryRaw`SELECT 1 as test`;
-      
-      logger.info("✅ Prisma connection also successful", {
-        provider: "postgresql",
-        environment: process.env.NODE_ENV || "development",
-        timestamp: new Date().toISOString()
-      });
-      
-      return { pgConnection: pgResult, prismaWorking: true };
+      // Only try Prisma if PostgreSQL direct connection worked
+      try {
+        await prisma.$connect();
+        await prisma.$queryRaw`SELECT 1 as test`;
+        
+        logger.info("✅ Prisma connection also successful", {
+          provider: "postgresql",
+          environment: process.env.NODE_ENV || "development",
+          timestamp: new Date().toISOString()
+        });
+        
+        return { pgConnection: pgResult, prismaWorking: true };
+      } catch (prismaError) {
+        logger.warn("Prisma connection failed but PostgreSQL direct connection works", {
+          error: prismaError.message
+        });
+        
+        return { pgConnection: pgResult, prismaWorking: false };
+      }
       
     } catch (pgError) {
-      logger.warn("PostgreSQL direct connection failed, trying Prisma only", {
+      logger.error("All PostgreSQL direct connection strategies failed", {
         error: pgError.message
       });
       
-      // Fallback to Prisma only
-      await prisma.$connect();
-      await prisma.$queryRaw`SELECT 1 as test`;
-      
-      logger.info("✅ Prisma connection successful (fallback)", {
-        provider: "postgresql",
-        environment: process.env.NODE_ENV || "development",
-        timestamp: new Date().toISOString()
-      });
-      
-      global.dbConnection = prisma;
-      global.dbStrategy = "prisma";
-      
-      return { pgConnection: null, prismaWorking: true };
+      // Don't try Prisma if all PostgreSQL strategies failed - it will likely fail too
+      throw new Error(`Database connection failed: ${pgError.message}`);
     }
     
   } catch (error) {
@@ -132,11 +128,8 @@ async function testDatabaseConnection() {
   }
 }
 
-// Initialize database connection with logging
-testDatabaseConnection().catch((error) => {
-  logger.error("Failed to initialize database connection", { error: error.message });
-  process.exit(1);
-});
+// Don't initialize database connection automatically - let server.js handle it
+// This prevents connection errors during module loading
 
 // Handle graceful shutdown
 process.on("beforeExit", async () => {
