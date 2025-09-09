@@ -10,7 +10,7 @@ require("dotenv").config();
 
 const logger = require("./utils/logger");
 const { checkMigrations } = require("./scripts/check-migrations");
-const { checkDatabaseHealth } = require("./config/database");
+const { checkDatabaseHealth, testDatabaseConnection } = require("./config/database");
 
 // Import routes
 const authRoutes = require("./routes/auth");
@@ -191,6 +191,18 @@ app.get("/", (req, res) => {
 // Startup function with migration check
 async function startServer() {
   try {
+    // Test database connection first with new approach
+    logger.info('🔄 Testing database connections...');
+    const dbResult = await testDatabaseConnection();
+    
+    if (dbResult.pgConnection) {
+      logger.info(`✅ Database connected using ${dbResult.pgConnection.strategy} strategy`);
+      console.log(`\n✅ Database connected using ${dbResult.pgConnection.strategy} strategy`);
+    } else {
+      logger.info('✅ Database connected using Prisma fallback');
+      console.log('\n✅ Database connected using Prisma fallback');
+    }
+    
     // Check migrations before starting (only in production)
     if (process.env.NODE_ENV === 'production') {
       logger.info('Checking migration status before startup...');
@@ -210,15 +222,45 @@ async function startServer() {
     }
     
     // Start the server
-    app.listen(PORT, HOST, () => {
-      logger.info("Server started successfully", {
+    const server = app.listen(PORT, HOST, () => {
+      const serverInfo = {
+        message: `🚀 Server running successfully`,
         port: PORT,
         host: HOST,
         environment: process.env.NODE_ENV || "development",
+        database: global.dbStrategy || "prisma",
         urls: {
           server: `http://${HOST}:${PORT}`,
           health: `http://${HOST}:${PORT}/health`
-        }
+        },
+        timestamp: new Date().toISOString()
+      };
+
+      logger.info("Server started", serverInfo);
+      console.log(`\n🚀 Server running on http://${HOST}:${PORT}`);
+      console.log(`📊 Environment: ${process.env.NODE_ENV || "development"}`);
+      console.log(`🗄️  Database: ${global.dbStrategy || "prisma"} connection`);
+      console.log(`🏥 Health check: http://${HOST}:${PORT}/health`);
+    });
+
+    // Handle graceful shutdown
+    process.on('SIGTERM', async () => {
+      console.log('\n🔄 Received SIGTERM, shutting down gracefully...');
+      server.close(async () => {
+        const pgDatabase = require('./config/pgDatabase');
+        await pgDatabase.disconnect();
+        console.log('✅ Server shut down complete');
+        process.exit(0);
+      });
+    });
+
+    process.on('SIGINT', async () => {
+      console.log('\n🔄 Received SIGINT, shutting down gracefully...');
+      server.close(async () => {
+        const pgDatabase = require('./config/pgDatabase');
+        await pgDatabase.disconnect();
+        console.log('✅ Server shut down complete');
+        process.exit(0);
       });
     });
     

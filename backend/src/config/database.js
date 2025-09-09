@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const logger = require("../utils/logger");
+const pgDatabase = require("./pgDatabase");
 
 let prisma;
 
@@ -61,35 +62,63 @@ prisma.$on('warn', (e) => {
 // Test database connection and log the result
 async function testDatabaseConnection() {
   try {
-    await prisma.$connect();
+    // First, try the pg.connect() approach for better compatibility
+    logger.info("Testing database connection strategies...");
     
-    // Always log database connection success, especially important for production
-    const connectionMessage = "✅ Database connection established successfully";
-    const connectionMeta = {
-      provider: "postgresql",
-      environment: process.env.NODE_ENV || "development",
-      timestamp: new Date().toISOString(),
-      databaseUrl: process.env.DATABASE_URL ? "configured" : "not configured"
-    };
-    
-    logger.info(connectionMessage, connectionMeta);
-    
-    // In production, also ensure this critical log appears in console for immediate visibility
-    if (process.env.NODE_ENV === "production") {
-      console.log(`[${new Date().toISOString()}] ${connectionMessage}`, connectionMeta);
+    try {
+      const pgResult = await pgDatabase.testConnection();
+      logger.info("✅ PostgreSQL direct connection successful", {
+        strategy: pgResult.strategy,
+        timestamp: new Date().toISOString()
+      });
+      
+      // Store the successful connection globally
+      global.dbConnection = pgResult.connection;
+      global.dbStrategy = pgResult.strategy;
+      
+      // Test Prisma with the same connection string
+      await prisma.$connect();
+      await prisma.$queryRaw`SELECT 1 as test`;
+      
+      logger.info("✅ Prisma connection also successful", {
+        provider: "postgresql",
+        environment: process.env.NODE_ENV || "development",
+        timestamp: new Date().toISOString()
+      });
+      
+      return { pgConnection: pgResult, prismaWorking: true };
+      
+    } catch (pgError) {
+      logger.warn("PostgreSQL direct connection failed, trying Prisma only", {
+        error: pgError.message
+      });
+      
+      // Fallback to Prisma only
+      await prisma.$connect();
+      await prisma.$queryRaw`SELECT 1 as test`;
+      
+      logger.info("✅ Prisma connection successful (fallback)", {
+        provider: "postgresql",
+        environment: process.env.NODE_ENV || "development",
+        timestamp: new Date().toISOString()
+      });
+      
+      global.dbConnection = prisma;
+      global.dbStrategy = "prisma";
+      
+      return { pgConnection: null, prismaWorking: true };
     }
-    
-    // Test with a simple query
-    await prisma.$queryRaw`SELECT 1 as test`;
-    logger.info("✅ Database query test successful");
     
   } catch (error) {
     const errorMessage = "❌ Database connection failed";
     const errorMeta = {
       error: error.message,
+      stack: error.stack,
       provider: "postgresql",
       environment: process.env.NODE_ENV || "development",
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      sslMode: process.env.DATABASE_URL?.includes('sslmode') ? 'configured' : 'not configured',
+      connectionType: process.env.DATABASE_URL?.includes('pooler') ? 'pooled' : 'direct'
     };
     
     logger.error(errorMessage, errorMeta);
@@ -112,21 +141,24 @@ testDatabaseConnection().catch((error) => {
 // Handle graceful shutdown
 process.on("beforeExit", async () => {
   logger.info("Application is shutting down, disconnecting from database...");
+  await pgDatabase.disconnect();
   await prisma.$disconnect();
-  logger.info("Database connection closed");
+  logger.info("Database connections closed");
 });
 
 process.on("SIGINT", async () => {
   logger.info("Received SIGINT signal, shutting down gracefully...");
+  await pgDatabase.disconnect();
   await prisma.$disconnect();
-  logger.info("Database connection closed");
+  logger.info("Database connections closed");
   process.exit(0);
 });
 
 process.on("SIGTERM", async () => {
   logger.info("Received SIGTERM signal, shutting down gracefully...");
+  await pgDatabase.disconnect();
   await prisma.$disconnect();
-  logger.info("Database connection closed");
+  logger.info("Database connections closed");
   process.exit(0);
 });
 
@@ -134,32 +166,45 @@ process.on("SIGTERM", async () => {
 async function checkDatabaseHealth() {
   try {
     const start = Date.now();
-    await prisma.$queryRaw`SELECT 1 as health_check`;
-    const duration = Date.now() - start;
     
-    logger.debug("Database health check passed", { 
-      responseTime: `${duration}ms`,
-      status: "healthy" 
-    });
-    
-    return {
-      status: "healthy",
-      responseTime: duration,
-      timestamp: new Date().toISOString()
-    };
+    // Use the established connection strategy
+    if (global.dbConnection && global.dbStrategy) {
+      const healthResult = await pgDatabase.checkHealth(global.dbConnection, global.dbStrategy);
+      
+      if (healthResult.status === 'healthy') {
+        logger.debug("Database health check passed", healthResult);
+        return healthResult;
+      } else {
+        throw new Error(healthResult.error);
+      }
+    } else {
+      // Fallback to Prisma health check
+      await prisma.$queryRaw`SELECT 1 as health_check`;
+      const duration = Date.now() - start;
+      
+      const result = {
+        status: "healthy",
+        responseTime: duration,
+        timestamp: new Date().toISOString(),
+        strategy: "prisma"
+      };
+      
+      logger.debug("Database health check passed (Prisma fallback)", result);
+      return result;
+    }
   } catch (error) {
-    logger.error("Database health check failed", { 
-      error: error.message,
-      status: "unhealthy" 
-    });
-    
-    return {
+    const result = {
       status: "unhealthy",
       error: error.message,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
+      strategy: global.dbStrategy || "unknown"
     };
+    
+    logger.error("Database health check failed", result);
+    return result;
   }
 }
 
 module.exports = prisma;
 module.exports.checkDatabaseHealth = checkDatabaseHealth;
+module.exports.testDatabaseConnection = testDatabaseConnection;
