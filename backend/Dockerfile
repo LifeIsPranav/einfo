@@ -1,0 +1,42 @@
+# Use the official Node.js 18 runtime as a parent image
+FROM node:18-alpine
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy package.json and package-lock.json (if available)
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the prisma directory
+COPY prisma ./prisma/
+
+# Generate Prisma client
+RUN npm run generate
+
+# Create the migrations directory
+RUN mkdir -p prisma/migrations
+
+# Copy the rest of the application code
+COPY . .
+
+# Create uploads directory if it doesn't exist
+RUN mkdir -p uploads
+
+# Expose the port the app runs on
+EXPOSE 8000
+
+# Define environment variable
+ENV NODE_ENV=production
+
+# Create a script to run database setup and start the application
+RUN echo '#!/bin/sh\n\
+echo "Running database setup..."\n\
+npx prisma db push --accept-data-loss\n\
+echo "Starting application..."\n\
+npm start' > start.sh && chmod +x start.sh
+
+# Start the application
+CMD ["./start.sh"]
