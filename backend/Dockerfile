@@ -25,18 +25,14 @@ COPY . .
 # Create uploads directory if it doesn't exist
 RUN mkdir -p uploads
 
+# Make start script executable
+RUN chmod +x start.sh
+
 # Expose the port the app runs on
 EXPOSE 8000
 
 # Define environment variable
 ENV NODE_ENV=production
-
-# Create a script to run database setup and start the application
-RUN echo '#!/bin/sh\n\
-echo "Running database setup..."\n\
-npx prisma db push --accept-data-loss\n\
-echo "Starting application..."\n\
-npm start' > start.sh && chmod +x start.sh
 
 # Start the application
 CMD ["./start.sh"]
