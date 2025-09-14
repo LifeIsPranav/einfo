@@ -2,6 +2,9 @@
 
 echo "🚀 Starting E-Info Backend..."
 
+# Set OpenSSL environment variables for Prisma
+export OPENSSL_CONF=/dev/null
+
 echo "📦 Running database setup..."
 npx prisma db push --accept-data-loss
 

@@ -1,6 +1,9 @@
 # Use the official Node.js 18 runtime as a parent image
 FROM node:18-alpine
 
+# Install OpenSSL and other dependencies needed for Prisma
+RUN apk add --no-cache openssl
+
 # Set the working directory in the container
 WORKDIR /app
 
@@ -33,6 +36,7 @@ EXPOSE 8000
 
 # Define environment variable
 ENV NODE_ENV=production
+ENV OPENSSL_CONF=/dev/null
 
 # Start the application
 CMD ["./start.sh"]
