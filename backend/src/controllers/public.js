@@ -297,8 +297,7 @@ class PublicController {
         error: error.message,
         stack: error.stack,
         username: req.params.username,
-        senderEmail: req.body.senderEmail,
-        receiverEmail: user?.email || 'unknown'
+        senderEmail: req.body.senderEmail
       });
       res.status(500).json({
         success: false,
