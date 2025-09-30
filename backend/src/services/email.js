@@ -3,18 +3,64 @@ const logger = require("../utils/logger");
 
 class EmailService {
   constructor() {
-    this.transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.SMTP_USERNAME,
-        pass: process.env.SMTP_PASSWORD,
-      },
-    });
+    const username = process.env.SMTP_USERNAME;
+    const password = process.env.SMTP_PASSWORD;
+    const host = process.env.SMTP_HOST;
+    const port = parseInt(process.env.SMTP_PORT || "0", 10);
+    const secureEnv = process.env.SMTP_SECURE;
+    const secure = secureEnv
+      ? secureEnv.toLowerCase() === "true"
+      : port === 465;
+
+    this.isConfigured = Boolean(username && password);
+
+    if (!this.isConfigured) {
+      logger.error("Email service is not configured. Missing SMTP credentials.");
+      return;
+    }
+
+    const transportConfig = host
+      ? {
+          host,
+          port: port || 587,
+          secure: port ? secure : false,
+          auth: {
+            user: username,
+            pass: password,
+          },
+        }
+      : {
+          service: process.env.SMTP_SERVICE || "gmail",
+          auth: {
+            user: username,
+            pass: password,
+          },
+        };
+
+    this.transporter = nodemailer.createTransport(transportConfig);
 
     this.from = {
-      email: process.env.FROM_EMAIL || process.env.SMTP_USERNAME,
+      email: process.env.FROM_EMAIL || username,
       name: process.env.FROM_NAME || "E-Info.me",
     };
+
+    this.verifyTransport();
+  }
+
+  async verifyTransport() {
+    if (!this.transporter) {
+      return;
+    }
+
+    try {
+      await this.transporter.verify();
+      logger.info("Email transporter verified successfully");
+    } catch (error) {
+      logger.error("Email transporter verification failed", {
+        error: error.message,
+        stack: error.stack,
+      });
+    }
   }
 
   /**
@@ -22,6 +68,14 @@ class EmailService {
    * Shows: "senderEmail has sent you a mail: [message]"
    */
   async sendMessage(senderEmail, receiverEmail, message) {
+    if (!this.isConfigured || !this.transporter) {
+      logger.error("Attempted to send email without valid SMTP configuration", {
+        senderEmail,
+        receiverEmail,
+      });
+      throw new Error("Email service is not configured");
+    }
+
     try {
       const mailOptions = {
         from: `${this.from.name} <${this.from.email}>`,
@@ -63,9 +117,9 @@ class EmailService {
         error: error.message,
         stack: error.stack,
         senderEmail: senderEmail,
-        recipientEmail: recipientEmail
+        recipientEmail: receiverEmail
       });
-      throw new Error("Failed to send email");
+      throw new Error(`Failed to send email: ${error.message}`);
     }
   }
 
@@ -73,6 +127,14 @@ class EmailService {
    * Send verification email
    */
   async sendVerificationEmail(email, name, token) {
+    if (!this.isConfigured || !this.transporter) {
+      logger.error("Attempted to send verification email without valid SMTP configuration", {
+        email,
+        name,
+      });
+      throw new Error("Email service is not configured");
+    }
+
     try {
       const verificationUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/verify-email?token=${token}`;
       
@@ -137,6 +199,14 @@ class EmailService {
    * Send welcome email
    */
   async sendWelcomeEmail(email, name, username) {
+    if (!this.isConfigured || !this.transporter) {
+      logger.error("Attempted to send welcome email without valid SMTP configuration", {
+        email,
+        username,
+      });
+      throw new Error("Email service is not configured");
+    }
+
     try {
       const profileUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/@${username}`;
       
@@ -210,6 +280,11 @@ class EmailService {
    * Test email configuration
    */
   async testConnection() {
+    if (!this.isConfigured || !this.transporter) {
+      logger.error("Email service is not configured. Unable to verify transporter.");
+      return false;
+    }
+
     try {
       await this.transporter.verify();
       logger.info("Email service is ready");
