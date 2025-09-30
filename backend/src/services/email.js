@@ -15,9 +15,21 @@ class EmailService {
     this.isConfigured = Boolean(username && password);
 
     if (!this.isConfigured) {
-      logger.error("Email service is not configured. Missing SMTP credentials.");
+      logger.error("Email service is not configured. Missing SMTP credentials.", {
+        hasUsername: Boolean(username),
+        hasPassword: Boolean(password),
+        hasHost: Boolean(host),
+        hasPort: Boolean(port),
+      });
       return;
     }
+
+    logger.info("Email service initializing", {
+      host: host || 'default (gmail)',
+      port: port || 587,
+      username: username,
+      service: host ? 'custom' : (process.env.SMTP_SERVICE || 'gmail'),
+    });
 
     const transportConfig = host
       ? {

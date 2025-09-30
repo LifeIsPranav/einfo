@@ -236,6 +236,13 @@ class PublicController {
       const { username } = req.params;
       const { message, senderEmail, senderName } = req.body;
 
+      logger.info("Message request received", {
+        username,
+        senderEmail,
+        hasSenderName: Boolean(senderName),
+        messageLength: message?.length || 0
+      });
+
       if (!message || !senderEmail) {
         return res.status(400).json({
           success: false,
@@ -255,14 +262,31 @@ class PublicController {
       });
 
       if (!user || !user.isActive) {
+        logger.warn("Profile not found or inactive", {
+          username,
+          found: Boolean(user),
+          isActive: user?.isActive
+        });
         return res.status(404).json({
           success: false,
           message: "Profile not found",
         });
       }
 
+      logger.info("Attempting to send email", {
+        from: senderEmail,
+        to: user.email,
+        username: user.username
+      });
+
       // Send email using the email service
       await emailService.sendMessage(senderEmail, user.email, message);
+
+      logger.info("Message sent successfully", {
+        username,
+        senderEmail,
+        recipientEmail: user.email
+      });
 
       res.json({
         success: true,
@@ -273,11 +297,13 @@ class PublicController {
         error: error.message,
         stack: error.stack,
         username: req.params.username,
-        senderEmail: req.body.senderEmail
+        senderEmail: req.body.senderEmail,
+        receiverEmail: user?.email || 'unknown'
       });
       res.status(500).json({
         success: false,
         message: "Failed to send message",
+        error: process.env.NODE_ENV === 'development' ? error.message : undefined,
       });
     }
   }

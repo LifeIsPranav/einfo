@@ -132,6 +132,24 @@ app.get("/health", (req, res) => {
   });
 });
 
+// Email configuration check endpoint (for debugging)
+app.get("/debug/email-config", (req, res) => {
+  const emailService = require("./services/email");
+  res.json({
+    isConfigured: emailService.isConfigured || false,
+    hasTransporter: Boolean(emailService.transporter),
+    env: {
+      hasSmtpHost: Boolean(process.env.SMTP_HOST),
+      hasSmtpPort: Boolean(process.env.SMTP_PORT),
+      hasSmtpUsername: Boolean(process.env.SMTP_USERNAME),
+      hasSmtpPassword: Boolean(process.env.SMTP_PASSWORD),
+      smtpHost: process.env.SMTP_HOST || 'not set',
+      smtpPort: process.env.SMTP_PORT || 'not set',
+      nodeEnv: process.env.NODE_ENV || 'not set',
+    }
+  });
+});
+
 // API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/profile", profileRoutes);
