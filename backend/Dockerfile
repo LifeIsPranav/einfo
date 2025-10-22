@@ -1,8 +1,8 @@
 # Use the official Node.js 18 runtime as a parent image
 FROM node:18-alpine
 
-# Install OpenSSL and other dependencies needed for Prisma
-RUN apk add --no-cache openssl
+# Install OpenSSL and other dependencies needed for Prisma and DNS resolution
+RUN apk add --no-cache openssl ca-certificates
 
 # Set the working directory in the container
 WORKDIR /app
@@ -33,7 +33,6 @@ RUN chmod +x start.sh
 
 # Expose the port the app runs on
 EXPOSE 8000
-EXPOSE 587
 
 # Define environment variable
 ENV NODE_ENV=production

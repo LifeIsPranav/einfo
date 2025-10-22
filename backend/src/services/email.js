@@ -40,6 +40,24 @@ class EmailService {
             user: username,
             pass: password,
           },
+          // Add timeouts to prevent hanging in Docker
+          connectionTimeout: 10000, // 10 seconds
+          greetingTimeout: 10000, // 10 seconds
+          socketTimeout: 15000, // 15 seconds
+          // Connection pooling for better performance
+          pool: true,
+          maxConnections: 5,
+          maxMessages: 10,
+          rateDelta: 1000,
+          rateLimit: 5,
+          // Add TLS options for better compatibility
+          tls: {
+            rejectUnauthorized: process.env.NODE_ENV === 'production',
+            minVersion: 'TLSv1.2'
+          },
+          // Enable debug logs in non-production
+          debug: process.env.NODE_ENV !== 'production',
+          logger: process.env.NODE_ENV !== 'production'
         }
       : {
           service: process.env.SMTP_SERVICE || "gmail",
@@ -47,6 +65,24 @@ class EmailService {
             user: username,
             pass: password,
           },
+          // Add timeouts to prevent hanging in Docker
+          connectionTimeout: 10000, // 10 seconds
+          greetingTimeout: 10000, // 10 seconds
+          socketTimeout: 15000, // 15 seconds
+          // Connection pooling for better performance
+          pool: true,
+          maxConnections: 5,
+          maxMessages: 10,
+          rateDelta: 1000,
+          rateLimit: 5,
+          // Add TLS options for better compatibility
+          tls: {
+            rejectUnauthorized: process.env.NODE_ENV === 'production',
+            minVersion: 'TLSv1.2'
+          },
+          // Enable debug logs in non-production
+          debug: process.env.NODE_ENV !== 'production',
+          logger: process.env.NODE_ENV !== 'production'
         };
 
     this.transporter = nodemailer.createTransport(transportConfig);

@@ -5,12 +5,16 @@ services:
     build: .
     ports:
       - "8000:8000"
-      - "587:587"
     env_file:
       - .env
     
     volumes:
       - ./uploads:/app/uploads
+    
+    # DNS settings to ensure proper name resolution for SMTP servers
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     
     restart: unless-stopped
     
