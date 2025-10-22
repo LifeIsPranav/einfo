@@ -276,7 +276,9 @@ class PublicController {
       logger.info("Attempting to send email", {
         from: senderEmail,
         to: user.email,
-        username: user.username
+        username: user.username,
+        emailServiceConfigured: emailService.isConfigured,
+        hasTransporter: Boolean(emailService.transporter)
       });
 
       // Send email using the email service
@@ -293,15 +295,27 @@ class PublicController {
         message: "Message sent successfully",
       });
     } catch (error) {
-      logger.error("Error sending message", {
+      logger.error("Error sending message - DETAILED", {
         error: error.message,
+        errorName: error.name,
+        errorCode: error.code,
         stack: error.stack,
         username: req.params.username,
-        senderEmail: req.body.senderEmail
+        senderEmail: req.body.senderEmail,
+        emailServiceConfigured: emailService.isConfigured,
+        hasTransporter: Boolean(emailService.transporter),
+        smtpDetails: {
+          hasHost: Boolean(process.env.SMTP_HOST),
+          hasPort: Boolean(process.env.SMTP_PORT),
+          hasUsername: Boolean(process.env.SMTP_USERNAME),
+          hasPassword: Boolean(process.env.SMTP_PASSWORD),
+          host: process.env.SMTP_HOST || 'not set',
+          port: process.env.SMTP_PORT || 'not set'
+        }
       });
       res.status(500).json({
         success: false,
-        message: "Failed to send message",
+        message: "Failed to send message. Please try again.",
         error: process.env.NODE_ENV === 'development' ? error.message : undefined,
       });
     }

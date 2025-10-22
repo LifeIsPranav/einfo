@@ -161,13 +161,39 @@ class EmailService {
       });
       return info;
     } catch (error) {
-      logger.error("Email sending failed", {
+      // Enhanced error logging for debugging SMTP issues
+      logger.error("Email sending failed - DETAILED ERROR", {
         error: error.message,
+        errorCode: error.code,
+        errorCommand: error.command,
+        errorResponse: error.response,
+        errorResponseCode: error.responseCode,
         stack: error.stack,
         senderEmail: senderEmail,
-        recipientEmail: receiverEmail
+        recipientEmail: receiverEmail,
+        smtpConfig: {
+          host: process.env.SMTP_HOST,
+          port: process.env.SMTP_PORT,
+          secure: process.env.SMTP_SECURE,
+          service: process.env.SMTP_SERVICE
+        }
       });
-      throw new Error(`Failed to send email: ${error.message}`);
+      
+      // Provide more specific error messages
+      let errorMessage = error.message;
+      if (error.code === 'ETIMEDOUT') {
+        errorMessage = 'SMTP connection timeout - unable to reach mail server';
+      } else if (error.code === 'ECONNREFUSED') {
+        errorMessage = 'SMTP connection refused - mail server rejected connection';
+      } else if (error.code === 'EAUTH' || error.responseCode === 535) {
+        errorMessage = 'SMTP authentication failed - invalid credentials';
+      } else if (error.responseCode === 550) {
+        errorMessage = 'Email rejected by recipient server';
+      } else if (error.code === 'ESOCKET') {
+        errorMessage = 'SMTP socket error - network issue';
+      }
+      
+      throw new Error(`Failed to send email: ${errorMessage}`);
     }
   }
 

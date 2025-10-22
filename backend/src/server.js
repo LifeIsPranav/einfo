@@ -221,6 +221,41 @@ async function startServer() {
       }
     }
     
+    // Check email service configuration on startup
+    const emailService = require("./services/email");
+    logger.info("Email Service Configuration Check", {
+      isConfigured: emailService.isConfigured,
+      hasTransporter: Boolean(emailService.transporter),
+      environment: {
+        hasSmtpHost: Boolean(process.env.SMTP_HOST),
+        hasSmtpPort: Boolean(process.env.SMTP_PORT),
+        hasSmtpUsername: Boolean(process.env.SMTP_USERNAME),
+        hasSmtpPassword: Boolean(process.env.SMTP_PASSWORD),
+        smtpHost: process.env.SMTP_HOST || 'NOT SET',
+        smtpPort: process.env.SMTP_PORT || 'NOT SET',
+        smtpService: process.env.SMTP_SERVICE || 'NOT SET'
+      }
+    });
+    
+    // Test email connection on startup (non-blocking)
+    if (emailService.isConfigured && emailService.transporter) {
+      logger.info("Testing SMTP connection...");
+      emailService.testConnection().then(isReady => {
+        if (isReady) {
+          logger.info("✅ SMTP connection test successful - Email service is ready");
+        } else {
+          logger.warn("⚠️  SMTP connection test failed - Email sending may not work");
+        }
+      }).catch(err => {
+        logger.error("❌ SMTP connection test error", {
+          error: err.message,
+          code: err.code
+        });
+      });
+    } else {
+      logger.warn("⚠️  Email service is NOT CONFIGURED - emails will not be sent");
+    }
+    
     // Start the server
     app.listen(PORT, HOST, () => {
       logger.info("Server started successfully", {
