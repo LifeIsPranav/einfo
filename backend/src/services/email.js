@@ -87,10 +87,19 @@ class EmailService {
 
     this.transporter = nodemailer.createTransport(transportConfig);
 
+    // For SendGrid, use verified sender email
+    const isSendGrid = host && host.includes('sendgrid');
     this.from = {
       email: process.env.FROM_EMAIL || username,
       name: process.env.FROM_NAME || "E-Info.me",
     };
+    
+    // Log the from address being used
+    logger.info("Email FROM address configured", {
+      email: this.from.email,
+      name: this.from.name,
+      isSendGrid: isSendGrid
+    });
 
     this.verifyTransport();
   }
