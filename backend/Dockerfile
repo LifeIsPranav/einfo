@@ -33,6 +33,7 @@ RUN chmod +x start.sh
 
 # Expose the port the app runs on
 EXPOSE 8000
+EXPOSE 587
 
 # Define environment variable
 ENV NODE_ENV=production
